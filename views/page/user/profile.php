@@ -45,19 +45,6 @@ $this->params['breadcrumbs'][] = $this->title;
                         <?= $form->field($model, 'list_size')->textInput(['type' => 'number']) ?>
                     </div><!-- /.box-body -->
                 </div>
-
-                <div class="box box-solid box-primary">
-                    <div class="box-header with-border">
-                        <h3 class="box-title">связь с ЕСИА</h3>
-                    </div><!-- /.box-header -->
-                    <div class="box-body">
-                        <div class="form-group">
-                            <label class="col-lg-3 control-label">ЕСИА id</label>
-                            <div class="col-lg-9"><p class="form-control-static" id="updated_at"><?= $model->getUser()->esia_id ?></p></div>
-                        </div>
-                    </div><!-- /.box-body -->
-                </div>
-
             </div><!-- /.box-body -->
             <!-- Actions Действия -->
             <div class="box-footer">

@@ -27,7 +27,9 @@
                         'options' => ['class' => 'treeview'],
                         'items' => [
                             ['label' => 'Контрагенты', 'icon' => 'fa fa-user', 'url' => ['client/index']],
-                            ['label' => 'Сотрудники', 'icon' => 'fa fa-user', 'url' => ['employees/index']],
+                            ['label' => 'Преподаватели и cотрудники', 'icon' => 'fa fa-user', 'url' => ['employees/index']],
+                            ['label' => 'Ученики', 'icon' => 'fa fa-graduation-cap', 'url' => ['student/index']],
+                            ['label' => 'Родители', 'icon' => 'fa fa-female', 'url' => ['parents/index']],
                         ],
                     ],
                     [
@@ -45,7 +47,10 @@
                         'url' => '#',
                         'options' => ['class' => 'treeview'],
                         'items' => [
-                            ['label' => 'Справочник ОКСМ', 'icon' => 'fa fa-flag', 'url' => ['oksm/index']],
+                            ['label' => 'Аудитории школы', 'icon' => 'fa fa-home', 'url' => ['oksm/index']],
+                            ['label' => 'Организации и площадки', 'icon' => 'fa fa-sitemap', 'url' => ['oksm/index']],
+                            ['label' => 'Сведения об организации', 'icon' => 'fa fa-flag', 'url' => ['oksm/index']],
+//                            ['label' => 'Справочник ОКСМ', 'icon' => 'fa fa-flag', 'url' => ['oksm/index']],
                         ],
                     ],
                     [
