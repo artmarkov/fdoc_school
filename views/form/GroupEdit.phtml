@@ -1,0 +1,43 @@
+<?php
+/* @var $url string */
+/* @var $formName string */
+/* @var $fields array */
+/* @var $fieldsets array */
+/* @var $hidden_fields array */
+/* @var $actions array */
+/* @var $helper_actions array */
+?>
+<form class="form-horizontal form-compact" role="form" action="<?= $url ?>" name="<?= $formName ?>" method="post" enctype="multipart/form-data">
+   <div class="box box-solid box-primary">
+      <div class="box-header with-border">
+         <h3 class="box-title">Группа</h3>
+         <div class="box-tools pull-right">
+         </div><!-- /.box-tools -->
+      </div><!-- /.box-header -->
+      <div class="box-body">
+         <div class="form-group form-group-sm <?= 0 == $fields['parent_id']['renderMode'] ? ' hide' : '' ?><?= $fields['parent_id']['error'] ? ' has-error' : '' ?>">
+            <label class="col-sm-4 control-label" for="parent_id">Родитель</label>
+            <div class="col-sm-8">
+               <?= $fields['parent_id']['html'] ?>
+               <?php if ($fields['parent_id']['error']): ?><span class="help-block"><?= $fields['parent_id']['error'] ?></span><?php endif; ?>
+            </div>
+         </div>
+         <div class="form-group form-group-sm <?= 0 == $fields['name']['renderMode'] ? ' hide' : '' ?><?= $fields['name']['error'] ? ' has-error' : '' ?>">
+            <label class="col-sm-4 control-label" for="name">Наименование*</label>
+            <div class="col-sm-8">
+               <?= $fields['name']['html'] ?>
+               <?php if ($fields['name']['error']): ?><span class="help-block"><?= $fields['name']['error'] ?></span><?php endif; ?>
+            </div>
+         </div>
+      </div><!-- /.box-body -->
+      <!-- Actions Действия -->
+      <div class="box-footer">
+         <?= $actions['save']['html'] ?>
+         <?= $actions['saveexit']['html'] ?>
+         <?= $actions['exit']['html'] ?>
+      </div>
+      <!-- Скрытые поля -->
+      <?= $hidden_fields['type']['html'] ?>
+      <?= $hidden_fields['action']['html'] ?>
+   </div>
+</form>

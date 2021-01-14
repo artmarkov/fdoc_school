@@ -1,0 +1,40 @@
+version: "3.5"
+services:
+
+   postgres:
+      build: postgres/
+      container_name: ${POSTGRES_CONTAINER_NAME}
+      working_dir: /app
+      command: postgres -c logging_collector=on -c log_destination=stderr -c log_directory=/logs -c client_min_messages=notice -c log_min_messages=warning -c log_min_error_statement=warning -c log_min_duration_statement=0 -c log_statement=all -c log_error_verbosity=default
+      volumes:
+        - ../:/app:delegated
+        - db:/var/lib/postgresql/data
+        - ${LOGS_DIR}:/logs
+      environment:
+        - POSTGRES_USER=${POSTGRES_USER}
+        - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+        - POSTGRES_DB=${POSTGRES_DB}
+        - LANG=ru_RU.UTF-8
+        - TZ=${TZ}
+      ports:
+        - "5432:5432"
+
+   php:
+      build: php/
+      container_name: ${PHP_CONTAINER_NAME}
+      volumes:
+        - ../:/app:delegated
+        - ./php/000-default.conf:/etc/apache2/sites-enabled/000-default.conf
+        - ./php/php-ini-overrides.ini:/usr/local/etc/php/conf.d/z-overrides.ini
+        - ${LOGS_DIR}:/logs
+        - ${WEBDAV_DIR}:/var/www/html/webdav
+      environment:
+        - PHP_ENABLE_XDEBUG=1
+      ports:
+        - '443:443'
+        - '80:80'
+      depends_on:
+        - postgres
+
+volumes:
+  db:

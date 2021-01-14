@@ -1,0 +1,123 @@
+---
+- name: enable remi-php73
+  shell: yum-config-manager --enable remi-php73
+
+- name: Install http php packages
+  yum: pkg={{ item }} state=latest
+  with_items:
+    - python-pip
+    - git
+    - httpd
+    - mod_ssl
+    - php
+    - php-pecl-apcu
+    - php-devel
+    - php-gd
+    - php-xml
+    - php-process
+    - php-soap
+    - php-process
+    - php-mcrypt
+    - php-mbstring
+    - php-pecl-xdebug
+    - php-pecl-ssh2
+    - php-pecl-zip
+    - php-pgsql
+    - php-intl
+    - php-bcmath
+
+- name: Copy logrotate config
+  copy: src=app-logrotate.conf dest=/etc/logrotate.d/wwwapp owner=root group=root mode=0644
+  notify: restart http
+
+- name: Ensure python OpenSSL dependencies are installed.
+  pip:
+    name: pyOpenSSL
+    state: present
+
+- name: Create cert directory
+  file: path=/etc/ssl/private state=directory owner=root mode=700
+
+- name: Generate an OpenSSL private key.
+  openssl_privatekey:
+    path: /etc/ssl/private/apache-selfsigned.key
+
+- name: Generate an OpenSSL CSR.
+  openssl_csr:
+    path: /etc/ssl/private/apache-selfsigned.csr
+    privatekey_path: /etc/ssl/private/apache-selfsigned.key
+    common_name: "{{ ansible_hostname }}"
+
+- name: Generate a Self Signed OpenSSL certificate
+  openssl_certificate:
+    path: /etc/ssl/private/apache-selfsigned.crt
+    privatekey_path: /etc/ssl/private/apache-selfsigned.key
+    csr_path: /etc/ssl/private/apache-selfsigned.csr
+    provider: selfsigned
+
+- name: Modify php.ini
+  lineinfile: dest=/etc/php.ini regexp="{{ item.key }}" line="{{ item.value }}"
+  with_items:
+   - { key: "^expose_php" , value: "expose_php = Off" }
+   - { key: "^[;]*date.timezone" , value: "date.timezone = 'Europe/Moscow'" }
+  notify: restart http
+
+- name: Copy http conf.d/app.include
+  copy: src=app.include dest=/etc/httpd/conf.d/app.include owner=root group=root mode=0644
+  notify: restart http
+
+- name: Copy http conf.d/app.conf
+  copy: src=app.conf dest=/etc/httpd/conf.d/app.conf owner=root group=root mode=0644
+  notify: restart http
+
+- name: fix systemd PrivateTmp for httpd
+  lineinfile: dest=/usr/lib/systemd/system/httpd.service
+    regexp="^PrivateTmp"
+    line="PrivateTmp=false"
+    state=present
+
+- name: httpd set autostart
+  service: name=httpd enabled=yes
+
+- name: httpd start
+  service: name=httpd state=started
+
+- name: Create webdev user
+  action: user name=webdev password={{webdev_password}}
+
+- name: Adding users webdev,apache to docker group
+  user: name={{ item }}
+        groups=docker,apache
+        append=yes
+  with_items:
+   - webdev
+   - apache
+
+- name: Create web-app directory
+  file: path=/var/www/app state=directory owner=webdev group=users mode=755
+
+- name: Create web app cron task
+  cron: name="web app cron" minute="*/5" job="cd /var/www/app/current && php yii cron/run-tasks" user=webdev
+
+- name: Create database
+  become_user: postgres
+  postgresql_db: name=appdb
+
+- name: Create database user
+  become_user: postgres
+  postgresql_user:
+    db: appdb
+    name: appdb
+    password: Passw0rd!
+    encrypted: yes
+
+- name: Grant priviledges to db user
+  become_user: postgres
+  postgresql_privs: db=postgres privs=ALL type=database obj=appdb role=appdb
+
+- name: Create extensions in db
+  become_user: postgres
+  postgresql_ext: name={{ item }} db=appdb
+  with_items:
+   - tablefunc
+   - pg_trgm

@@ -1,0 +1,40 @@
+<?php
+/* @var $data array */
+/* @var $route array */
+?>
+<div class="row">
+    <div class="col-md-12">
+        <div class="box">
+            <div class="box-header">
+                <h3 class="box-title">Таблица запросов в СМЭВ</h3>
+            </div><!-- /.box-header -->
+            <div class="box-body no-padding">
+                <table class="table table-bordered table-striped">
+                    <tr>
+                        <th>Ведомство</th>
+                        <th>Тип запроса</th>
+                        <th style="width: 120px"># Заявления</th>
+                        <th>Статус</th>
+                        <th>Действия</th>
+                    </tr>
+                    <?php foreach ($data as $v): ?>
+                        <tr>
+                            <td><?= $v['department'] ?></td>
+                            <td><?= $v['service'] ?></td>
+                            <?php if ($v['order']): ?>
+                                <?php $order=$v['order']; /* @var $order \fdoc\eav\object\Order */ ?>
+                                <td><?= sprintf('#%06d', $order->id); ?></td>
+                                <td><?= $order->getStatusName() ?></td>
+                                <td><a href='<?= \fdoc\ordertype\Factory::get($order)->getOrderUrl() ?>' class="btn btn-sm btn-primary pull-right">Перейти</a></td>
+                            <?php else: ?>
+                                <td></td>
+                                <td></td>
+                                <td><a href="<?= \yii\helpers\Url::to(array_merge($route,array('create'=>$v['typeId']))) ?>" class="btn btn-sm btn-default pull-right<?= $v['canCreate'] ? '' : ' disabled' ?>">Создать</a></td>
+                            <?php endif; ?>
+                        </tr>
+                    <?php endforeach; ?>
+                </table>
+            </div><!-- /.box-body -->
+        </div>
+    </div>
+</div>

@@ -1,0 +1,1 @@
+gunzip -c docker/dump.gz | psql -U appdb appdb

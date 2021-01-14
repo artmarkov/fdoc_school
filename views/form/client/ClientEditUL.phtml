@@ -1,0 +1,331 @@
+<?php
+/* @var $url string */
+/* @var $formName string */
+/* @var $fields array */
+/* @var $fieldsets array */
+/* @var $hidden_fields array */
+/* @var $actions array */
+/* @var $helper_actions array */
+/* @var $timestamp int */
+/* @var $versionList array */
+/* @var $version string */
+/* @var $isNew boolean */
+?>
+<style>
+   .datepicker {z-index:1151 !important;}
+</style>
+<form class="form-horizontal form-compact" role="form" action="<?= $url ?>" name="<?= $formName ?>" method="post">
+   <div class="box box-solid box-primary">
+      <div class="box-header with-border">
+         <h3 class="box-title">Информация о контрагенте</h3>
+         <div class="box-tools pull-right">
+            <?php if (!$isNew): ?>
+            <div class="btn-group btn-group-sm">
+               <a class="btn btn-info" data-toggle="modal" href="#historyDateModal"><i class="fa fa-clock-o"></i> <?= $timestamp ? date('d-m-Y H:i:s',$timestamp) : 'Просмотр на дату'; ?></a>
+               <?php if (count($versionList)>0): ?>
+               <button data-toggle="dropdown" class="btn btn-info dropdown-toggle" type="button" aria-expanded="false">
+                  <span class="caret"></span>
+                  <span class="sr-only">Toggle Dropdown</span>
+               </button>
+               <ul class="dropdown-menu pull-right scrollable-menu form-versions" role="menu">
+                  <?php foreach($versionList as $k=>$v): ?>
+                     <?php if ($k==$version): ?>
+                        <li><a role="menuitem" href="<?= $url ?>"><?= $k.': '.date('d-m-Y H:i:s',$v).' (Текущая версия)' ?></a></li>
+                     <?php else: ?>
+                        <li><a role="menuitem" href="<?= $url.'?time='.$v ?>"><?= $k.': '.date('d-m-Y H:i:s',$v) ?></a></li>
+                     <?php endif; ?>
+                  <?php endforeach; ?>
+               </ul>
+               <?php endif; ?>
+            </div>
+            <?php endif; ?>
+            <?php if (!$timestamp): ?>
+               <?= $helper_actions['history']['html'] ?>
+            <?php endif; ?>
+         </div><!-- /.box-tools -->
+      </div><!-- /.box-header -->
+      <div class="box-body">
+         <!-- Fields Поля -->
+
+         <div class="form-group form-group-sm <?= 0 == $fields['type']['renderMode'] ? ' hide' : '' ?><?= $fields['type']['error'] ? ' has-error' : '' ?>">
+            <label class="col-sm-4 control-label" for="form:type">Тип*</label>
+            <div class="col-sm-8">
+               <?= $fields['type']['html'] ?>
+               <?php if ($fields['type']['error']): ?><span class="help-block"><?= $fields['type']['error'] ?></span><?php endif; ?>
+            </div>
+         </div>
+
+         <div class="form-group form-group-sm <?= 0 == $fields['name']['renderMode'] ? ' hide' : '' ?><?= $fields['name']['error'] ? ' has-error' : '' ?>">
+            <label class="col-sm-4 control-label" for="form:name">Полное наименование*</label>
+            <div class="col-sm-8">
+               <?= $fields['name']['html'] ?>
+               <?php if ($fields['name']['error']): ?><span class="help-block"><?= $fields['name']['error'] ?></span><?php endif; ?>
+            </div>
+         </div>
+         <div class="form-group form-group-sm <?= 0 == $fields['briefname']['renderMode'] ? ' hide' : '' ?><?= $fields['briefname']['error'] ? ' has-error' : '' ?>">
+            <label class="col-sm-4 control-label" for="form:briefname">Сокращенное наименование*</label>
+            <div class="col-sm-8">
+               <?= $fields['briefname']['html'] ?>
+               <?php if ($fields['briefname']['error']): ?><span class="help-block"><?= $fields['briefname']['error'] ?></span><?php endif; ?>
+            </div>
+         </div>
+         <div class="form-group form-group-sm <?= 0 == $fields['firmname']['renderMode'] ? ' hide' : '' ?><?= $fields['firmname']['error'] ? ' has-error' : '' ?>">
+            <label class="col-sm-4 control-label" for="form:firmname">Фирменное наименование</label>
+            <div class="col-sm-8">
+               <?= $fields['firmname']['html'] ?>
+               <?php if ($fields['firmname']['error']): ?><span class="help-block"><?= $fields['firmname']['error'] ?></span><?php endif; ?>
+            </div>
+         </div>
+
+         <div class="form-group form-group-sm <?= 0 == $fields['ogrn']['renderMode'] ? ' hide' : '' ?><?= $fields['ogrn']['error'] ? ' has-error' : '' ?>">
+            <label class="col-sm-4 control-label" for="form:ogrn">ОГРН*</label>
+            <div class="col-sm-8">
+               <?= $fields['ogrn']['html'] ?>
+               <?php if ($fields['ogrn']['error']): ?><span class="help-block"><?= $fields['ogrn']['error'] ?></span><?php endif; ?>
+            </div>
+         </div>
+
+         <div class="form-group form-group-sm <?= 0 == $fields['inn']['renderMode'] ? ' hide' : '' ?><?= $fields['inn']['error'] ? ' has-error' : '' ?>">
+            <label class="col-sm-4 control-label" for="form:inn">ИНН*</label>
+            <div class="col-sm-8">
+               <?= $fields['inn']['html'] ?>
+               <?php if ($fields['inn']['error']): ?><span class="help-block"><?= $fields['inn']['error'] ?></span><?php endif; ?>
+            </div>
+         </div>
+         
+         <div class="form-group form-group-sm <?= 0 == $fields['address_legal']['renderMode'] ? ' hide' : '' ?><?= $fields['address_legal']['error'] ? ' has-error' : '' ?>">
+            <label class="col-sm-4 control-label" for="form:address_legal">Адрес регистрации юридического лица*</label>
+            <div class="col-sm-8">
+               <?= $fields['address_legal']['html'] ?>
+               <?php if ($fields['address_legal']['error']): ?><span class="help-block"><?= $fields['address_legal']['error'] ?></span><?php endif; ?>
+            </div>
+         </div>
+
+         <div class="form-group form-group-sm <?= 0 == $fields['address']['renderMode'] ? ' hide' : '' ?><?= $fields['address']['error'] ? ' has-error' : '' ?>">
+            <label class="col-sm-4 control-label" for="form:address">Почтовый адрес*</label>
+            <div class="col-sm-8">
+               <?= $fields['address']['html'] ?>
+               <?php if ($fields['address']['error']): ?><span class="help-block"><?= $fields['address']['error'] ?></span><?php endif; ?>
+            </div>
+         </div>
+
+         <div class="form-group form-group-sm <?= 0 == $fields['phone']['renderMode'] ? ' hide' : '' ?><?= $fields['phone']['error'] ? ' has-error' : '' ?>">
+            <label class="col-sm-4 control-label" for="form:phone">Телефон*</label>
+            <div class="col-sm-8">
+               <?= $fields['phone']['html'] ?>
+               <?php if ($fields['phone']['error']): ?><span class="help-block"><?= $fields['phone']['error'] ?></span><?php endif; ?>
+            </div>
+         </div>
+
+         <div class="form-group form-group-sm <?= 0 == $fields['email']['renderMode'] ? ' hide' : '' ?><?= $fields['email']['error'] ? ' has-error' : '' ?>">
+            <label class="col-sm-4 control-label" for="form:email">Электронная почта*</label>
+            <div class="col-sm-8">
+               <?= $fields['email']['html'] ?>
+               <?php if ($fields['email']['error']): ?><span class="help-block"><?= $fields['email']['error'] ?></span><?php endif; ?>
+            </div>
+         </div>
+
+          <div class="box box-solid box-primary">
+              <div class="box-header with-border">
+                  <h3 class="box-title"> Руководитель </h3>
+              </div>
+              <div class="box-body">
+                  <!-- Fields Поля -->
+
+                  <div class="form-group form-group-sm <?= 0 == $fields['r_surname']['renderMode'] ? ' hide' : '' ?><?= $fields['r_surname']['error'] ? ' has-error' : '' ?>">
+                      <label class="col-sm-4 control-label" for="form:r_surname">Фамилия*</label>
+                      <div class="col-sm-8">
+                         <?= $fields['r_surname']['html'] ?>
+                         <?php if ($fields['r_surname']['error']): ?><span class="help-block"><?= $fields['r_surname']['error'] ?></span><?php endif; ?>
+                      </div>
+                  </div>
+                  <div class="form-group form-group-sm <?= 0 == $fields['r_name']['renderMode'] ? ' hide' : '' ?><?= $fields['r_name']['error'] ? ' has-error' : '' ?>">
+                      <label class="col-sm-4 control-label" for="form:r_name">Имя*</label>
+                      <div class="col-sm-8">
+                         <?= $fields['r_name']['html'] ?>
+                         <?php if ($fields['r_name']['error']): ?><span class="help-block"><?= $fields['r_name']['error'] ?></span><?php endif; ?>
+                      </div>
+                  </div>
+                  <div class="form-group form-group-sm <?= 0 == $fields['r_thirdname']['renderMode'] ? ' hide' : '' ?><?= $fields['r_thirdname']['error'] ? ' has-error' : '' ?>">
+                      <label class="col-sm-4 control-label" for="form:r_thirdname">Отчество</label>
+                      <div class="col-sm-8">
+                         <?= $fields['r_thirdname']['html'] ?>
+                         <?php if ($fields['r_thirdname']['error']): ?><span class="help-block"><?= $fields['r_thirdname']['error'] ?></span><?php endif; ?>
+                      </div>
+                  </div>
+
+              </div>
+          </div>
+
+          <div class="box box-solid box-primary">
+              <div class="box-header with-border">
+                  <h3 class="box-title"> Лицо, действующее без доверенности </h3>
+              </div>
+              <div class="box-body">
+                  <!-- Fields Поля -->
+
+                  <div class="form-group form-group-sm <?= 0 == $fields['l_surname']['renderMode'] ? ' hide' : '' ?><?= $fields['l_surname']['error'] ? ' has-error' : '' ?>">
+                      <label class="col-sm-4 control-label" for="form:l_surname">Фамилия</label>
+                      <div class="col-sm-8">
+                         <?= $fields['l_surname']['html'] ?>
+                         <?php if ($fields['l_surname']['error']): ?><span class="help-block"><?= $fields['l_surname']['error'] ?></span><?php endif; ?>
+                      </div>
+                  </div>
+                  <div class="form-group form-group-sm <?= 0 == $fields['l_name']['renderMode'] ? ' hide' : '' ?><?= $fields['l_name']['error'] ? ' has-error' : '' ?>">
+                      <label class="col-sm-4 control-label" for="form:l_name">Имя</label>
+                      <div class="col-sm-8">
+                         <?= $fields['l_name']['html'] ?>
+                         <?php if ($fields['l_name']['error']): ?><span class="help-block"><?= $fields['l_name']['error'] ?></span><?php endif; ?>
+                      </div>
+                  </div>
+                  <div class="form-group form-group-sm <?= 0 == $fields['l_thirdname']['renderMode'] ? ' hide' : '' ?><?= $fields['l_thirdname']['error'] ? ' has-error' : '' ?>">
+                      <label class="col-sm-4 control-label" for="form:l_thirdname">Отчество</label>
+                      <div class="col-sm-8">
+                         <?= $fields['l_thirdname']['html'] ?>
+                         <?php if ($fields['l_thirdname']['error']): ?><span class="help-block"><?= $fields['l_thirdname']['error'] ?></span><?php endif; ?>
+                      </div>
+                  </div>
+                  <div class="form-group form-group-sm <?= 0 == $fields['l_snils']['renderMode'] ? ' hide' : '' ?><?= $fields['l_snils']['error'] ? ' has-error' : '' ?>">
+                      <label class="col-sm-4 control-label" for="form:l_snils">СНИЛС</label>
+                      <div class="col-sm-8">
+                         <?= $fields['l_snils']['html'] ?>
+                         <?php if ($fields['l_snils']['error']): ?><span class="help-block"><?= $fields['l_snils']['error'] ?></span><?php endif; ?>
+                      </div>
+                  </div>
+
+              </div>
+          </div>
+
+          <div class="box box-solid box-primary">
+              <div class="box-header with-border">
+                  <h3 class="box-title">Реестр отозванных транспортных средств </h3>
+              </div>
+              <div class="box-body">
+                  <!-- Fields Поля -->
+
+                  <div class="form-group form-group-sm <?= 0 == $fields['revocamp_type']['renderMode'] ? ' hide' : '' ?><?= $fields['revocamp_type']['error'] ? ' has-error' : '' ?>">
+                      <label class="col-sm-4 control-label" for="form:revocamp_type">Тип юридического лица</label>
+                      <div class="col-sm-8">
+                         <?= $fields['revocamp_type']['html'] ?>
+                         <?php if ($fields['revocamp_type']['error']): ?><span class="help-block"><?= $fields['revocamp_type']['error'] ?></span><?php endif; ?>
+                      </div>
+                  </div>
+
+              </div>
+          </div>
+
+      </div><!-- /.box-body -->
+
+      <!-- Actions Действия -->
+      <div class="box-footer">
+         <?= $actions['save']['html'] ?>
+         <?= $actions['saveexit']['html'] ?>
+         <?= $actions['exit']['html'] ?>
+      </div>
+
+      <!-- Скрытые поля -->
+      <?= $hidden_fields['action']['html'] ?>
+   </div>
+</form>
+<div class="modal" id="historyDateModal">
+   <div class="modal-dialog">
+      <form role="form" method="post" action="<?= $url ?>">
+         <div class="modal-content">
+            <div class="modal-header">
+               <button aria-label="Close" data-dismiss="modal" class="close" type="button"><span aria-hidden="true">&times;</span></button>
+               <h4 class="modal-title">Выбор даты</h4>
+            </div>
+            <div class="modal-body">
+               <div class="input-group date margin" data-provide="datepicker" data-date-format="dd-mm-yyyy" data-date-clear-btn="true" data-date-language="ru" data-date-today-highlight="true" data-date-autoclose="true">
+               <input type="text" class="form-control" name="time" value="<?= $timestamp?date('d-m-Y',$timestamp):'' ?>"/>
+               <span class="input-group-addon"><i class="fa fa-calendar"></i></span></div>
+            </div>
+            <div class="modal-footer">
+               <a class="btn btn-default pull-left" href="<?= $url ?>">Сбросить</a>
+               <button class="btn btn-primary" type="submit" value="save">Выбрать</button>
+            </div>
+         </div>
+      </form>
+   </div>
+</div>
+<script type="text/javascript">
+
+   $('#form\\:ogrn').keypress(function (e) {
+         var txt = String.fromCharCode(e.which);
+         if (e.which !== 0 && e.which !== 8) {
+            if ((txt.match(/[A-Za-zа-яА-Я#.№:;,\/' @$%^&*(_=)"?!-+\\]/)) || ($('#form\\:ogrn').val().length >= 13)) {
+               return false;
+            }
+         }
+   });
+
+   $('#form\\:inn').keypress(function (e) {
+      var txt = String.fromCharCode(e.which);
+         if (e.which !== 0 && e.which !== 8) {
+            if ((txt.match(/[A-Za-zа-яА-Я#.№:;,\/' @$%^&*(_=)"?!-+\\]/)) || ($('#form\\:inn').val().length >= 10)) {
+               return false;
+            }
+         }
+   });
+
+   $('#form\\:kpp').keypress(function (e) {
+      var txt = String.fromCharCode(e.which);
+      if (e.which !== 0 && e.which !== 8) {
+         if ((txt.match(/[A-Za-zа-яА-Я#.№:;,\/' @$%^&*(_=)"?!-+\\]/)) || ($('#form\\:kpp').val().length >= 9)) {
+            return false;
+         }
+      }
+    });
+
+   $('#form\\:phone').keypress(function (e) {
+      var txt = String.fromCharCode(e.which);
+      if (e.which !== 0 && e.which !== 8) {
+         if ((txt.match(/[A-Za-zа-яА-Я.№:;,\/' @#$%^&_="?!\\]/)) || ($('#form\\:phone').val().length >= 25)) {
+            return false;
+         }
+      }
+   });
+
+   $('#form\\:fax').keypress(function (e) {
+      var txt = String.fromCharCode(e.which);
+      if (e.which !== 0 && e.which !== 8) {
+         if ((txt.match(/[A-Za-zа-яА-Я.№:;,\/' @#$%^&_="?!\\]/)) || ($('#form\\:fax').val().length >= 25)) {
+            return false;
+         }
+      }
+   });
+
+   $('#form\\:email').keypress(function (e) {
+      var txt = String.fromCharCode(e.which);
+      if (e.which !== 0 && e.which !== 8) {
+         if ((txt.match(/[а-яА-Я]/)) || ($('#form\\:email').val().length >= 40)) {
+            return false;
+         }
+      }
+   });
+
+</script>
+
+<?php if (isset($isValid)): ?>
+   <script>
+      $(document).ready(function() {
+         $('#errormodal').modal() ;
+      });
+   </script>
+<?php endif; ?>
+
+<div id="errormodal" class="modal fade" role="dialog" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h3 class="modal-title" style="text-align:center;"> Запись не сохранена! </h3>
+            </div>
+            <div class="modal-body">
+                <h4 style="color:red; text-align:center;">Не все обязательные поля заполнены корректно.</h4>
+                <hr>
+                <p style="text-align:center;">* Для сохранения записи заполните поля, выделенные красным цветом, и повторно нажмите кнопку "Сохранить" </p>
+            </div>
+        </div>
+    </div>
+</div>

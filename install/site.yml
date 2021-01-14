@@ -1,0 +1,11 @@
+---
+- name: Setup web app environment
+  hosts: all
+  become: yes
+  become_user: root
+
+  roles:
+    - common
+    - docker
+    - postgre
+    - web

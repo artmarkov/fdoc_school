@@ -1,0 +1,78 @@
+<?php
+/* @var $hist array */
+/* @var $v hist_filter_Entry */
+\fdoc\assets\DataTablesAsset::register($this);
+?>
+<div class="row">
+    <div class="col-md-12">
+        <div class="box">
+            <div class="box-body table-responsive no-padding">
+                <table id="history" class="table table-bordered table-striped">
+                    <thead>
+                    <tr>
+                        <th>Тип события</th>
+                        <th>Параметр</th>
+                        <th>Старое значение</th>
+                        <th>Новое значение</th>
+                        <th>Дата</th>
+                        <th>Инициатор</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <?php foreach ($hist as $v): ?>
+                        <tr class="<?= $v->class; ?>">
+                            <td><?= $v->type; ?></td>
+                            <td><?= $v->field; ?></td>
+                            <td><?= $v->valueOld; ?></td>
+                            <td><?= $v->value; ?></td>
+                            <td><?= $v->modifyDate; ?></td>
+                            <td><?= $v->modifyUserLink; ?></td>
+                        </tr>
+                    <?php endforeach; ?>
+                    </tbody>
+                    <tfoot>
+                    <tr class="red">
+                        <th>Тип события</th>
+                        <th>Параметр</th>
+                        <th>Старое значение</th>
+                        <th>Новое значение</th>
+                        <th>Дата</th>
+                        <th>Инициатор</th>
+                    </tr>
+                    </tfoot>
+                </table>
+            </div>
+            <!-- /.box-body -->
+        </div>
+        <!-- /.box -->
+    </div>
+</div>
+
+table-responsive no-padding
+<script>
+    $(function () {
+        $('#history').DataTable({
+            sDom: '<"row"<"col-sm-6"f><"col-sm-6"p>><"row"<"col-sm-12"tr>>',
+            paging: true,
+            searching: true,
+            lengthChange: false,
+            info: true,
+            autoWidth: true,
+            ordering: false,
+            pageLength: 25,
+            language: {
+                search: "Поиск&nbsp;:",
+                paginate: {
+                    first: "&laquo;",
+                    previous: "&lt;",
+                    next: "&gt;",
+                    last: "&raquo;"
+                },
+                info: "Страница _PAGE_ из _PAGES_",
+                zeroRecords: "Ничего не найдено",
+                infoEmpty: "Нет записей",
+                infoFiltered: "(отфильтровано из _MAX_ строк)"
+            }
+        });
+    });
+</script>

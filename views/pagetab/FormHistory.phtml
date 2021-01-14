@@ -1,0 +1,22 @@
+<div class="box">
+    <div class="box-body no-padding">
+        <table class="table table-striped">
+            <tr>
+                <th>Параметр</th>
+                <th>Значение было</th>
+                <th>Значение стало</th>
+                <th style="width: 150px;">Дата</th>
+                <th>Пользователь</th>
+            </tr>
+            <?php foreach ($data as $v): ?>
+                <tr>
+                    <td><?= $v['label']; ?></td>
+                    <td><?= $v['value_old']; ?></td>
+                    <td><?= $v['value']; ?></td>
+                    <td><?= $v['mdate']; ?></td>
+                    <td><?= $v['musername']; ?></td>
+                </tr>
+            <?php endforeach; ?>
+        </table>
+    </div><!-- /.box-body -->
+</div><!-- /.box -->

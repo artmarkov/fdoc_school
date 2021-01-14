@@ -1,0 +1,197 @@
+<?php
+/* @var $url string */
+/* @var $formName string */
+/* @var $fields array */
+/* @var $fieldsets array */
+/* @var $hidden_fields array */
+/* @var $actions array */
+/* @var $helper_actions array */
+?>
+<form class="form-horizontal form-compact" role="form" action="<?= $url ?>" name="<?= $formName ?>" method="post" enctype="multipart/form-data">
+    <div class="box box-solid box-primary">
+        <div class="box-header with-border">
+            <h3 class="box-title">Информация о пользователе</h3>
+        </div><!-- /.box-header -->
+        <div class="box-body">
+            <div class="row">
+                <div class="col-sm-7">
+
+                    <div class="form-group form-group-sm <?= 0 == $fields['group_id']['renderMode'] ? ' hide' : '' ?><?= $fields['group_id']['error'] ? ' has-error' : '' ?>">
+                        <label class="col-sm-3 control-label" for="group_id">Группа</label>
+                        <div class="col-sm-9">
+                            <?= $fields['group_id']['html'] ?>
+                            <?php if ($fields['group_id']['error']): ?><span class="help-block"><?= $fields['group_id']['error'] ?></span><?php endif; ?>
+                        </div>
+                    </div>
+
+                    <div class="form-group form-group-sm <?= 0 == $fields['login']['renderMode'] ? ' hide' : '' ?><?= $fields['login']['error'] ? ' has-error' : '' ?>">
+                        <label class="col-sm-3 control-label" for="login">Логин</label>
+                        <div class="col-sm-9">
+                            <?= $fields['login']['html'] ?>
+                            <?php if ($fields['login']['error']): ?><span class="help-block"><?= $fields['login']['error'] ?></span><?php endif; ?>
+                        </div>
+                    </div>
+
+                    <div class="form-group form-group-sm <?= 0 == $fields['password']['renderMode'] ? ' hide' : '' ?><?= $fields['password']['error'] ? ' has-error' : '' ?>">
+                        <label class="col-sm-3 control-label" for="password">Новый пароль</label>
+                        <div class="col-sm-9">
+                            <?= $fields['password']['html'] ?>
+                            <?php if ($fields['password']['error']): ?><span class="help-block"><?= $fields['password']['error'] ?></span><?php endif; ?>
+                        </div>
+                    </div>
+
+                    <div class="form-group form-group-sm <?= 0 == $fields['surname']['renderMode'] ? ' hide' : '' ?><?= $fields['surname']['error'] ? ' has-error' : '' ?>">
+                        <label class="col-sm-3 control-label" for="surname">Фамилия*</label>
+                        <div class="col-sm-9">
+                            <?= $fields['surname']['html'] ?>
+                            <?php if ($fields['surname']['error']): ?><span class="help-block"><?= $fields['surname']['error'] ?></span><?php endif; ?>
+                        </div>
+                    </div>
+                    <div class="form-group form-group-sm <?= 0 == $fields['name']['renderMode'] ? ' hide' : '' ?><?= $fields['name']['error'] ? ' has-error' : '' ?>">
+                        <label class="col-sm-3 control-label" for="name">Имя*</label>
+                        <div class="col-sm-9">
+                            <?= $fields['name']['html'] ?>
+                            <?php if ($fields['name']['error']): ?><span class="help-block"><?= $fields['name']['error'] ?></span><?php endif; ?>
+                        </div>
+                    </div>
+                    <div class="form-group form-group-sm <?= 0 == $fields['patronymic']['renderMode'] ? ' hide' : '' ?><?= $fields['patronymic']['error'] ? ' has-error' : '' ?>">
+                        <label class="col-sm-3 control-label" for="patronymic">Отчество</label>
+                        <div class="col-sm-9">
+                            <?= $fields['patronymic']['html'] ?>
+                            <?php if ($fields['patronymic']['error']): ?><span class="help-block"><?= $fields['patronymic']['error'] ?></span><?php endif; ?>
+                        </div>
+                    </div>
+
+                    <div class="form-group form-group-sm <?= 0 == $fields['job']['renderMode'] ? ' hide' : '' ?><?= $fields['job']['error'] ? ' has-error' : '' ?>">
+                        <label class="col-sm-3 control-label" for="job">Должность</label>
+                        <div class="col-sm-9">
+                            <?= $fields['job']['html'] ?>
+                            <?php if ($fields['job']['error']): ?><span class="help-block"><?= $fields['job']['error'] ?></span><?php endif; ?>
+                        </div>
+                    </div>
+
+<!--                    <div class="form-group form-group-sm --><?//= 0 == $fields['supervisor_id']['renderMode'] ? ' hide' : '' ?><!----><?//= $fields['supervisor_id']['error'] ? ' has-error' : '' ?><!--">-->
+<!--                        <label class="col-sm-3 control-label" for="supervisor_id">Непосредственный руководитель</label>-->
+<!--                        <div class="col-sm-9">-->
+<!--                            --><?//= $fields['supervisor_id']['html'] ?>
+<!--                            --><?php //if ($fields['supervisor_id']['error']): ?><!--<span class="help-block">--><?//= $fields['supervisor_id']['error'] ?><!--</span>--><?php //endif; ?>
+<!--                        </div>-->
+<!--                    </div>-->
+
+                    <div class="form-group form-group-sm <?= 0 == $fields['birthday']['renderMode'] ? ' hide' : '' ?><?= $fields['birthday']['error'] ? ' has-error' : '' ?>">
+                        <label class="col-sm-3 control-label" for="birthday">Дата рождения</label>
+                        <div class="col-sm-9">
+                            <?= $fields['birthday']['html'] ?>
+                            <?php if ($fields['birthday']['error']): ?><span class="help-block"><?= $fields['birthday']['error'] ?></span><?php endif; ?>
+                        </div>
+                    </div>
+
+                    <div class="form-group form-group-sm <?= 0 == $fields['snils']['renderMode'] ? ' hide' : '' ?><?= $fields['snils']['error'] ? ' has-error' : '' ?>">
+                        <label class="col-sm-3 control-label" for="snils">СНИЛС</label>
+                        <div class="col-sm-9">
+                            <?= $fields['snils']['html'] ?>
+                            <?php if ($fields['snils']['error']): ?><span class="help-block"><?= $fields['snils']['error'] ?></span><?php endif; ?>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="col-sm-5">
+
+                    <div class="form-group form-group-sm <?= 0 == $fields['intphone']['renderMode'] ? ' hide' : '' ?><?= $fields['intphone']['error'] ? ' has-error' : '' ?>">
+                        <label class="col-sm-3 control-label" for="intphone">Внутр.тел.</label>
+                        <div class="col-sm-9">
+                            <?= $fields['intphone']['html'] ?>
+                            <?php if ($fields['intphone']['error']): ?><span class="help-block"><?= $fields['intphone']['error'] ?></span><?php endif; ?>
+                        </div>
+                    </div>
+
+                    <div class="form-group form-group-sm <?= 0 == $fields['extphone']['renderMode'] ? ' hide' : '' ?><?= $fields['extphone']['error'] ? ' has-error' : '' ?>">
+                        <label class="col-sm-3 control-label" for="extphone">Гор.тел.</label>
+                        <div class="col-sm-9">
+                            <?= $fields['extphone']['html'] ?>
+                            <?php if ($fields['extphone']['error']): ?><span class="help-block"><?= $fields['extphone']['error'] ?></span><?php endif; ?>
+                        </div>
+                    </div>
+
+                    <div class="form-group form-group-sm <?= 0 == $fields['mobphone']['renderMode'] ? ' hide' : '' ?><?= $fields['mobphone']['error'] ? ' has-error' : '' ?>">
+                        <label class="col-sm-3 control-label" for="mobphone">Моб.тел.</label>
+                        <div class="col-sm-9">
+                            <?= $fields['mobphone']['html'] ?>
+                            <?php if ($fields['mobphone']['error']): ?><span class="help-block"><?= $fields['mobphone']['error'] ?></span><?php endif; ?>
+                        </div>
+                    </div>
+
+                    <div class="form-group form-group-sm <?= 0 == $fields['email']['renderMode'] ? ' hide' : '' ?><?= $fields['email']['error'] ? ' has-error' : '' ?>">
+                        <label class="col-sm-3 control-label" for="email">E-mail</label>
+                        <div class="col-sm-9">
+                            <?= $fields['email']['html'] ?>
+                            <?php if ($fields['email']['error']): ?><span class="help-block"><?= $fields['email']['error'] ?></span><?php endif; ?>
+                        </div>
+                    </div>
+
+                    <div class="form-group form-group-sm <?= 0 == $fields['photo']['renderMode'] ? ' hide' : '' ?><?= $fields['photo']['error'] ? ' has-error' : '' ?>">
+                        <label class="col-sm-3 control-label" for="photo">Фото</label>
+                        <div class="col-sm-9">
+                            <?= $fields['photo']['html'] ?>
+                            <?php if ($fields['photo']['error']): ?><span class="help-block"><?= $fields['photo']['error'] ?></span><?php endif; ?>
+                        </div>
+                    </div>
+
+                    <div class="form-group form-group-sm <?= 0 == $fields['created_at']['renderMode'] ? ' hide' : '' ?><?= $fields['created_at']['error'] ? ' has-error' : '' ?>">
+                        <label class="col-sm-3 control-label" for="created_at">Дата создания</label>
+                        <div class="col-sm-9">
+                            <?= $fields['created_at']['html'] ?>
+                            <?php if ($fields['created_at']['error']): ?><span class="help-block"><?= $fields['created_at']['error'] ?></span><?php endif; ?>
+                        </div>
+                    </div>
+
+                    <div class="form-group form-group-sm <?= 0 == $fields['updated_at']['renderMode'] ? ' hide' : '' ?><?= $fields['updated_at']['error'] ? ' has-error' : '' ?>">
+                        <label class="col-sm-3 control-label" for="updated_at">Дата изменения</label>
+                        <div class="col-sm-9">
+                            <?= $fields['updated_at']['html'] ?>
+                            <?php if ($fields['updated_at']['error']): ?><span class="help-block"><?= $fields['updated_at']['error'] ?></span><?php endif; ?>
+                        </div>
+                    </div>
+
+                </div><!-- /.col -->
+            </div><!-- /.row -->
+
+        </div><!-- /.box-body -->
+
+        <!-- Actions Действия -->
+        <div class="box-footer">
+            <?= $actions['save']['html'] ?>
+            <?= $actions['saveexit']['html'] ?>
+            <?= $actions['exit']['html'] ?>
+            <?= $actions['impersonate_user']['html'] ?>
+            <?= $actions['mail_user']['html'] ?>
+        </div>
+
+        <!-- Скрытые поля -->
+        <?= $hidden_fields['action']['html'] ?>
+    </div>
+</form>
+
+<?php if (isset($isValid)): ?>
+    <script>
+        $(document).ready(function () {
+            $('#errormodal').modal();
+        });
+    </script>
+<?php endif; ?>
+
+<div id="errormodal" class="modal fade" role="dialog" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h3 class="modal-title" style="text-align:center;"> Запись не сохранена! </h3>
+            </div>
+            <div class="modal-body">
+                <h4 style="color:red; text-align:center;">Не все обязательные поля заполнены корректно.</h4>
+                <hr>
+                <p style="text-align:center;">* Для сохранения записи заполните поля, выделенные красным цветом, и повторно нажмите кнопку "Сохранить" </p>
+            </div>
+        </div>
+    </div>
+</div>

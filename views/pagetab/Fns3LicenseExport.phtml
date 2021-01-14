@@ -1,0 +1,220 @@
+<?php
+/* @var $route array */
+/* @var $data array */
+/* @var $resolutionList array */
+/* @var $resolutionId int */
+
+use yii\helpers\Url;
+
+?>
+<style>
+    div.edate, div.edateago {
+        font-size: 18px;
+    }
+</style>
+
+<form role="form" method="post" action="<?= Url::to($route) ?>">
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="box">
+                <div class="box-header">
+                    <h3 class="box-title">Журнал передачи сведений</h3>
+                </div><!-- /.box-header -->
+                <div class="box-body no-padding">
+                    <table class="table table-bordered table-striped table-condensed">
+                        <tr>
+                            <th>Передаваемые сведения</th>
+                            <th style="width: 200px;">Дата передачи сведений</th>
+                        </tr>
+                        <?php foreach ($data as $k => $v): ?>
+                            <tr>
+                                <td>
+                                    <div class="row">
+                                        <div class="col-md-6 col-lg-3">
+                                            <h4>Контрагент</h4>
+                                            <?php if ($v['client']): ?>
+                                                <dl>
+                                                    <dt>Тип лицензиата</dt>
+                                                    <dd><?= $v['client']['type_name'] ?></dd>
+                                                    <?php if ('UL' == $v['client']['type']): ?>
+                                                        <dt>Наименование</dt>
+                                                        <dd><?= $v['client']['name'] ?></dd>
+                                                    <?php elseif ('IP' == $v['client']['type']): ?>
+                                                        <dt>Фамилия</dt>
+                                                        <dd><?= $v['client']['last_name'] ?></dd>
+                                                        <dt>Имя</dt>
+                                                        <dd><?= $v['client']['middle_name'] ?></dd>
+                                                        <dt>Отчество</dt>
+                                                        <dd><?= $v['client']['first_name'] ?></dd>
+                                                    <?php endif; ?>
+                                                    <dt>ИНН</dt>
+                                                    <dd><?= $v['client']['inn'] ?></dd>
+                                                    <dt>ОГРН</dt>
+                                                    <dd><?= $v['client']['ogrn'] ?></dd>
+                                                </dl>
+                                            <?php else: ?>
+                                                <p class="text-red">- Не указан -</p>
+                                            <?php endif; ?>
+                                        </div>
+                                        <div class="col-md-6 col-lg-3">
+                                            <h4>Лицензия</h4>
+                                            <dl>
+                                                <dt>Номер</dt>
+                                                <dd><?= $v['license']['lic_number'] ?></dd>
+                                                <dt>Дата</dt>
+                                                <dd><?= $v['license']['lic_date'] ?></dd>
+                                                <dt>Дата начала действия</dt>
+                                                <dd><?= $v['license']['lic_date_start'] ? $v['license']['lic_date_start'] : '-' ?></dd>
+                                                <dt>Дата окончания действия</dt>
+                                                <dd><?= $v['license']['lic_date_end'] ? $v['license']['lic_date_end'] : '-' ?></dd>
+                                                <dt>Вид деятельности СЛВД</dt>
+                                                <dd><?= $v['license']['activity_name_slvd'] ?></dd>
+                                                <dt>Признак действия</dt>
+                                                <dd><?= $v['license']['status_name'] ?></dd>
+                                            </dl>
+                                            <?php if ($v['old_license'] == true): ?>
+                                                <h4>Старая лицензия</h4>
+                                                <?php if (is_array($v['old_license'])): ?>
+                                                    <dl>
+                                                        <dt>Номер</dt>
+                                                        <dd><?= $v['old_license']['lic_number'] ?></dd>
+                                                        <dt>Дата</dt>
+                                                        <dd><?= $v['old_license']['lic_date'] ?></dd>
+                                                        <dt>Дата начала действия</dt>
+                                                        <dd><?= $v['old_license']['lic_date_start'] ? $v['old_license']['lic_date_start'] : '-' ?></dd>
+                                                        <dt>Дата окончания действия</dt>
+                                                        <dd><?= $v['old_license']['lic_date_end'] ? $v['old_license']['lic_date_end'] : '-' ?></dd>
+                                                        <dt>Номер решения</dt>
+                                                        <dd><?= $v['old_license']['resolution'] && $v['old_license']['resolution']['num'] ? $v['old_license']['resolution']['num'] : '-' ?></dd>
+                                                        <dt>Дата решения</dt>
+                                                        <dd><?= $v['old_license']['resolution'] ? $v['old_license']['resolution']['date'] : '-' ?></dd>
+                                                    </dl>
+                                                <?php else: ?>
+                                                    <p class="text-red">- Не указана -</p>
+                                                <?php endif; ?>
+                                            <?php endif; ?>
+                                        </div>
+                                        <div class="col-md-6 col-lg-3">
+                                            <h4>Адреса</h4>
+                                            <?php if ($v['address']): ?>
+                                                <?php foreach ($v['address'] as $id => $a): ?>
+                                                    <dl>
+                                                        <dt>Адрес <?= $id ?></dt>
+                                                        <dd><?= $a['name'] ?></dd>
+                                                        <dt>Признак действия адреса <?= $id ?></dt>
+                                                        <dd><?= $a['status_name'] ?></dd>
+                                                    </dl>
+                                                <?php endforeach; ?>
+                                            <?php else: ?>
+                                                <p class="text-red">- Не указаны -</p>
+                                            <?php endif; ?>
+                                        </div>
+                                        <div class="col-md-6 col-lg-3">
+                                            <h4>Решение</h4>
+                                            <?php if ('new' === $k): ?>
+                                                <div class="form-group">
+                                                    <select class="resolution-list form-control" name="resolution_id" lang="ru" style="width: 100%;">
+                                                        <option></option>
+                                                        <?php foreach ($resolutionList as $id => $name): ?>
+                                                            <option value="<?= $id ?>"<?= $resolutionId == $id ? ' selected' : '' ?>><?= $name ?></option>
+                                                        <?php endforeach; ?>
+                                                    </select>
+                                                </div>
+                                            <?php endif; ?>
+                                            <?php if ($v['resolution']): ?>
+                                                <dl>
+                                                    <dt>Номер</dt>
+                                                    <dd><?= $v['resolution']['num'] ? $v['resolution']['num'] : '-' ?></dd>
+                                                    <dt>Дата</dt>
+                                                    <dd><?= $v['resolution']['date'] ?></dd>
+                                                    <dt>Тип решения</dt>
+                                                    <dd><?= $v['resolution']['type_name'] ?></dd>
+                                                </dl>
+                                            <?php else: ?>
+                                                <p class="text-red">- Не указано -</p>
+                                            <?php endif; ?>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <?php if ('new' === $k): ?>
+                                        <button type="submit" name="export" class="btn btn-default"<?= count($v['messages']) > 0 ? ' disabled' : '' ?> value="1">Отправить сведения</button>
+                                        <div class="has-error">
+                                            <?php foreach ($v['messages'] as $m): ?>
+                                                <span class="help-block"><?= $m ?></span>
+                                            <?php endforeach; ?>
+                                        </div>
+                                    <?php elseif (isset($v['export']['status'])): ?>
+                                        <div class="box box-solid box-<?= 'error' == $v['export']['status'] ? 'danger' : 'info' ?>">
+                                            <div class="box-header with-border">
+                                                <h4 class="box-title"><?= Fns3LicenseExportService::$actionMap[$v['export']['action']] ?></h4>
+                                            </div>
+                                            <div class="box-body">
+                                                <dl>
+                                                    <dt>Идентификатор запроса</dt>
+                                                    <dd><?= $v['export']['uuid'] ?></dd>
+                                                    <dt>Дата отправки</dt>
+                                                    <dd><?= $v['export']['date_request'] ?></dd>
+                                                    <?php if (isset($v['export']['date_response'])): ?>
+                                                        <dt>Дата ответа</dt>
+                                                        <dd><?= $v['export']['date_response'] ?></dd>
+                                                    <?php endif ?>
+                                                    <dt>Статус</dt>
+                                                    <dd><?= Fns3LicenseExportService::$statusMap[$v['export']['action']][$v['export']['status']] ?></dd>
+                                                    <?php if (isset($v['export']['error'])): ?>
+                                                        <dt>Ошибка</dt>
+                                                        <dd><?= $v['export']['error'] ?></dd>
+                                                    <?php else: ?>
+                                                        <dt>&nbsp;</dt>
+                                                        <dd>После получения ответа ФНС эта запись будет
+                                                            <?php if ($v['export']['action'] == 'send'): ?>
+                                                                подтверждена как <b>переданная</b>
+                                                            <?php elseif ($v['export']['action'] == 'revert'): ?>
+                                                                <b>удалена</b>
+                                                            <?php endif ?>
+                                                            или будет отображена ошибка.
+                                                        </dd>
+                                                    <?php endif ?>
+                                                </dl>
+                                            </div>
+                                            <?php if ('error' == $v['export']['status']): ?>
+                                                <div class="box-footer">
+                                                    <button type="submit" name="reset" class="btn btn-default" value="1">Завершить</button>
+                                                </div>
+                                            <?php endif ?>
+                                            <!-- /.box-body -->
+                                        </div>
+                                    <?php else: ?>
+                                        <div class="edate"><?= $v['export']['date'] ?></div>
+                                        <div class="edateago">(<?= $v['export']['date_ago'] ?>)</div>
+                                        <?php if (isset($v['can_revert'])): ?>
+                                            <a href="#" class="btn btn-warning" role="button" data-toggle="delete-confirmation" data-href="<?= Url::to(array_merge($route, ['revert' => '1'])) ?>"
+                                               data-original-title="Исключить сведения из реестра ФНС?"><i class="fa fa-trash"> Исключить сведения</i></a>
+                                        <?php endif; ?>
+                                    <?php endif; ?>
+                                </td>
+                            </tr>
+                        <?php endforeach; ?>
+                    </table>
+                </div><!-- /.box-body -->
+            </div>
+        </div>
+    </div>
+</form>
+<script>
+    $(function () {
+        $(".resolution-list").select2({
+            placeholder: "Выберите решение",
+            allowClear: true,
+            minimumResultsForSearch: "Infinity"
+        }).on('change', function () {
+            $(this).closest('form').submit();
+        });
+        $('[data-toggle="delete-confirmation"]').confirmation({
+            btnOkLabel: "Да",
+            btnCancelLabel: "Нет",
+            placement: "left"
+        });
+    });
+</script>

@@ -1,0 +1,1 @@
+pg_dump -U appdb --no-owner appdb | gzip > docker/dump.gz

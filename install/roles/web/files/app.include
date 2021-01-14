@@ -1,0 +1,10 @@
+DocumentRoot /var/www/app/current/web/
+<Directory /var/www/app/current/web/>
+    Options Indexes FollowSymLinks
+    AllowOverride None
+    Require all granted
+    RewriteEngine On
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteRule ^(.*)$ index.php [QSA,L]
+</Directory>

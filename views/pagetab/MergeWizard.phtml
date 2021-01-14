@@ -1,0 +1,158 @@
+<?php
+/* @var $url string */
+/* @var $exitUrl string */
+/* @var $info array */
+/* @var $default string */
+/* @var $deps array */
+/* @var $links array */
+?>
+
+<div class="box">
+    <form class="form-horizontal" role="form" method="post" action="<?= $url ?>">
+        <div class="box-body">
+            <div class="callout callout-warning">
+                <h4><i class="icon fa fa-exclamation-circle"></i> Внимание!</h4>
+                Запись, которую Вы выберете, останется в базе. Остальные будут удалены!
+            </div>
+            <div class="box box-solid box-primary">
+                <div class="box-header with-border">
+                    <h3 class="box-title">Информация для объединения</h3>
+                </div>
+                <div class="box-body table-responsive">
+                    <table class="table table-hover">
+                        <thead>
+                        <tr>
+                            <th colspan="2">Атрибут/Запись</th>
+                            <?php foreach ($info['objects'] as $id => $obj): ?>
+                                <th>
+                                    <label class="radio-inline">
+                                        <input type="radio" name="main_id" <?= $default == $id ? ' checked="checked" ' : '' ?> class="icheck" value="<?= $id ?>">
+                                    </label>
+                                </th>
+                                <th>
+                                    <?= '<a href="' . $links[$id] . '">' . sprintf('#%06d', $id) . '</a>'?>
+                                </th>
+                            <?php endforeach; ?>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <?php foreach ($info['data'] as $field => $item): ?>
+                            <?php if (!isset($item['fieldset'])): ?>
+                                <tr>
+                                    <td colspan="2"><?= $item['label'] ?></td>
+                                    <?php foreach ($info['objects'] as $key => $obj): ?>
+                                        <td>
+                                            <label class="radio-inline">
+                                                <input type="radio"
+                                                       name="f:<?= $field ?>" <?= $default == $key ? ' checked="checked" ' : '' ?> <?= (isset($item['values'][$default]) && isset($item['values'][$key]) && $item['values'][$key] == $item['values'][$default] && $default != $key) ? ' disabled' : '' ?>
+                                                       class="icheck" value="<?= $key ?>">
+                                            </label>
+                                        </td>
+                                        <td>
+                                            <?= $item['values'][$key] ?? '' ?>
+                                        </td>
+                                    <?php endforeach; ?>
+                                </tr>
+                            <?php else: ?>
+                                <tr>
+                                <td rowspan="<?= count($item['fields']); ?>"
+                                    style="vertical-align: middle;"><?= $item['label'] ?></td>
+                                <?php $i = 0 ?>
+                                <?php foreach ($item['fields'] as $k => $field): ?>
+                                    <?php if (0 != $i): ?><tr><?php endif; ?>
+                                    <td><?= $field['label'] ?></td>
+                                    <?php foreach ($info['objects'] as $key => $obj): ?>
+                                        <td>
+                                            <label class="radio-inline">
+                                                <input type="radio"
+                                                       name="f:<?= $k ?>" <?= $default == $key ? ' checked="checked" ' : '' ?> <?= (isset($field['values'][$default]) && isset($field['values'][$key]) && $field['values'][$key] == $field['values'][$default] && $default != $key) ? ' disabled' : '' ?>
+                                                       class="icheck" value="<?= $key ?>">
+                                            </label>
+                                        </td>
+                                        <td>
+                                            <?= $field['values'][$key] ?? '' ?>
+                                        </td>
+                                    <?php endforeach; ?>
+                                    </tr>
+                                    <?php $i++ ?>
+                                <?php endforeach; ?>
+                            <?php endif; ?>
+                        <?php endforeach; ?>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <!-- dependencies -->
+            <?php $dep_collapse = [] ?>
+            <div class="box-group" id="accordion">
+            <?php foreach ($deps as $depIds => $dep): ?>
+            <?php $dep_collapse[$depIds] = 'hide' ?>
+                <div  class="box box-solid box-info ">
+                    <div class="box-header with-border">
+                        <h3 class="box-title">
+                            <a data-toggle="collapse" data-parent="#accordion" href="#<?= $depIds; ?>"><?= $dep['name']; ?></a>
+                        </h3>
+                    </div>
+                    <div id= "<?= $depIds; ?>" class="panel-collapse collapse">
+                    <div class="box-body table-responsive" >
+                        <table class="table table-bordered table-striped">
+                            <?php foreach ($dep['content'] as $depId => $v): ?>
+                                <tr>
+                                    <th colspan="<?= count($v['columns']) + 1 ?>"
+                                        class="bg-gray color-palette"><?= sprintf('#%06d', $depId) ?></th>
+                                </tr>
+                                <?php if (0 == count($v['list'])): ?>
+                                    <tr>
+                                        <td style="text-align: center;" colspan="<?= count($v['columns']) + 1 ?>">
+                                            - нет записей -
+                                        </td>
+                                    </tr>
+                                <?php else: ?>
+                                    <?php $dep_collapse[$depIds] = 'show' ?>
+                                    <tr>
+                                        <?php foreach ($v['columns'] as $c): ?>
+                                            <th><?= $c['name']; ?></th>
+                                        <?php endforeach; ?>
+                                        <th></th>
+                                    </tr>
+                                    <?php foreach ($v['list'] as $data): ?>
+                                        <tr>
+                                            <?php foreach ($v['columns'] as $colId => $vv): ?>
+                                                <td><?= $data['data'][$colId]; ?></td>
+                                            <?php endforeach; ?>
+                                            <td>
+                                                <a class="btn btn-default btn-sm btn-sm-fix pull-right" href="<?= $v['linkCallback']($data['id']); ?>">Перейти к записи</a>
+                                            </td>
+                                        </tr>
+                                    <?php endforeach; ?>
+                                <?php endif; ?>
+                            <?php endforeach; ?>
+                        </table>
+                    </div>
+                    </div>
+                </div>
+            <?php endforeach; ?>
+            </div>
+            <div class="box-footer">
+                <button class="btn btn-primary" type="submit" name="merge" value="1"><i class="fa fa-object-group" aria-hidden="true"></i> Объединить записи и обработать связанные объекты</button>
+                <a class="btn btn-default" href="<?= $exitUrl ?>">Перейти к списку</a>
+            </div>
+        </div>
+    </form>
+</div>
+
+<script>
+    <?php foreach ($dep_collapse as $id => $v): ?>
+    $('#<?=$id?>').collapse('<?=$v?>');
+    <?php endforeach; ?>
+</script>
+
+<?php
+$css= <<< CSS
+.iradio_square-blue.disabled {
+        background-position: -216px 0;
+        cursor: default;
+    }
+CSS;
+$this->registerCss($css, ["type" => "text/css"] );
+?>

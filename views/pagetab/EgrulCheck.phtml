@@ -1,0 +1,158 @@
+<?php
+/* @var $route array */
+/* @var $isActive bool */
+/* @var $data array */
+/* @var $hist array */
+/* @var $report array */
+/* @var $readOnly bool */
+
+use yii\helpers\Url;
+?>
+    <div class="row margin-bottom">
+        <div class="col-md-12">
+            <?php if ($isActive): ?>
+                <form class="form-horizontal form-compact form-egrul" role="form" method="post" action="<?= Url::to($route) ?>">
+                    <div class="box box-solid box-primary">
+                        <div class="box-header with-border">
+                            <h3 class="box-title">Статус сверки</h3>
+                        </div><!-- /.box-header -->
+                        <?php if ($data['ready'] && is_array($report)): ?>
+                            <div class="box-body no-padding">
+                                <table id="checklog" class="table table-bordered table-striped">
+                                    <thead>
+                                    <tr>
+                                        <th><label class="checkbox-inline"><input type="checkbox" id="check_all" checked="" class="icheck"></label></th>
+                                        <th>Атрибут</th>
+                                        <th>Текущее значение</th>
+                                        <th>Значение из ЕГРЮЛ</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <?php foreach ($report as $group => $list): ?>
+                                        <tr class="text-bold text-uppercase">
+                                            <td colspan="4"><?= $group ?></td>
+                                        </tr>
+                                        <?php foreach ($list as $field => $values): ?>
+                                            <tr class="<?= $values['changed'] ? '' : 'text-muted' ?>">
+                                                <?php if ($values['changed']): ?>
+                                                    <td><label class="checkbox-inline"><input type="checkbox" name="item[]" checked="" class="icheck" value="<?= $field ?>"></label></td>
+                                                <?php else: ?>
+                                                    <td></td>
+                                                <?php endif; ?>
+                                                <td><?= $values['name']; ?></td>
+                                                <td><?= $values['displayOld']; ?></td>
+                                                <td><?= $values['displayNew']; ?></td>
+                                            </tr>
+                                        <?php endforeach; ?>
+                                    <?php endforeach; ?>
+                                    </tbody>
+                                </table>
+                            </div><!-- /.box-body -->
+                            <div class="box-footer">
+                                <button class="btn btn-success" type="submit" name="approve" value="1">Принять изменения</button>
+                                <button class="btn btn-default" type="submit" name="cancel" value="1">Отменить</button>
+                                <a class="btn btn-default pull-right" target="_blank" href="<?= \fdoc\ordertype\Factory::get(\ObjectFactory::order($data['order_id']))->getOrderUrl() ?>">Запрос
+                                    #<?= $data['order_id'] ?>
+                                    от <?= substr($data['created_at'], 0, 10); ?></a>
+                            </div><!-- /.box-footer -->
+                        <?php else: ?>
+                            <div class="box-body">
+                                <div class="form-group form-group-sm ">
+                                    <label class="col-sm-3 control-label" for="createDate">Дата начала</label>
+                                    <div class="col-sm-9"><p class="form-control-static"><?= $data['created_at']; ?></p></div>
+                                </div>
+                                <div class="form-group form-group-sm ">
+                                    <label class="col-sm-3 control-label" for="createUser">Созд. польз.</label>
+                                    <div class="col-sm-9"><p class="form-control-static"><?= $data['created_by_username']; ?></p>
+                                    </div>
+                                </div>
+                                <div class="form-group form-group-sm ">
+                                    <label class="col-sm-3 control-label" for="createUser">№ запроса</label>
+                                    <div class="col-sm-9"><p class="form-control-static"><?= $data['order']; ?></p>
+                                    </div>
+                                </div>
+                                <?php if (is_string($report)): ?>
+                                    <div class="form-group form-group-sm ">
+                                        <label class="col-sm-3 control-label" for="createDate">Статус</label>
+                                        <div class="col-sm-9"><p class="form-control-static"><?= $report ?></p></div>
+                                    </div>
+                                <?php else: ?>
+                                    <div class="form-group form-group-sm ">
+                                        <label class="col-sm-3 control-label" for="createDate">Статус</label>
+                                        <div class="col-sm-9"><p class="form-control-static"><span class="badge bg-green"><i class="fa fa-refresh fa-spin"></i>  <?= $data['status_name']; ?></span></p>
+                                        </div>
+                                    </div>
+                                <?php endif; ?>
+                            </div><!-- /.box-body -->
+                            <?php if (is_string($report)): ?>
+                                <div class="box-footer">
+                                    <button class="btn btn-default" type="submit" name="cancel" value="1">Завершить</button>
+                                </div><!-- /.box-footer -->
+                            <?php endif; ?>
+                        <?php endif; ?>
+                    </div>
+                </form>
+            <?php elseif(!$readOnly): ?>
+                <a href="<?= Url::to(array_merge($route, ['start' => 1])) ?>" class="btn btn-primary">Инициировать сверку</a>
+            <?php endif; ?>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="box box-solid box-default">
+                <div class="box-header with-border">
+                    <h3 class="box-title">История</h3>
+                </div><!-- /.box-header -->
+                <div class="box-body no-padding">
+                    <table id="checklog" class="table table-bordered table-striped">
+                        <thead>
+                        <tr>
+                            <th>№ запроса</th>
+                            <th>Создан</th>
+                            <th>Создал</th>
+                            <th>Завершена</th>
+                            <th>Завершил</th>
+                            <th>Результат</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <?php if (0 == count($hist)): ?>
+                            <tr>
+                                <td colspan="6" class="text-center">- Сверок не проводилось -</td>
+                            </tr>
+                        <?php else: ?>
+                            <?php foreach ($hist as $v): ?>
+                                <tr>
+                                    <td><?= $v['order']; ?></td>
+                                    <td><?= $v['created_at']; ?></td>
+                                    <td><?= $v['created_by_username']; ?></td>
+                                    <td><?= $v['closed_at']; ?></td>
+                                    <td><?= $v['closed_by_username']; ?></td>
+                                    <td><span class="badge <?= 'ok' == $v['result'] ? 'bg-green' : 'bg-orange' ?>"><?= strlen($v['message']) > 50 ? substr($v['message'], 0,
+                                                    47) . '...' : $v['message']; ?></span></td>
+                                </tr>
+                            <?php endforeach; ?>
+                        <?php endif; ?>
+                        </tbody>
+                    </table>
+                </div><!-- /.box-body -->
+            </div>
+        </div>
+    </div>
+<?php if ($data['ready']): ?>
+    <script>
+        $(function () {
+            $('.form-egrul #check_all').on('ifToggled', function (e) {
+                $('.form-egrul td input.icheck').iCheck(e.target.checked ? 'check' : 'uncheck');
+            });
+        });
+    </script>
+<?php else: ?>
+    <script>
+        $(function () {
+            setTimeout(function () {
+                location.reload();
+            }, 60000)
+        });
+    </script>
+<?php endif; ?>

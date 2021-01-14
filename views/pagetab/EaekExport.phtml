@@ -1,0 +1,57 @@
+<?php
+/* @var $url string */
+/* @var $data array */
+/* @var $statusMap array */
+?>
+<style>
+    div.edate, div.edateago {
+        font-size: 18px;
+    }
+
+    .table-striped > tbody > tr:nth-of-type(odd) {
+        background-color: #f4f4f4;
+    }
+</style>
+<?php if ($data[0]['unprocessed']): ?>
+    <div class="alert alert-warning alert-dismissible">Ожидание обновления статуса обработки записей...</div>
+<?php endif; ?>
+<div class="row">
+    <div class="col-md-12">
+        <div class="box">
+            <div class="box-header">
+                <h3 class="box-title">Журнал передачи сведений</h3>
+            </div><!-- /.box-header -->
+            <div class="box-body no-padding">
+                <form role="form" method="post" action="<?= $url ?>">
+                    <table class="table table-bordered table-striped table-condensed">
+                        <tr>
+                            <th>Передаваемые сведения</th>
+                            <th style="width: 200px;">Дата передачи сведений</th>
+                        </tr>
+                        <?php foreach ($data as $k => $v): ?>
+                            <tr>
+                                <td>
+                                    <?= $v['htmlContent'] ?>
+                                </td>
+                                <td>
+                                    <?php if ($k == 0): ?>
+                                        <button type="submit" name="export" class="btn btn-default<?= count($data[0]['messages']) > 0 ? ' disabled' : '' ?>" value="1">Отправить сведения</button>
+                                        <div class="has-error">
+                                            <?php foreach ($data[0]['messages'] as $w): ?>
+                                                <span class="help-block"><?= $w ?></span>
+                                            <?php endforeach; ?>
+                                        </div>
+                                    <?php else: ?>
+                                        <div class="edate"><?= $v['date'] ?></div>
+                                        <div class="edateago">(<?= $v['date_ago'] ?>)</div>
+                                        <div><span class="badge bg-<?= $statusMap[$v['status']][0]; ?>"><?= $statusMap[$v['status']][1]; ?></span></div>
+                                    <?php endif; ?>
+                                </td>
+                            </tr>
+                        <?php endforeach; ?>
+                    </table>
+                </form>
+            </div><!-- /.box-body -->
+        </div>
+    </div>
+</div>

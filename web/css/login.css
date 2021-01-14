@@ -1,0 +1,24 @@
+.login-box {
+   width: 702px;
+   height: 472px;
+   background-image: url('../img/logo.png?n');
+}
+.login-box-body {
+   padding: 190px 250px 0 250px;
+   background: transparent;
+   color: white;
+}
+.login-box-msg {
+   padding: 0 10px 10px;
+   font-weight: bold;
+}
+#message {
+   position: absolute;
+   top: 0;
+   left: 0;
+   width: 100%;
+}
+.alert {
+   margin: 0 auto;
+   width: 700px;
+}

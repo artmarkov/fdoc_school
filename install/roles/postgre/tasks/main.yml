@@ -1,0 +1,59 @@
+---
+- name: Install Postgre 10 repository
+  yum: name=https://download.postgresql.org/pub/repos/yum/reporpms/EL-7-x86_64/pgdg-redhat-repo-latest.noarch.rpm state=present
+
+- name: Install postgresql packages
+  yum: name={{ item }} state=present
+  with_items:
+    - postgresql10-server
+    - postgresql10-contrib
+    - python-psycopg2
+  notify: restart http
+
+- name: Check if PostgreSQL database is initialized.
+  stat:
+    path: "/var/lib/pgsql/10/data/PG_VERSION"
+  register: pgdata_dir_version
+
+- name: initialize postgresql
+  shell: /usr/pgsql-10/bin/postgresql-10-setup initdb
+  when: not pgdata_dir_version.stat.exists
+
+- name: fix pg_hba.conf 1/2
+  lineinfile: dest=/var/lib/pgsql/10/data/pg_hba.conf
+    regexp="^(host\s+all\s+all\s+127.0.0.1/32\s+)ident"
+    line="\1trust"
+    backrefs=yes
+    state=present
+
+- name: fix pg_hba.conf 2/3
+  lineinfile: dest=/var/lib/pgsql/10/data/pg_hba.conf
+    regexp="^(host\s+all\s+all\s+::1/128\s+)ident"
+    line="\1trust"
+    backrefs=yes
+    state=present
+
+- name: fix pg_hba.conf 3/3
+  lineinfile: dest=/var/lib/pgsql/10/data/pg_hba.conf
+    regexp="^(local\s+all\s+all\s+)peer"
+    line="\1trust"
+    backrefs=yes
+    state=present
+
+- name: Modify postgresql.conf
+  lineinfile: dest=/var/lib/pgsql/10/data/postgresql.conf regexp="{{ item.key }}" line="{{ item.value }}"
+  with_items:
+   - { key: "^log_timezone\\s*=" , value: "log_timezone = 'Europe/Moscow'" }        #log_timezone = 'UTC'
+   - { key: "^datestyle\\s*=" ,    value: "datestyle = 'iso, dmy'" }       #datestyle = 'iso, mdy'
+   - { key: "^timezone\\s*=" ,     value: "timezone = 'Europe/Moscow'" }            #timezone = 'UTC''
+   - { key: "^lc_messages\\s*=" ,  value: "lc_messages = 'ru_RU.UTF-8'" }  #lc_messages = 'en_US.UTF-8'
+   - { key: "^lc_monetary\\s*=" ,  value: "lc_monetary = 'ru_RU.UTF-8'" }  #lc_monetary = 'en_US.UTF-8'
+   - { key: "^lc_numeric\\s*=" ,   value: "lc_numeric = 'ru_RU.UTF-8'" }   #lc_numeric = 'en_US.UTF-8'
+   - { key: "^lc_time\\s*=" ,      value: "lc_time = 'ru_RU.UTF-8'" }      #lc_time = 'en_US.UTF-8'
+   - { key: "^default_text_search_config\\s*=" , value: "default_text_search_config = 'pg_catalog.russian'" } #default_text_search_config = 'pg_catalog.english'
+
+- name: postgresql set autostart
+  service: name=postgresql-10 enabled=yes
+
+- name: postgresql start
+  service: name=postgresql-10 state=started

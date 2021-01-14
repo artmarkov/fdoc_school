@@ -1,0 +1,47 @@
+---
+- name: Disable SELinux
+  selinux:
+    state: disabled
+
+- name: Add EPEL repository
+  yum:
+    name: epel-release
+    state: latest
+
+- name: Add Remi repository
+  yum:
+    name: http://rpms.famillecollet.com/enterprise/remi-release-7.rpm
+    state: present
+
+- name: Install common packages
+  yum: name={{ item }} state=latest
+  with_items:
+    - unzip
+    - htop
+    - openssh-clients
+    - file
+    - xorg-x11-xauth
+    - atop
+    - dstat
+    - nload
+    - nano
+    - mc
+    - yum-priorities
+    - wget
+
+- name: Set nano default editor
+  copy: src=nano.sh dest=/etc/profile.d/nano.sh owner=root group=root mode=644
+
+- name: Update /etc/hosts
+  lineinfile: dest=/etc/hosts
+    regexp="^{{ ansible_default_ipv4.address }}"
+    line="{{ ansible_default_ipv4.address }} {{ ansible_hostname }}"
+    state=present
+
+- name: Fix sshd.conf for turinig on password authentication
+  lineinfile: dest=/etc/ssh/sshd_config
+    regexp="^(PasswordAuthentication\s+)no"
+    line="\1yes"
+    backrefs=yes
+    state=present
+  notify: restart ssh

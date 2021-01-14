@@ -1,0 +1,79 @@
+<?php
+/* @var $info array */
+/* @var $deps array */
+/* @var $actionList array */
+/* @var $exitUrl string */
+?>
+<div class="box">
+    <form class="form-horizontal" role="form" method="post" action="<?= $url ?>">
+        <div class="box-body">
+            <!-- general info -->
+            <div class="box box-solid box-danger">
+                <div class="box-header with-border">
+                    <h3 class="box-title">Общая информация</h3>
+                    <div class="box-tools pull-right">
+                        <button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+                    </div>
+                </div>
+                <div style="display: block;" class="box-body">
+                    <table class="table table-bordered table-striped">
+                        <?php foreach ($info as $name => $value): ?>
+                            <tr>
+                                <td><?= $name; ?></td>
+                                <td><strong><?= $value; ?></strong></td>
+                            </tr>
+                        <?php endforeach; ?>
+                    </table>
+                </div>
+            </div>
+            <!-- dependencies -->
+            <?php foreach ($deps as $depId => $v): ?>
+                <div class="box box-solid box-danger">
+                    <div class="box-header with-border">
+                        <h3 class="box-title"><?= $v['name'] ?></h3>
+                        <div class="box-tools pull-right">
+                            <button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+                        </div>
+                    </div>
+                    <!-- /.box-header -->
+                    <?php if (0 == count($v['list'])): ?>
+                        <div class="box-body text-center">
+                            <div>- нет записей -</div>
+                        </div>
+                    <?php else: ?>
+                        <div class="box-body">
+                            <table class="table table-bordered table-striped">
+                                <tr>
+                                    <?php foreach ($v['columns'] as $c): ?>
+                                        <th><?= $c['name']; ?></th>
+                                    <?php endforeach; ?>
+                                    <th></th>
+                                </tr>
+                                <?php foreach ($v['list'] as $data): ?>
+                                    <tr>
+                                        <?php foreach ($v['columns'] as $colId => $vv): ?>
+                                            <td><?= $data['data'][$colId]; ?></td>
+                                        <?php endforeach; ?>
+                                        <td><a class="btn btn-default btn-sm btn-sm-fix pull-right" href="<?= $v['linkCallback']($data['id']); ?>">
+                                                Перейти к записи</a></td>
+                                    </tr>
+                                <?php endforeach; ?>
+                            </table>
+                        </div>
+                        <div class="box-footer">
+                            <?php foreach ($v['actions'] as $action): ?>
+                                <label class="radio-inline"><input type="radio" name="<?= $depId ?>"
+                                                                   <?= $v['default'] == $action ? ' checked="" ' : '' ?>class="icheck"
+                                                                   value="<?= $action ?>"> <?= $actionList[$action]; ?></label>
+                            <?php endforeach; ?>
+                        </div>
+                    <?php endif; ?>
+                </div>
+            <?php endforeach; ?>
+        </div>
+        <div class="box-footer">
+            <button class="btn btn-danger" type="submit" name="delete" value="1">Удалить запись и обработать связанные объекты</button>
+            <a class="btn btn-default" href="<?= $exitUrl ?>">Перейти к списку</a>
+        </div>
+    </form>
+</div>

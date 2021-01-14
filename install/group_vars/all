@@ -1,0 +1,3 @@
+# python -c 'import crypt; print crypt.crypt("ryjgrf27", "$1$!qW2$")'
+# webdev shell user password
+webdev_password: $1$!qW2$U1nPB0C2LXNOAkSe1IF0l1

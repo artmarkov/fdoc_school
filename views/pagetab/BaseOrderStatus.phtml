@@ -1,0 +1,121 @@
+<?php
+/* @var $url string */
+/* @var $readOnly bool */
+/* @var $statusList array */
+/* @var $statusPlaceHolderList array */
+/* @var $currentStatus string */
+/* @var $documentList array */
+/* @var $statusHist array */
+/* @var $statusDaysLeft string */
+/* @var $statusDaysLeftString string */
+?>
+<?php if (isset($errorTitle)): ?>
+    <div class="alert alert-warning alert-dismissible">
+        <button aria-hidden="true" data-dismiss="alert" class="close" type="button">&times;</button>
+        <h4><i class="icon fa fa-ban"></i> <?= $errorTitle ?></h4>
+        <?= isset($errorMessage) ? $errorMessage : '' ?>
+    </div>
+<?php endif; ?>
+<div class="row">
+    <div class="col-md-5">
+        <div class="box box-solid box-default">
+            <div class="box-header with-border">
+                <i class="fa fa-pencil"></i>
+                <h3 class="box-title">Изменение статуса</h3>
+            </div><!-- /.box-header -->
+            <?php if ($readOnly): ?>
+                <div class="box-body">
+                    <p class="text-center">- нет доступа -</p>
+                </div><!-- /.box-body -->
+            <?php else: ?>
+                <!-- form start -->
+                <form role="form" action="<?= $url ?>" enctype="multipart/form-data" method="post">
+                    <div class="box-body">
+                        <div class="form-group">
+                            <label for="sel_status">Текущий статус</label>
+                            <p class="form-control-static"><?= $currentStatus ?></p>
+                        </div>
+                        <?php if ($statusDaysLeft != null): ?>
+                            <div class="form-group">
+                                <label for="sel_status">Срок смены статуса</label>
+                                <?php if ($statusDaysLeft < 0): ?>
+                                    <p class="form-control-static text-red text-bold">Просрочка <?= $statusDaysLeftString ?></p>
+                                <?php elseif ($statusDaysLeft == 0): ?>
+                                    <p class="form-control-static text-orange text-bold">Сегодня</p>
+                                <?php else: ?>
+                                    <p class="form-control-static">Осталось <?= $statusDaysLeftString ?></p>
+                                <?php endif; ?>
+                            </div>
+                        <?php endif; ?>
+                        <div class="form-group">
+                            <label for="sel_status">Новый статус</label>
+                            <select id="sel_status" name="sel_status" class="form-control"<?= 0 == count($statusList) ? ' disabled' : '' ?>>
+                                <?php foreach ($statusList as $k => $v): ?>
+                                    <option value="<?= $k ?>"><?= $v ?></option>
+                                <?php endforeach; ?>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="sel_comment">Комментарий</label>
+                            <textarea id="sel_comment" name="sel_comment" rows="5" class="form-control" maxlength="1400"<?= 0 == count($statusList) ? ' disabled' : '' ?>></textarea>
+                        </div>
+                        <div class="form-group">
+                            <input type="file" name="file" title="Прикрепить файл"<?= 0 == count($statusList) ? ' class="disabled"' : '' ?>><br/>или<br/>
+                            <select class="document-list form-control" name="sel_document" lang="ru" style="width: 100%;"<?= 0 == count($statusList) ? ' disabled' : '' ?>>
+                                <option></option>
+                                <?php foreach ($documentList as $k => $v): ?>
+                                    <option value="<?= $k ?>"><?= $v ?></option>
+                                <?php endforeach; ?>
+                            </select>
+                        </div>
+                    </div><!-- /.box-body -->
+                    <div class="box-footer">
+                        <button class="btn btn-info pull-right<?= 0 == count($statusList) ? ' disabled' : '' ?>" type="submit" name="changeStatus" value="1">Отправить</button>
+                    </div><!-- /.box-footer -->
+                </form>
+                <script>
+                    var st_comment_placeholder = {};
+                    <?= implode("\n", $statusPlaceHolderList) ?>
+                    $('#sel_status').change(function () {
+                        $('#sel_comment').attr('placeholder', this.value in st_comment_placeholder ? st_comment_placeholder[this.value] : '');
+                    });
+                    var value = $('#sel_status').val();
+                    $('#sel_comment').attr('placeholder', value in st_comment_placeholder ? st_comment_placeholder[value] : '');
+                    $(".document-list").select2({
+                        placeholder: "Выберите документ",
+                        allowClear: true,
+                        minimumResultsForSearch: "Infinity"
+                    });
+                </script>
+            <?php endif; ?>
+        </div>
+    </div>
+    <div class="col-md-7">
+        <div class="box box-solid box-default">
+            <div class="box-header with-border">
+                <i class="fa fa-th-list"></i>
+                <h3 class="box-title">История статусов</h3>
+            </div>
+            <div class="box-body">
+                <table class="table table-striped table-condensed table-bordered">
+                    <tr>
+                        <th>Дата</th>
+                        <th>Инициатор</th>
+                        <th>Статус заказа</th>
+                        <th>Комментарий</th>
+                        <th>Файл / Документ</th>
+                    </tr>
+                    <?php foreach ($statusHist as $v): ?>
+                        <tr>
+                            <td><?= $v['date']; ?></td>
+                            <td><?= $v['userName']; ?></td>
+                            <td><?= $v['statusName']; ?></td>
+                            <td><?= $v['note']; ?></td>
+                            <td><?= $v['downloadUrl'] ?><?= $v['documentUrl']; ?></td>
+                        </tr>
+                    <?php endforeach; ?>
+                </table>
+            </div><!-- /.box-body -->
+        </div>
+    </div>
+</div>

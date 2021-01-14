@@ -1,0 +1,92 @@
+<?php
+/* @var $route array */
+/* @var $readOnly bool */
+/* @var $fileError string */
+/* @var $list array */
+/* @var $v \fdoc\models\File */
+/* @var $that \pagetab_FileList */
+
+use fdoc\helpers\Tools;
+use fdoc\models\File;
+use fdoc\ui\LinkButton;
+use yii\helpers\Url;
+
+$downloadLink = LinkButton::create()
+    ->setIcon('fa-download')
+    ->setStyle('btn-default margin-r-5')
+    ->setTitle('Скачать');
+$deleteLink = LinkButton::create()
+    ->setIcon('fa-trash')
+    ->setStyle('btn-default margin-r-5')
+    ->setTitle('Удалить');
+$restoreLink = LinkButton::create()
+    ->setIcon('fa-undo')
+    ->setStyle('btn-default margin-r-5')
+    ->setTitle('Восстановить');
+?>
+<style>
+   .file-icon {
+      font-size: 21px;
+   }
+   .deleted {
+      text-decoration: line-through;
+   }
+</style>
+<form enctype="multipart/form-data" method="post" action="<?= Url::to($route) ?>" role="form" class="form-horizontal form-compact">
+   <div class="box box-solid box-primary">
+      <div class="box-header with-border">
+         <h3 class="box-title">Электронные документы</h3>
+      </div><!-- /.box-header -->
+      <div class="box-body">
+         <!-- Fields Поля -->
+         <?php if (!$readOnly): ?>
+         <div class="form-group form-group-sm ">
+            <div class="col-sm-12">
+               <input type="file" title="Загрузить файл" name="file" id="upload-file">
+               <?php if ($fileError): ?><span class="help-block"><?= $fileError ?></span><?php endif; ?>
+           </div>
+         </div>
+         <?php endif; ?>
+         <div class="box">
+            <div class="box-body no-padding">
+               <table class="table table-striped">
+                  <tr>
+                     <th></th>
+                     <th>Загрузил</th>
+                     <th>Дата создания</th>
+                     <th>Размер файла</th>
+                     <th>Имя файла</th>
+                     <th>Действия</th>
+                  </tr>
+                  <?php if (0==count($list)): ?>
+                  <tr><td colspan="6" class="text-center">- нет документов -</td></tr>
+                  <?php endif; ?>
+                  <?php foreach ($list as $k => $v): ?>
+                      <tr <?= $v->deleted_at ? ' class="deleted text-gray"' : '' ?>>
+                      <td><i class="fa <?= File::getIcon($v->name); ?> file-icon"></i></td>
+                        <td><?= $v->createdBy->name; ?></td>
+                        <td><?= Tools::asDateTime($v->created_at); ?></td>
+                        <td><?= \Yii::$app->formatter->asShortSize($v->size,1); ?></td>
+                        <td><?= $v->name; ?></td>
+                        <td>
+                            <?= $v->deleted_by == null ? $downloadLink->setLink(Url::to(['site/download', 'id' => $v->id]))->render() : '' ?>
+                            <?= $v->deleted_by == null && !$readOnly && $that->getFileDeletePermission($v->id) ? $deleteLink->setLink(Url::to(array_merge($route, ['delete' => $v->id])))->render() : '' ?>
+                            <?= $v->deleted_by == null || $readOnly ? '' : $restoreLink->setLink(Url::to(array_merge($route, ['restore' => $v->id])))->render(); ?>
+                        </td>
+                     </tr>
+                  <?php endforeach; ?>
+               </table>
+            </div><!-- /.box-body -->
+         </div><!-- /.box -->
+
+      </div><!-- /.box-body -->
+   </div>
+</form>
+<script>
+$(document).ready(function() {
+    $("#upload-file").on('change',function() {
+      $(this).closest('a').children('span').prepend('<i class="fa fa-refresh fa-spin"></i>  '); // bootstrap file input wrapper lookup
+      $(this).closest('form').submit();
+   });
+});
+</script>
