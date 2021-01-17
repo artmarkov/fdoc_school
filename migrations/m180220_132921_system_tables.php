@@ -122,7 +122,7 @@ class m180220_132921_system_tables extends BaseMigration
             'email'            => $this->string(255),
             'password_hash'    => $this->string(60)->notNull(),
             'auth_key'         => $this->string(32)->notNull(),
-            'api_token'        => $this->string(32),
+           // 'api_token'        => $this->string(32),
             'group_id'         => $this->integer(),
            // 'supervisor_id'    => $this->integer(),
             'surname'          => $this->string(255)->notNull(),

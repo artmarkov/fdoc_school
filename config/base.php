@@ -84,6 +84,12 @@ $config = [
                 'employees/' => 'employees/index',
                 'employees/<id:\d+>' => 'employees/edit',
                 'employees/<id:\d+>/view' => 'employees/view',
+                'students/' => 'students/index',
+                'students/<id:\d+>' => 'students/edit',
+                'students/<id:\d+>/view' => 'students/view',
+                'parents/' => 'parents/index',
+                'parents/<id:\d+>' => 'parents/edit',
+                'parents/<id:\d+>/view' => 'parents/view',
             ],
         ],
         'formatter' => [

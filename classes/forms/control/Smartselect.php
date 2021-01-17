@@ -157,6 +157,40 @@ class Smartselect extends BaseControl
                     }
                 }
                 break;
+            case 'students':
+                if ($value != 0) {
+                    if (\ObjectFactory::students(0)->exists($value)) {
+                        $o = \ObjectFactory::students($value);
+                        $name = sprintf('#%06d', $value) . ' ' . $o->getval('surname', ''). ' ' . $o->getval('firstname', ''). ' ' . $o->getval('thirdname', '');
+                        $link = $name; // @todo
+                        $obj_link = \main\ui\LinkButton::create()
+                            ->setTitle('Карточка ученика')
+                            ->setStyle('btn-info')
+                            ->setIcon('glyphicon-info-sign')
+                            ->setLink(Url::to(['students/edit', 'id' => $value]))
+                            ->render();
+                    } else {
+                        $name = 'Удаленная запись ' . sprintf('#%06d', $value);
+                    }
+                }
+                break;
+            case 'parents':
+                if ($value != 0) {
+                    if (\ObjectFactory::parents(0)->exists($value)) {
+                        $o = \ObjectFactory::parents($value);
+                        $name = sprintf('#%06d', $value) . ' ' . $o->getval('surname', ''). ' ' . $o->getval('firstname', ''). ' ' . $o->getval('thirdname', '');
+                        $link = $name; // @todo
+                        $obj_link = \main\ui\LinkButton::create()
+                            ->setTitle('Карточка родителя')
+                            ->setStyle('btn-info')
+                            ->setIcon('glyphicon-info-sign')
+                            ->setLink(Url::to(['parents/edit', 'id' => $value]))
+                            ->render();
+                    } else {
+                        $name = 'Удаленная запись ' . sprintf('#%06d', $value);
+                    }
+                }
+                break;
             case 'user':
                 if ($value) {
                     $o = \main\models\User::findOne($value);
@@ -171,7 +205,6 @@ class Smartselect extends BaseControl
                 }
                 break;
             case 'order':
-            case 'order:vvt_protocol':
                 if ($value != 0) {
                     $o = \ObjectFactory::order($value);
                     $name = '#' . sprintf('%06d', $o->id);
@@ -214,23 +247,6 @@ class Smartselect extends BaseControl
                     $name = 'Удаленная запись ' . sprintf('#%06d', $value);
                 }
                 break;
-            case 'medicament':
-                if ($value != 0) {
-                    if (\ObjectFactory::medicament(0)->exists($value)) {
-                        $o = \ObjectFactory::medicament($value);
-                        $name = $o->getName();
-                        $link = $name; // @todo
-                        $obj_link = \main\ui\LinkButton::create()
-                            ->setTitle('Карточка лек.препарата')
-                            ->setStyle('btn-info')
-                            ->setIcon('glyphicon-info-sign')
-                            ->setLink(Url::to(['medicament/edit', 'id' => $value]))
-                            ->render();
-                    } else {
-                        $name = 'Удаленная запись ' . sprintf('#%06d', $value);
-                    }
-                }
-                break;
             case 'clientgroup';
             case 'rolegroup';
                 if ($value != 0) {
@@ -247,77 +263,6 @@ class Smartselect extends BaseControl
                 break;
             case 'role';
                 $name = Role::findOne($value)->name;
-                break;
-            case 'taxfree':
-            case 'taxfree:approved':
-            case 'taxfree:rejected':
-                if ($value != 0) {
-                    if (\ObjectFactory::taxfree(0)->exists($value)) {
-                        $o = \ObjectFactory::taxfree($value);
-                        $name = $o->getval('appl_number', 'б/н') . ' от ' . $o->getval('appl_date', '');
-                        $link = $name; // @todo
-                        $obj_link = \main\ui\LinkButton::create()
-                            ->setTitle('Заявление Tax free')
-                            ->setStyle('btn-info')
-                            ->setIcon('glyphicon-info-sign')
-                            ->setLink(Url::to(['taxfree/edit', 'id' => $value]))
-                            ->render();
-                    } else {
-                        $name = 'Удаленная запись ' . sprintf('#%06d', $value);
-                    }
-                }
-                break;
-            case 'tfprotocol':
-            case 'tfprotocol:approved':
-                if ($value != 0) {
-                    if (\ObjectFactory::tfprotocol(0)->exists($value)) {
-                        $o = \ObjectFactory::tfprotocol($value);
-                        $name = $o->getval('protocol_number', 'б/н') . ' от ' . $o->getval('protocol_date', '');
-                        $link = $name; // @todo
-                        $obj_link = \main\ui\LinkButton::create()
-                            ->setTitle('Протокол Tax free')
-                            ->setStyle('btn-info')
-                            ->setIcon('glyphicon-info-sign')
-                            ->setLink(Url::to(['taxfree/protocol-edit', 'id' => $value]))
-                            ->render();
-                    } else {
-                        $name = 'Удаленная запись ' . sprintf('#%06d', $value);
-                    }
-                }
-                break;
-            case 'tforder':
-                if ($value != 0) {
-                    if (\ObjectFactory::tforder(0)->exists($value)) {
-                        $o = \ObjectFactory::tforder($value);
-                        $name = $o->getval('order_number', 'б/н') . ' от ' . $o->getval('order_date', '');
-                        $link = $name; // @todo
-                        $obj_link = \main\ui\LinkButton::create()
-                            ->setTitle('Приказ Tax free')
-                            ->setStyle('btn-info')
-                            ->setIcon('glyphicon-info-sign')
-                            ->setLink(Url::to(['taxfree/order-edit', 'id' => $value]))
-                            ->render();
-                    } else {
-                        $name = 'Удаленная запись ' . sprintf('#%06d', $value);
-                    }
-                }
-                break;
-            case 'expaircraft':
-                if ($value != 0) {
-                    if (\ObjectFactory::expaircraft(0)->exists($value)) {
-                        $o = \ObjectFactory::expaircraft($value);
-                        $name = sprintf('#%06d', $value) . ' - ' . $o->getval('expair_category', ''). '  №' . $o->getval('serial_number', ''). ' изг. ' . $o->getval('manufacture_date', '');
-                        $link = $name; // @todo
-                        $obj_link = \main\ui\LinkButton::create()
-                            ->setTitle('Карточка ЭВС')
-                            ->setStyle('btn-info')
-                            ->setIcon('glyphicon-info-sign')
-                            ->setLink(Url::to(['expaircraft/edit', 'id' => $value]))
-                            ->render();
-                    } else {
-                        $name = 'Удаленная запись ' . sprintf('#%06d', $value);
-                    }
-                }
                 break;
             default:
                 throw new \RuntimeException('unsupported type: ' . $type);

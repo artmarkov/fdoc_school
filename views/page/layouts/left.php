@@ -28,7 +28,7 @@
                         'items' => [
                             ['label' => 'Контрагенты', 'icon' => 'fa fa-user', 'url' => ['client/index']],
                             ['label' => 'Преподаватели и cотрудники', 'icon' => 'fa fa-user', 'url' => ['employees/index']],
-                            ['label' => 'Ученики', 'icon' => 'fa fa-graduation-cap', 'url' => ['student/index']],
+                            ['label' => 'Ученики', 'icon' => 'fa fa-graduation-cap', 'url' => ['students/index']],
                             ['label' => 'Родители', 'icon' => 'fa fa-female', 'url' => ['parents/index']],
                         ],
                     ],

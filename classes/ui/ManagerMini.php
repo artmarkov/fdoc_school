@@ -80,6 +80,7 @@ class ManagerMini extends Element
             'url' => $url,
             'name' => $name,
             'icon' => $icon,
+            'target' => '_blank',
             'style' => $style
         );
         return $this;

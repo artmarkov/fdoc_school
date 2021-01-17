@@ -59,5 +59,21 @@ class ObjectFactory
     {
         return self::load('employees', $id);
     }
+    /**
+     * @param int $id
+     * @return Students
+     */
+    public static function students($id)
+    {
+        return self::load('students', $id);
+    }
+    /**
+     * @param int $id
+     * @return Parents
+     */
+    public static function parents($id)
+    {
+        return self::load('parents', $id);
+    }
 
 }
