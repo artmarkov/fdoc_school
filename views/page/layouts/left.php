@@ -47,7 +47,7 @@
                         'url' => '#',
                         'options' => ['class' => 'treeview'],
                         'items' => [
-                            ['label' => 'Аудитории школы', 'icon' => 'fa fa-home', 'url' => ['oksm/index']],
+                            ['label' => 'Аудитории школы', 'icon' => 'fa fa-home', 'url' => ['auditory/index']],
                             ['label' => 'Организации и площадки', 'icon' => 'fa fa-sitemap', 'url' => ['oksm/index']],
                             ['label' => 'Сведения об организации', 'icon' => 'fa fa-flag', 'url' => ['oksm/index']],
 //                            ['label' => 'Справочник ОКСМ', 'icon' => 'fa fa-flag', 'url' => ['oksm/index']],

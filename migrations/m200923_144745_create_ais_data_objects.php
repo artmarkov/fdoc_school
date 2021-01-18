@@ -53,6 +53,25 @@ class m200923_144745_create_ais_data_objects extends \main\BaseMigration
         $this->addColumn('parents_sort', 'intphone', $this->string(200));
         $this->addColumn('parents_sort', 'mobphone', $this->string(200));
         $this->addColumn('parents_sort', 'email', $this->string(200));
+
+        $this->createTableWithHistory('auditory', [
+            'id' => $this->primaryKey(),
+            'building_id' => $this->integer()->notNull(),
+            'cat_id' => $this->integer()->notNull(),
+            'study_flag' => $this->integer()->notNull(),
+            'num' => $this->integer()->notNull(),
+            'name' => $this->string(128)->notNull(),
+            'floor' => $this->string(32)->notNull(),
+            'area' =>  $this->integer()->notNull(),
+            'capacity' =>  $this->integer()->notNull(),
+            'description' => $this->string(1000)->notNull(),
+            'created_at' => $this->integer()->notNull(),
+            'created_by' => $this->integer(),
+            'updated_at' => $this->integer()->notNull(),
+            'updated_by' => $this->integer(),
+            'version' => $this->bigInteger()->notNull()->defaultValue(0),
+        ]);
+        $this->addCommentOnTable('auditory','Аудитории');
     }
     /**
      * {@inheritdoc}
@@ -60,6 +79,7 @@ class m200923_144745_create_ais_data_objects extends \main\BaseMigration
      */
     public function safeDown()
     {
+        $this->dropTableWithHistory('auditory');
         $this->dropEavTableGroup('parents');
         $this->dropEavTableGroup('students');
         $this->dropEavTableGroup('employees');
