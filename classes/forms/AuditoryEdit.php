@@ -22,9 +22,9 @@ public $model;
 
         $this->addField('form_control_Text', 'building_id', 'ID здания', ['required' => 1]);
         $this->addField('form_control_Text', 'cat_id', 'Cat ID', ['required' => 1]);
-        $this->addField('form_control_Checkbox', 'study_flag', 'Возможность обучения', ['required' => 0]);
-        $this->addField('form_control_Text', 'num', 'Номер аудитории', ['required' => 1]);
-        $this->addField('form_control_Text', 'name', 'Название аудитории', ['required' => 1]);
+        $this->addField('form_control_Radio', 'study_flag', 'Возможность обучения', ['list' => ['1' => 'Да', '0' => 'Нет']]);
+        $this->addField('form_control_Text', 'num', 'Номер аудитории*', ['required' => 1]);
+        $this->addField('form_control_Text', 'name', 'Название аудитории*', ['required' => 1]);
         $this->addField('form_control_Text', 'floor', 'Этаж', ['required' => 0]);
         $this->addField('form_control_Text', 'area', 'Площадь аудитории', ['required' => 0]);
         $this->addField('form_control_Text', 'capacity', 'Вместимость', ['required' => 0]);
