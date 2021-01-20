@@ -23,6 +23,8 @@ class AuditoryManager extends BaseCommand
     public function getUiManager()
     {
         $m = parent::getUiManager();
+        $m->addCommand('Реестр аудиторий', Url::to(array_merge($this->route, ['excel' => '1'])), 'download');
+
         if (\Yii::$app->user->can('create@object', [$this->type])) {
             $m->addCommand('Создать', Url::to([$this->createRoute]), 'plus', 'primary');
         }
