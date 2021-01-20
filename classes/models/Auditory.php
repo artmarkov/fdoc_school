@@ -22,9 +22,16 @@ use yii\helpers\ArrayHelper;
  * @property int $capacity
  * @property string $description
  * @property int $order
+ *
+ * @property User $createdBy
+ * @property User $updatedBy
+ * @property AuditoryCat $cat
+ * @property AuditoryBuilding $building
  */
 class Auditory extends ActiveRecord
 {
+    const ID_RANGE=[1000,9999];
+
     /**
      * {@inheritdoc}
      */
@@ -34,21 +41,32 @@ class Auditory extends ActiveRecord
     }
 
     /**
+     * Возвращает признак id в допустимом диапазоне
+     * @param int $id
+     * @return bool
+     */
+    public static function validateId($id)
+    {
+        return $id >= self::ID_RANGE[0] && $id <= self::ID_RANGE[1];
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function rules()
     {
         return [
-            [['building_id', 'study_flag', 'floor', 'area', 'capacity'], 'required'],
-            [['id','building_id', 'cat_id', 'num', 'capacity'], 'integer'],
-            [['created_by', 'updated_by', 'created_at', 'updated_at'], 'safe'],
-            [['study_flag'], 'string'],
+            [['name', 'study_flag'], 'required'],
+            [['id', 'num', 'study_flag', 'capacity'], 'integer'],
+            [['created_by', 'updated_by', 'created_at', 'updated_at', 'building_id', 'cat_id',], 'safe'],
             [['area'], 'number'],
             [['name'], 'string', 'max' => 128],
             [['floor'], 'string', 'max' => 32],
             [['description'], 'string', 'max' => 1000],
             [['created_by'], 'exist', 'skipOnError' => true, 'targetClass' => User::class, 'targetAttribute' => ['created_by' => 'id']],
             [['updated_by'], 'exist', 'skipOnError' => true, 'targetClass' => User::class, 'targetAttribute' => ['updated_by' => 'id']],
+            [['building_id'], 'exist', 'skipOnError' => true, 'targetClass' => AuditoryBuilding::class, 'targetAttribute' => ['building_id' => 'id']],
+            [['cat_id'], 'exist', 'skipOnError' => true, 'targetClass' => AuditoryCat::class, 'targetAttribute' => ['cat_id' => 'id']],
         ];
     }
 
@@ -59,8 +77,8 @@ class Auditory extends ActiveRecord
     {
         return [
             'id' => 'ID',
-            'building_id' => 'Здание',
-            'cat_id' => 'Категория',
+            'building_id' => 'id здания',
+            'cat_id' => 'id категории',
             'study_flag' => 'Возможность обучения',
             'num' => 'Номер аудитории',
             'name' => 'Название аудитории',
@@ -75,6 +93,8 @@ class Auditory extends ActiveRecord
             'version' => 'Версия',
             'createdBy.name' => 'Создал',
             'updatedBy.name' => 'Изменил',
+            'building.name' => 'Название здания',
+            'cat.name' => 'Категория аудитории',
         ];
     }
 
@@ -106,6 +126,21 @@ class Auditory extends ActiveRecord
         return $this->hasOne(User::class, ['id' => 'updated_by']);
     }
 
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getCat()
+    {
+        return $this->hasOne(AuditoryCat::class, ['id' => 'cat_id']);
+    }
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getBuilding()
+    {
+        return $this->hasOne(AuditoryBuilding::class, ['id' => 'building_id']);
+    }
+
     /** @inheritdoc */
     public function scenarios()
     {
@@ -113,23 +148,26 @@ class Auditory extends ActiveRecord
         return ArrayHelper::merge($scenarios, [
             'columns' => [
                 'id',
-                'building_id', 'cat_id', 'study_flag', 'num', 'name', 'floor', 'area', 'capacity', 'description',
+                'study_flag', 'num', 'name', 'floor', 'area', 'capacity', 'description',
                 'created_at',
                 'updated_at', // own attrs
                 'createdBy.name', // createdBy relation
                 'updatedBy.name', // updatedBy relation
+                'building.name', // building relation
+                'cat.name', // cat relation
             ],
             'search' => [
                 'id',
-                'building_id', 'cat_id', 'study_flag', 'num', 'name', 'floor', 'area', 'capacity', 'description',
+                'study_flag', 'num', 'name', 'floor', 'area', 'capacity', 'description',
                 'created_at',
                 'updated_at', // own attrs
                 'createdBy.name', // createdBy relation
                 'updatedBy.name', // updatedBy relation
+                'building.name', // building relation
+                'cat.name', // cat relation
             ],
         ]);
     }
-
 
     /**
      * Возвращает версии объекта
@@ -159,26 +197,10 @@ class Auditory extends ActiveRecord
             ->asArray()->all(), 'id', 'name');
     }
 
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getCat()
-    {
-        return $this->hasOne(AuditoryCat::className(), ['id' => 'cat_id']);
-    }
-
     /* Геттер для названия категории */
     public function getCatName()
     {
         return $this->cat->name;
-    }
-
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getBuilding()
-    {
-        return $this->hasOne(AuditoryBuilding::className(), ['id' => 'building_id']);
     }
 
     /* Геттер для названия здания */

@@ -152,12 +152,24 @@ class m200925_113514_ais_dictionary extends \main\BaseMigration
         $this->db->createCommand()->batchInsert('refbooks', ['name', 'table_name', 'key_field', 'value_field', 'sort_field', 'ref_field', 'group_field', 'note'], [
             ['stake_dev', 'guide_stake', 'id', 'name_dev', 'id', null, null, 'Ставки название сокр.'],
         ])->execute();
+
+        $this->db->createCommand()->batchInsert('refbooks', ['name', 'table_name', 'key_field', 'value_field', 'sort_field', 'ref_field', 'group_field', 'note'], [
+            ['buildings', 'auditory_building', 'id', 'name', 'id', null, null, 'Отделы Школы Искусств'],
+        ])->execute();
+
+        $this->db->createCommand()->batchInsert('refbooks', ['name', 'table_name', 'key_field', 'value_field', 'sort_field', 'ref_field', 'group_field', 'note'], [
+            ['auditory_cat', 'auditory_cat', 'id', 'name', 'id', null, null, 'Отделы Школы Искусств'],
+        ])->execute();
+
     }
+
     /**
      * @throws \yii\db\Exception
      */
     public function safeDown()
     {
+        $this->db->createCommand()->delete('refbooks', ['name' => 'auditory_cat'])->execute();
+        $this->db->createCommand()->delete('refbooks', ['name' => 'buildings'])->execute();
         $this->db->createCommand()->delete('refbooks', ['name' => 'stake_dev'])->execute();
         $this->db->createCommand()->delete('refbooks', ['name' => 'stake'])->execute();
         $this->dropTable('guide_stake');

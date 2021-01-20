@@ -123,7 +123,7 @@ class UserEdit extends ObjEdit
             ]);
 
             $message->setToUser($u->id)
-                ->setSubject('АИС ГУ Минпромторг: реквизиты для входа')
+                ->setSubject('АИС Школа искусств: реквизиты для входа')
                 ->send();
 
             \main\ui\Notice::registerSuccess('Письмо с реквизитами отправлено');

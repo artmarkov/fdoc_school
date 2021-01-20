@@ -1,18 +1,17 @@
 <?php
-
 namespace main\manager;
 
-use main\search\AuditorySearch;
-use main\models\Auditory;
+use main\search\AuditoryBuildingSearch;
+use main\models\AuditoryBuilding;
 use yii\helpers\Html;
 use yii\helpers\Url;
 
-class AuditoryManager extends BaseCommand
+class AuditoryBuildingManager extends BaseCommand
 {
-    protected $type = 'auditory';
-    protected $columnsDefaults = ['id', 'cat.name','building.name', 'study_flag', 'num', 'name', 'floor', 'area', 'capacity', 'command'];
-    protected $editRoute = '/auditory/edit';
-    protected $createRoute = '/auditory/create';
+    protected $type = 'auditory-building';
+    protected $columnsDefaults = ['id', 'name', 'address', 'description', 'command'];
+    protected $editRoute = '/auditory/building-edit';
+    protected $createRoute = '/auditory/building-create';
 
     protected function __construct($url, $user)
     {
@@ -29,37 +28,14 @@ class AuditoryManager extends BaseCommand
         return $m;
     }
 
-    /**
-     * Возвращает текстовое значение колонки
-     * @param \main\models\Auditory $o
-     * @param string $field
-     * @return string
-     */
-    protected function getColumnValue($o, $field)
-    {
-        switch ($field) {
-            case 'createdBy.name':
-                return $o->createdBy ? $o->createdBy->name : '';
-            case 'updatedBy.name':
-                return $o->updatedBy ? $o->updatedBy->name : '';
-            case 'cat.name':
-                return $o->cat ? $o->cat->name : '';
-            case 'building.name':
-                return $o->building ? $o->building->name : '';
-            case 'study_flag':
-                return $o->study_flag ? 'Да' : 'Нет';
-        }
-        return parent::getColumnValue($o, $field);
-    }
-
     protected function getSearchObject()
     {
-        return new AuditorySearch();
+        return new AuditoryBuildingSearch();
     }
 
     protected function getObject($id)
     {
-        return Auditory::findOne($id);
+        return AuditoryBuilding::findOne($id);
     }
 
     public function getEditUrl($params = null)
@@ -74,7 +50,7 @@ class AuditoryManager extends BaseCommand
 //    }
     protected function getColumnList()
     {
-        $u = new Auditory();
+        $u = new AuditoryBuilding();
         $fields = $u->scenarios()['columns'];
         $result = parent::getColumnList();
         foreach ($fields as $v) {
@@ -89,7 +65,7 @@ class AuditoryManager extends BaseCommand
 
     protected function getSearchAttrList()
     {
-        $u = new Auditory();
+        $u = new AuditoryBuilding();
         $fields = $u->scenarios()['search'];
         $result = parent::getSearchAttrList();
         foreach ($fields as $v) {
@@ -100,7 +76,7 @@ class AuditoryManager extends BaseCommand
 
     /**
      * Возвращает html значение колонки
-     * @param \main\models\Auditory $o
+     * @param \main\models\AuditoryBuilding $o
      * @param string $field
      * @return string
      */
@@ -108,16 +84,9 @@ class AuditoryManager extends BaseCommand
     {
         switch ($field) {
             case 'id':
-                return Html::a(parent::getColumnHtmlValue($o, $field), Url::to(['/auditory/edit', 'id' => $o->id]));
-            case 'study_flag':
-                return $o->study_flag ? 'Да' : 'Нет';
+                return Html::a(parent::getColumnHtmlValue($o, $field), Url::to(['/auditory/building-edit', 'id' => $o->id]));
         }
         return parent::getColumnHtmlValue($o, $field);
-    }
-
-    protected function getRowStyle($o)
-    {
-        return $o->study_flag ? '' : 'background:#EFBEBE';
     }
 
     public function handleDelete($id)
