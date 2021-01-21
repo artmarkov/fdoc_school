@@ -84,4 +84,14 @@ class ObjectFactory
         return self::load('subject', $id);
     }
 
+    /**
+     * @param int $id
+     * @return Subject
+     */
+    public static function own($id)
+    {
+        return self::load('own', $id);
+    }
+
+
 }

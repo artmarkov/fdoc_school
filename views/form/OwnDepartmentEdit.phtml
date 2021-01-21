@@ -1,0 +1,74 @@
+<?php
+/* @var $url string */
+/* @var $formName string */
+/* @var $fields array */
+/* @var $fieldsets array */
+/* @var $hidden_fields array */
+/* @var $actions array */
+/* @var $helper_actions array */
+?>
+<form class="form-horizontal form-compact" role="form" action="<?= $url ?>" name="<?= $formName ?>" method="post" enctype="multipart/form-data">
+    <div class="box box-solid box-primary">
+        <div class="box-header with-border">
+            <h3 class="box-title">Атрибуты отдела</h3>
+        </div><!-- /.box-header -->
+        <div class="box-body">
+            <div class="form-group form-group-sm <?= $fields['division_id']['error'] ? ' has-error' : '' ?>">
+                <label class="col-sm-4 control-label" for="division_id"><?= $fields['division_id']['label'] ?></label>
+                <div class="col-sm-8">
+                    <?= $fields['division_id']['html'] ?>
+                    <?php if ($fields['division_id']['error']): ?><span class="help-block"><?= $fields['division_id']['error'] ?></span><?php endif; ?>
+                </div>
+            </div>
+            <div class="form-group form-group-sm <?= $fields['name']['error'] ? ' has-error' : '' ?>">
+                <label class="col-sm-4 control-label" for="name"><?= $fields['name']['label'] ?></label>
+                <div class="col-sm-8">
+                    <?= $fields['name']['html'] ?>
+                    <?php if ($fields['name']['error']): ?><span class="help-block"><?= $fields['name']['error'] ?></span><?php endif; ?>
+                </div>
+            </div>
+            <div class="form-group form-group-sm <?= $fields['description']['error'] ? ' has-error' : '' ?>">
+                <label class="col-sm-4 control-label" for="description"><?= $fields['description']['label'] ?></label>
+                <div class="col-sm-8">
+                    <?= $fields['description']['html'] ?>
+                    <?php if ($fields['description']['error']): ?><span class="help-block"><?= $fields['description']['error'] ?></span><?php endif; ?>
+                </div>
+            </div>
+
+        </div><!-- /.box-body -->
+
+        <!-- Actions Действия -->
+        <div class="box-footer">
+            <?= $actions['save']['html'] ?>
+            <?= $actions['saveexit']['html'] ?>
+            <?= $actions['exit']['html'] ?>
+        </div>
+
+        <!-- Скрытые поля -->
+        <?= $hidden_fields['action']['html'] ?>
+    </div>
+</form>
+
+<?php if (isset($isValid)): ?>
+    <script>
+        $(document).ready(function () {
+            $('#errormodal').modal();
+        });
+    </script>
+<?php endif; ?>
+
+<div id="errormodal" class="modal fade" role="dialog" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h3 class="modal-title" style="text-align:center;"> Запись не сохранена! </h3>
+            </div>
+            <div class="modal-body">
+                <h4 style="color:red; text-align:center;">Не все обязательные поля заполнены корректно.</h4>
+                <hr>
+                <p style="text-align:center;">* Для сохранения записи заполните поля, выделенные красным цветом, и повторно нажмите кнопку "Сохранить" </p>
+            </div>
+        </div>
+    </div>
+</div>

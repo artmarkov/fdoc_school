@@ -1,0 +1,133 @@
+<?php
+/* @var $url string */
+/* @var $title string */
+/* @var $formName string */
+/* @var $fields array */
+/* @var $fieldsets array */
+/* @var $hidden_fields array */
+/* @var $actions array */
+/* @var $helper_actions array */
+/* @var $timestamp int */
+/* @var $versionList array */
+/* @var $version string */
+/* @var $isNew boolean */
+?>
+<form class="form-horizontal form-compact" role="form" action="<?= $url ?>" name="<?= $formName ?>" method="post">
+
+   <div class="box box-solid box-primary">
+      <div class="box-header with-border">
+         <h3 class="box-title"><?= $title ?></h3>
+          <div class="box-tools pull-right">
+              <?= $helper_actions['history']['html'] ?>
+          </div><!-- /.box-tools -->
+      </div><!-- /.box-header -->
+           <div class="box-body">
+               <?php foreach ($fields as $id => $field): ?>
+               <div class="form-group form-group-sm <?= 0 == $field['renderMode'] ? ' hide' : '' ?><?= $field['error'] ? ' has-error' : '' ?>">
+                   <label class="col-sm-4 control-label" for="<?= $field['id'] ?>"><?= $field['label'] ?><?= $field['required'] ? '*' : '' ?></label>
+                   <div class="col-sm-8">
+                       <?= $field['html'] ?>
+                       <?php if ($field['error']): ?><span class="help-block"><?= $field['error'] ?></span><?php endif; ?>
+                   </div>
+               </div>
+               <?php endforeach;?>
+               <div class="box box-solid box-primary invoices-container"
+                    data-lastid="<?= 0 == count($fieldsets['invoices']['instances']) ? '1' : 1 + max(array_keys($fieldsets['invoices']['instances'])) ?>">
+                   <div class="box-header with-border">
+                       <h3 class="box-title"><?= $fieldsets['invoices']['title'] ?></h3>
+                   </div><!-- /.box-header -->
+                   <div class="box-body">
+                       <?php foreach ($fieldsets['invoices']['instances'] as $fId => $f): ?>
+                       <div class="box box-solid box-info" data-id="<?= $fId ?>">
+                           <div class="box-header with-border">
+                               <h3 class="box-title"><?= $f['title'] ?></h3>
+                               <div class="box-tools pull-right">
+                                   <a class="btn btn-sm btn-sm-fix btn-info<?= $auth < 2 ? ' hidden' : '' ?>" id="invoices:<?= $fId ?>:delete" href="#">Удалить</a>
+                               </div>
+                           </div><!-- /.box-header -->
+                           <div class="box-body">
+                               <?php foreach ($f['fields'] as $id => $field): ?>
+                               <div class="form-group form-group-sm <?= 0 == $field['renderMode'] ? ' hide' : '' ?><?= $field['error'] ? ' has-error' : '' ?>">
+                                   <label class="col-sm-4 control-label" for="<?= $field['id'] ?>"><?= $field['label'] ?><?= $field['required'] ? '*' : '' ?></label>
+                                   <div class="col-sm-8">
+                                       <?= $field['html'] ?>
+                                       <?php if ($field['error']): ?><span class="help-block"><?= $field['error'] ?></span><?php endif; ?>
+                                   </div>
+                               </div>
+                               <?php endforeach;?>
+                           </div><!-- /.box-body -->
+                       </div><!-- /.box -->
+                       <?php endforeach; ?>
+                   </div><!-- /.box-body -->
+                   <div class="box-footer">
+                       <a class="btn btn-default<?= $auth < 2 ? ' hidden' : '' ?>" id="invoices:add" href="#">Добавить</a>
+                   </div>
+               </div><!-- /.box -->
+           <!-- Actions Действия -->
+           <div class="box-footer">
+               <?= $actions['save']['html'] ?>
+               <?= $actions['saveexit']['html'] ?>
+               <?= $actions['exit']['html'] ?>
+           </div>
+
+       <!-- Скрытые поля -->
+       <?= $hidden_fields['action']['html'] ?>
+            </div>
+   </div>
+</form>
+<script id="invoices-template" type="text/x-handlebars-template">
+    <div class="box box-solid box-info" data-id="{{id}}">
+        <div class="box-header with-border">
+            <h3 class="box-title"><?= $fieldsets['invoices']['template']['title'] ?></h3>
+            <div class="box-tools pull-right">
+                <a class="btn btn-sm btn-sm-fix btn-info" id="invoices:{{id}}:delete" href="#">Удалить</a>
+            </div>
+        </div><!-- /.box-header -->
+        <div class="box-body">
+            <?php foreach ($fieldsets['invoices']['template']['fields'] as $v): ?>
+                <div class="form-group form-group-sm <?= 0 == $v['renderMode'] ? ' hide' : '' ?>">
+                    <label class="col-sm-4 control-label" for="<?= $v['id'] ?>"><?= $v['label'] ?></label>
+                    <div class="col-sm-8">
+                        <?= $v['html'] ?>
+                    </div>
+                </div>
+            <?php endforeach; ?>
+        </div><!-- /.box-body -->
+    </div><!-- /.box -->
+</script>
+<script>
+    var form = {
+        tmplInvoices: null,
+        init: function () {
+            var self = this;
+            this.tmplInvoices = Handlebars.compile($('#invoices-template').html());
+            app.formInitContainer($('div.invoices-container'), 'invoices', this.tmplInvoices);
+        }
+    };
+    $().ready(function () {
+        form.init();
+    });
+</script>
+<?php if (isset($isValid)): ?>
+   <script>
+      $(document).ready(function() {
+         $('#errormodal').modal() ;
+      });
+   </script>
+<?php endif; ?>
+
+<div id="errormodal" class="modal fade" role="dialog" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button status="button" class="close" data-dismiss="modal">&times;</button>
+                <h3 class="modal-title" style="text-align:center;"> Запись не сохранена! </h3>
+            </div>
+            <div class="modal-body">
+                <h4 style="color:red; text-align:center;">Не все обязательные поля заполнены корректно.</h4>
+                <hr>
+                <p style="text-align:center;">* Для сохранения записи заполните поля, выделенные красным цветом, и повторно нажмите кнопку "Сохранить" </p>
+            </div>
+        </div>
+    </div>
+</div>

@@ -12,36 +12,13 @@ class m200925_113514_ais_dictionary extends \main\BaseMigration
      */
     public function safeUp()
     {
-        $this->createTable('guide_department', [
-            'id' => $this->primaryKey(),
-            'name' => $this->string(400)->notNull(),
-            'type_id' => $this->string(100)->notNull(),
-            'hide' => $this->boolean()->defaultValue(false),
-        ]);
 
-        $this->db->createCommand()->batchInsert('guide_department', ['id', 'name', 'type_id'], [
-            ['1', 'Фортепиано', '1'],
-            ['2', 'Струнные инструменты', '1'],
-            ['3', 'Духовые и ударные инструменты', '1'],
-            ['4', 'Народные инструменты', '1'],
-            ['5', 'Теоретические дисциплины', '1'],
-            ['6', 'Хоровое пение', '1'],
-            ['7', 'Музыкальный фольклор', '1'],
-            ['8', 'Инструменты эстрадного оркестра', '1'],
-            ['9', 'Отдел общего фортепиано', '1'],
-            ['10', 'Художественный отдел', '2'],
-            ['11', 'Отделение развития МО', '1'],
-            ['12', 'Класс художественной керамики', '1'],
-            ['13', 'Хореография', '3'],
-            ['14', 'Музыкальный театр', '1'],
-            ['15', 'Архитектурное творчество', '2'],
-            ['16', 'Основы дизайна', '2'],
-            ['17', 'Академический вокал', '1'],
-            ['18', 'Сценическое мастерство', '2'],
+        $this->db->createCommand()->batchInsert('refbooks', ['name', 'table_name', 'key_field', 'value_field', 'sort_field', 'ref_field', 'group_field', 'note'], [
+            ['division', 'own_division', 'id', 'name', 'id', null, null, 'Отделения Школы Искусств'],
         ])->execute();
 
         $this->db->createCommand()->batchInsert('refbooks', ['name', 'table_name', 'key_field', 'value_field', 'sort_field', 'ref_field', 'group_field', 'note'], [
-            ['department', 'guide_department', 'id', 'name', 'id', null, null, 'Отделы Школы Искусств'],
+            ['department', 'own_department', 'id', 'name', 'id', null, null, 'Отделы Школы Искусств'],
         ])->execute();
 
         $this->createTable('guide_advance', [
@@ -186,6 +163,6 @@ class m200925_113514_ais_dictionary extends \main\BaseMigration
         $this->db->createCommand()->delete('refbooks', ['name' => 'advance'])->execute();
         $this->dropTable('guide_advance');
         $this->db->createCommand()->delete('refbooks', ['name' => 'department'])->execute();
-        $this->dropTable('guide_department');
+        $this->db->createCommand()->delete('refbooks', ['name' => 'division'])->execute();
     }
 }

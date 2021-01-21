@@ -96,7 +96,7 @@ class SubjectController extends BaseController
     public function actionCatCreate()
     {
         $this->view->title = 'Добавить категорию';
-        $this->view->params['breadcrumbs'][] = ['label' => 'Категории дисциплины', 'url' => ['subject/building']];
+        $this->view->params['breadcrumbs'][] = ['label' => 'Категории дисциплины', 'url' => ['subject/cat']];
         $this->view->params['breadcrumbs'][] = $this->view->title;
 
         $f = new \main\forms\SubjectCatEdit(new SubjectCat, Url::to(['subject/cat-create']));
@@ -104,7 +104,7 @@ class SubjectController extends BaseController
 
             return Url::to(['subject/cat-edit', 'id' => $id]);
         });
-        $f->setExitUrl(Url::to(['subject/index']));
+        $f->setExitUrl(Url::to(['subject/cat']));
         return $this->renderContent($f->handle());
     }
 

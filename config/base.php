@@ -102,6 +102,11 @@ $config = [
                 'subject/<id:\d+>/view' => 'subject/view',
                 'subject/cat/<id:\d+>' => 'subject/cat-edit',
                 'subject/cat/<id:\d+>/view' => 'subject/cat-view',
+                'own/' => 'own/index',
+                'own/department/<id:\d+>' => 'own/department-edit',
+                'own/department/<id:\d+>/view' => 'own/department-view',
+                'own/division/<id:\d+>' => 'own/division-edit',
+                'own/division/<id:\d+>/view' => 'own/division-view',
                 ],
         ],
         'formatter' => [

@@ -81,7 +81,7 @@
                         'items' => [
                             ['label' => 'Аудитории школы', 'icon' => 'fa fa-minus', 'url' => ['auditory/index']],
                             ['label' => 'Дисциплины', 'icon' => 'fa fa-minus', 'url' => ['subject/index']],
-                            ['label' => 'Сведения об организации', 'icon' => 'fa fa-minus', 'url' => ['oksm/index']],
+                            ['label' => 'Сведения об организации', 'icon' => 'fa fa-minus', 'url' => ['own/index']],
 //                            ['label' => 'Справочник ОКСМ', 'icon' => 'fa fa-minus', 'url' => ['oksm/index']],
                         ],
                     ],

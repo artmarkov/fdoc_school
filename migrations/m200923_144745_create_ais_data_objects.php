@@ -276,6 +276,138 @@ class m200923_144745_create_ais_data_objects extends \main\BaseMigration
         $this->addColumn('subject_sort', 'name', $this->string(200));
         $this->addColumn('subject_sort', 'shortname', $this->string(200));
 
+        $this->createTableWithHistory('own_division', [
+            'id' => $this->primaryKey().' constraint check_range check (id between 1000 and 9999)',
+            'name' => $this->string(500)->notNull(),
+            'description' => $this->string(1000),
+            'created_at' => $this->integer()->notNull(),
+            'created_by' => $this->integer(),
+            'updated_at' => $this->integer()->notNull(),
+            'updated_by' => $this->integer(),
+            'version' => $this->bigInteger()->notNull()->defaultValue(0),
+        ]);
+        $this->addCommentOnTable('own_division','Отделения школы');
+        $this->addForeignKey('users_createdby_fk', 'own_division', 'created_by', 'users', 'id');
+        $this->addForeignKey('users_updatedby_fk', 'own_division', 'updated_by', 'users', 'id');
+        $this->db->createCommand()->resetSequence('own_division',1000)->execute();
+
+        $this->db->createCommand()->batchInsert('own_division', ['name', 'created_at', 'created_by', 'updated_at'], [
+            ['Музыкальное отделение', time(), $adminId, time()],
+            ['Художественное отделение', time(), $adminId, time()],
+            ['Отделение хореографии', time(), $adminId, time()],
+        ])->execute();
+
+        $this->createTableWithHistory('own_department', [
+            'id' => $this->primaryKey().' constraint check_range check (id between 1000 and 9999)',
+            'name' => $this->string(500)->notNull(),
+            'division_id' => $this->integer()->notNull(),
+            'description' => $this->string(1000),
+            'active' => $this->integer()->notNull()->defaultValue(1),
+            'created_at' => $this->integer()->notNull(),
+            'created_by' => $this->integer(),
+            'updated_at' => $this->integer()->notNull(),
+            'updated_by' => $this->integer(),
+            'version' => $this->bigInteger()->notNull()->defaultValue(0),
+        ]);
+        $this->addCommentOnTable('own_department','Отделы школы');
+        $this->addForeignKey('users_owndivision_fk', 'own_department', 'division_id', 'own_division', 'id');
+        $this->addForeignKey('users_createdby_fk', 'own_department', 'created_by', 'users', 'id');
+        $this->addForeignKey('users_updatedby_fk', 'own_department', 'updated_by', 'users', 'id');
+        $this->db->createCommand()->resetSequence('own_department',1000)->execute();
+
+        $department_data = [
+            ['Фортепиано', 'Музыкальное отделение'],
+            ['Струнные инструменты', 'Музыкальное отделение'],
+            ['Духовые и ударные инструменты', 'Музыкальное отделение'],
+            ['Народные инструменты', 'Музыкальное отделение'],
+            ['Теоретические дисциплины', 'Музыкальное отделение'],
+            ['Хоровое пение', 'Музыкальное отделение'],
+            ['Музыкальный фольклор', 'Музыкальное отделение'],
+            ['Инструменты эстрадного оркестра', 'Музыкальное отделение'],
+            ['Отдел общего фортепиано', 'Музыкальное отделение'],
+            ['Художественный отдел', 'Художественное отделение'],
+            ['Отделение развития МО', 'Музыкальное отделение'],
+            ['Класс художественной керамики', 'Музыкальное отделение'],
+            ['Хореография', 'Отделение хореографии'],
+            ['Музыкальный театр', 'Музыкальное отделение'],
+            ['Архитектурное творчество', 'Художественное отделение'],
+            ['Основы дизайна', 'Художественное отделение'],
+            ['Академический вокал', 'Музыкальное отделение'],
+            ['Сценическое мастерство', 'Художественное отделение'],
+        ];
+
+        foreach($department_data as $v) {
+            $u = new \main\models\OwnDepartment([
+                'name' => $v['0'],
+                'division_id' =>  \main\models\OwnDivision::findOne(['name' => $v['1']])->id,
+                'created_at' => time(),
+                'created_by' => $adminId,
+                'updated_at' => time(),
+            ]);
+            if (!$u->save()) {
+                throw new Exception('Error creating department "'.$v['0'].'": '. implode(',',$u->getErrorSummary(true)));
+            }
+        }
+
+        $this->createEavTableGroup('own');
+        $this->addColumn('own_sort', 'name', $this->string(1000));
+        $this->addColumn('own_sort', 'shortname', $this->string(500));
+        $this->addColumn('own_sort', 'address', $this->string(200));
+        $this->addColumn('own_sort', 'email', $this->string(200));
+        $this->addColumn('own_sort', 'head', $this->string(200));
+        $this->addColumn('own_sort', 'chief_accountant', $this->string(200));
+
+        $o = ObjectFactory::create('own');
+        $o->setdata([
+            'o_id' => '1000',
+            'name' => 'Государственное бюджетное учреждение дополнительного образования г. Москвы "Детская школа искусств им. И.Ф.Стравинского"',
+            'shortname' => 'ГБУДО г. Москвы "ДШИ им. И.Ф.Стравинского"',
+            'address' => '125368, г. Москва, ул. Митинская, д. 47, кор. 1',
+            'email' => 'dshi13@mail.ru',
+            'head' => 'Карташева Н.М.',
+            'chief_accountant' => 'Кофанова Г.В.',
+            'invoices' => [
+                '1' => [
+                    'name' => 'Банковские реквизиты для оплаты за обучение',
+                    'recipient' => 'Департамент финансов города Москвы (ГБУДО г.Москвы "ДШИ им. И.Ф.Стравинского")',
+                    'inn' => '7733098705',
+                    'kpp' => '773301001',
+                    'payment_account' => '03224643450000007300',
+                    'corr_account' => '40102810545370000003',
+                    'personal_account' => '2605642000830080',
+                    'bank_name' => 'ГУ Банка России по ЦФО//УФК по г.Москве г.Москва',
+                    'bik' => '004525988',
+                    'oktmo' => '45367000',
+                    'kbk' => '05600000000131131022',
+                ],
+                '2' => [
+                    'name' => 'Банковские реквизиты для добровольных пожертвований',
+                    'recipient' => 'Департамент финансов города Москвы (ГБУДО г.Москвы "ДШИ им. И.Ф.Стравинского")',
+                    'inn' => '7733098705',
+                    'kpp' => '773301001',
+                    'payment_account' => '03224643450000007300',
+                    'corr_account' => '40102810545370000003',
+                    'personal_account' => '2605642000830080',
+                    'bank_name' => 'ГУ Банка России по ЦФО//УФК по г.Москве г.Москва',
+                    'bik' => '004525988',
+                    'oktmo' => '45367000',
+                    'kbk' => '05600000000155000002',
+                ],
+                '3' => [
+                    'name' => 'Банковские реквизиты - Фонд поддержки и развития детского образования и культуры «МИТЮША»',
+                    'recipient' => 'Фонд поддержки и развития детского образования и культуры "МИТЮША"',
+                    'inn' => '7733092580',
+                    'kpp' => '773301001',
+                    'payment_account' => '40703810538020100115',
+                    'corr_account' => '30101810400000000225',
+                    'personal_account' => '',
+                    'bank_name' => 'ПАО Сбербанк г.Москва',
+                    'bik' => '044525225',
+                    'oktmo' => '',
+                    'kbk' => '',
+                ],
+            ]
+        ]);
     }
     /**
      * {@inheritdoc}
@@ -283,6 +415,9 @@ class m200923_144745_create_ais_data_objects extends \main\BaseMigration
      */
     public function safeDown()
     {
+        $this->dropEavTableGroup('own');
+        $this->dropTableWithHistory('own_department');
+        $this->dropTableWithHistory('own_division');
         $this->dropEavTableGroup('subject');
         $this->dropTableWithHistory('subject_cat');
         $this->dropTableWithHistory('auditory');

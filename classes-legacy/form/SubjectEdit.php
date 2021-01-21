@@ -23,7 +23,7 @@ class form_SubjectEdit extends \main\forms\ObjEdit
     public function __construct($obj, $url)
     {
         $objDS = new form_datasource_Object('', $obj);
-        $objAuth = new form_auth_Acl('form_PretrialEdit');
+        $objAuth = new form_auth_Acl('form_SubjectEdit');
         parent::__construct('', 'Учебные дисциплины школы', $objDS, $objAuth);
         $this->setRenderer(new form_render_Flight('SubjectEdit.phtml'));
         $this->setUrl($url);
