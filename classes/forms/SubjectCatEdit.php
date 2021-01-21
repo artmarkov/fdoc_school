@@ -6,7 +6,7 @@ use main\forms\auth\Acl;
 use main\forms\core\Renderer;
 use main\forms\datasource\Model;
 
-class AuditoryCatEdit extends ObjEdit
+class SubjectCatEdit extends ObjEdit
 {
 public $model;
     public function __construct($model, $url)
@@ -14,9 +14,9 @@ public $model;
 
         $objDS = new Model($model);
         $this->model = $objDS;
-        $objAuth = new Acl('form_AuditoryCat');
-        parent::__construct('', 'Категории аудиторий', $objDS, $objAuth);
-        $this->setRenderer(new Renderer('AuditoryCatEdit.phtml'));
+        $objAuth = new Acl('form_SubjectCat');
+        parent::__construct('', 'Категории дисциплин', $objDS, $objAuth);
+        $this->setRenderer(new Renderer('SubjectCatEdit.phtml'));
         $this->setUrl($url);
 
         $this->addField('form_control_Text', 'name', 'Название категории*', ['required' => 1]);

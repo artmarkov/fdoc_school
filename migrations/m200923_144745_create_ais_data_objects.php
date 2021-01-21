@@ -12,7 +12,7 @@ class m200923_144745_create_ais_data_objects extends \main\BaseMigration
     public function safeUp()
     {
         $this->createEavTableGroup('employees');
-        $this->addColumn('employees_sort', 'type', $this->string(2));
+        $this->addColumn('employees_sort', 'type', $this->string(200));
         $this->addColumn('employees_sort', 'name', $this->string(200));
         $this->addColumn('employees_sort', 'surname', $this->string(200));
         $this->addColumn('employees_sort', 'firstname', $this->string(200));
@@ -245,6 +245,37 @@ class m200923_144745_create_ais_data_objects extends \main\BaseMigration
                 throw new Exception('Error creating auditory "'.$v['2'].'": '. implode(',',$u->getErrorSummary(true)));
             }
         }
+
+        $this->createTableWithHistory('subject_cat', [
+            'id' => $this->primaryKey().' constraint check_range check (id between 1000 and 9999)',
+            'name' => $this->string(500)->notNull(),
+            'description' => $this->string(1000),
+            'created_at' => $this->integer()->notNull(),
+            'created_by' => $this->integer(),
+            'updated_at' => $this->integer()->notNull(),
+            'updated_by' => $this->integer(),
+            'version' => $this->bigInteger()->notNull()->defaultValue(0),
+        ]);
+        $this->addCommentOnTable('subject_cat','Категории дисциплин школы');
+        $this->addForeignKey('users_createdby_fk', 'subject_cat', 'created_by', 'users', 'id');
+        $this->addForeignKey('users_updatedby_fk', 'subject_cat', 'updated_by', 'users', 'id');
+        $this->db->createCommand()->resetSequence('subject_cat',1000)->execute();
+
+        $this->db->createCommand()->batchInsert('subject_cat', ['name', 'created_at', 'created_by', 'updated_at'], [
+            ['Специальность', time(), $adminId, time()],
+            ['Инструмент', time(), $adminId, time()],
+            ['Дисциплины отдела', time(), $adminId, time()],
+            ['Общие дисциплины', time(), $adminId, time()],
+            ['Предмет по выбору', time(), $adminId, time()],
+            ['Коллективное музицирование', time(), $adminId, time()],
+            ['Сводные репетиции', time(), $adminId, time()],
+        ])->execute();
+
+        $this->createEavTableGroup('subject');
+        $this->addColumn('subject_sort', 'status', $this->string(200));
+        $this->addColumn('subject_sort', 'name', $this->string(200));
+        $this->addColumn('subject_sort', 'shortname', $this->string(200));
+
     }
     /**
      * {@inheritdoc}
@@ -252,6 +283,8 @@ class m200923_144745_create_ais_data_objects extends \main\BaseMigration
      */
     public function safeDown()
     {
+        $this->dropEavTableGroup('subject');
+        $this->dropTableWithHistory('subject_cat');
         $this->dropTableWithHistory('auditory');
         $this->dropTableWithHistory('auditory_cat');
         $this->dropTableWithHistory('auditory_building');

@@ -97,6 +97,11 @@ $config = [
                 'auditory/building/<id:\d+>/view' => 'auditory/building-view',
                 'auditory/cat/<id:\d+>' => 'auditory/cat-edit',
                 'auditory/cat/<id:\d+>/view' => 'auditory/cat-view',
+                'subject/' => 'subject/index',
+                'subject/<id:\d+>' => 'subject/edit',
+                'subject/<id:\d+>/view' => 'subject/view',
+                'subject/cat/<id:\d+>' => 'subject/cat-edit',
+                'subject/cat/<id:\d+>/view' => 'subject/cat-view',
                 ],
         ],
         'formatter' => [

@@ -15,7 +15,6 @@
 .datepicker{z-index:1151 !important;}
 </style>
 <form class="form-horizontal form-compact" role="form" action="<?= $url ?>" name="<?= $formName ?>" method="post">
-
    <div class="box box-solid box-primary">
       <div class="box-header with-border">
          <h3 class="box-title">Информация о сотруднике</h3>
@@ -137,16 +136,15 @@
                        <?php if ($fields['address']['error']): ?><span class="help-block"><?= $fields['address']['error'] ?></span><?php endif; ?>
                    </div>
                </div>
+               <div class="box box-solid box-info">
+                   <div class="box-header with-border">
+                       <h3 class="box-title">Атрибуты </h3>
+                   </div><!-- /.box-header -->
+                   <div class="box-body">
+
+                   </div>
+               </div>
            </div><!-- /.box-body -->
-          </div>
-          <div class="box box-solid box-primary">
-              <div class="box-header with-border">
-                  <h3 class="box-title">Деятельность</h3>
-              </div><!-- /.box-header -->
-              <div class="box-body">
-              </div>
-          </div>
-      </div>
        <!-- Actions Действия -->
        <div class="box-footer">
            <?= $actions['save']['html'] ?>
@@ -156,7 +154,7 @@
 
        <!-- Скрытые поля -->
        <?= $hidden_fields['action']['html'] ?>
-   </div
+   </div>
 </form>
 <div class="modal" id="historyDateModal">
    <div class="modal-dialog">

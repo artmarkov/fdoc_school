@@ -61,7 +61,7 @@ class EmployeesEditTC extends EmployeesEdit
         $fsList = $fs->getInstanceList();
         foreach ($fsList as $id) {
             $f = $fs->getInstance($id);
-            $f->getField('stake')->setRenderMode(Form::MODE_READ);
+           // $f->getField('stake')->setRenderMode(Form::MODE_READ);
         }
         $fs = $this->getFieldset('advance');
         /* @var $fs Dynamic */

@@ -30,12 +30,18 @@ class Employees extends Base
     public static function rules()
     {
         return ArrayHelper::merge(parent::rules(), [
-            ['type', 'name' => 'Тип работника'],
+            ['type', 'name' => 'Тип работника', function ($v) {
+                $v->valueNum = $v->value;
+                $v->value = array_key_exists($v->value, self::TYPE_LIST) ? self::TYPE_LIST[$v->value] : '';
+            }],
             ['name', 'name' => 'Полное Имя'],
             ['surname', 'name' => 'Фамилия'],
             ['firstname', 'name' => 'Имя'],
             ['thirdname', 'name' => 'Отчество'],
-            ['gender', 'name' => 'Пол'],
+            ['gender', 'name' => 'Пол', function ($v) {
+                $v->valueNum = $v->value;
+                $v->value = array_key_exists($v->value, self::GENDER) ? self::GENDER[$v->value] : '';
+            }],
             ['birthday', 'name' => 'Дата рождения'],
             ['address', 'name' => ['Адрес', null]],
             ['snils', 'name' => 'СНИЛС'],
@@ -46,13 +52,6 @@ class Employees extends Base
         ]);
     }
 
-    /**
-     * @throws \yii\db\Exception
-     */
-    function onCreate()
-    {
-        $this->setval('status', 0);
-    }
 
     public function getFormId($type = null)
     {

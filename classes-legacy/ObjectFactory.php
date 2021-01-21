@@ -75,5 +75,13 @@ class ObjectFactory
     {
         return self::load('parents', $id);
     }
+    /**
+     * @param int $id
+     * @return Subject
+     */
+    public static function subject($id)
+    {
+        return self::load('subject', $id);
+    }
 
 }

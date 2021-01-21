@@ -28,18 +28,23 @@ class Students extends Base
         '7' => 'дядя',
         '8' => 'тетя',
         '9' => 'опекун',
-
     ];
 
     public static function rules()
     {
         return ArrayHelper::merge(parent::rules(), [
-            ['status', 'name' => 'Статус ученика'],
+            ['status', 'name' => 'Статус ученика', function ($v) {
+                $v->valueNum = $v->value;
+                $v->value = array_key_exists($v->value, self::STATUS_LIST) ? self::STATUS_LIST[$v->value] : '';
+            }],
             ['name', 'name' => 'Полное Имя'],
             ['surname', 'name' => 'Фамилия'],
             ['firstname', 'name' => 'Имя'],
             ['thirdname', 'name' => 'Отчество'],
-            ['gender', 'name' => 'Пол'],
+            ['gender', 'name' => 'Пол', function ($v) {
+                $v->valueNum = $v->value;
+                $v->value = array_key_exists($v->value, self::GENDER) ? self::GENDER[$v->value] : '';
+            }],
             ['birthday', 'name' => 'Дата рождения'],
             ['address', 'name' => ['Адрес', null]],
             ['snils', 'name' => 'СНИЛС'],
@@ -55,9 +60,8 @@ class Students extends Base
      */
     function onCreate()
     {
-        $this->setval('status', 0);
+        $this->setval('status', 1);
     }
-
 
     public function getAddress()
     {

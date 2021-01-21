@@ -19,7 +19,10 @@ class Parents extends Base
             ['surname', 'name' => 'Фамилия'],
             ['firstname', 'name' => 'Имя'],
             ['thirdname', 'name' => 'Отчество'],
-            ['gender', 'name' => 'Пол'],
+            ['gender', 'name' => 'Пол', function ($v) {
+                $v->valueNum = $v->value;
+                $v->value = array_key_exists($v->value, self::GENDER) ? self::GENDER[$v->value] : '';
+            }],
             ['birthday', 'name' => 'Дата рождения'],
             ['address', 'name' => ['Адрес', null]],
             ['snils', 'name' => 'СНИЛС'],
@@ -29,8 +32,6 @@ class Parents extends Base
             ['email', 'name' => 'Эл.почта'],
         ]);
     }
-
-
 
     public function getAddress()
     {

@@ -154,11 +154,14 @@ class m200925_113514_ais_dictionary extends \main\BaseMigration
         ])->execute();
 
         $this->db->createCommand()->batchInsert('refbooks', ['name', 'table_name', 'key_field', 'value_field', 'sort_field', 'ref_field', 'group_field', 'note'], [
-            ['buildings', 'auditory_building', 'id', 'name', 'id', null, null, 'Отделы Школы Искусств'],
+            ['buildings', 'auditory_building', 'id', 'name', 'id', null, null, 'Здания Школы Искусств'],
         ])->execute();
 
         $this->db->createCommand()->batchInsert('refbooks', ['name', 'table_name', 'key_field', 'value_field', 'sort_field', 'ref_field', 'group_field', 'note'], [
-            ['auditory_cat', 'auditory_cat', 'id', 'name', 'id', null, null, 'Отделы Школы Искусств'],
+            ['auditory_cat', 'auditory_cat', 'id', 'name', 'id', null, null, 'Категории аудиторий'],
+        ])->execute();
+        $this->db->createCommand()->batchInsert('refbooks', ['name', 'table_name', 'key_field', 'value_field', 'sort_field', 'ref_field', 'group_field', 'note'], [
+            ['subject_cat', 'subject_cat', 'id', 'name', 'id', null, null, 'Категории дисциплин'],
         ])->execute();
 
     }
@@ -168,6 +171,7 @@ class m200925_113514_ais_dictionary extends \main\BaseMigration
      */
     public function safeDown()
     {
+        $this->db->createCommand()->delete('refbooks', ['name' => 'subject_cat'])->execute();
         $this->db->createCommand()->delete('refbooks', ['name' => 'auditory_cat'])->execute();
         $this->db->createCommand()->delete('refbooks', ['name' => 'buildings'])->execute();
         $this->db->createCommand()->delete('refbooks', ['name' => 'stake_dev'])->execute();
