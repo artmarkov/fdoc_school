@@ -82,6 +82,16 @@ class SiteController extends BaseController
      */
     public function actionIndex()
     {
+        $info = \Yii::$app->getDb()->createCommand('
+            select concat(created_at, \' ip: \', (select (regexp_matches(descr, \'ip=([0-9\.]+)\', \'g\'))[1])) info 
+            from events 
+            where user_id = :userId 
+            and class = \'event_UserLogin\'
+            order by id desc 
+            limit 2 offset 1',
+            ['userId' => Yii::$app->user->id])
+            ->queryScalar();
+        $this->view->params['breadcrumbs'][] = $info ? 'Предыдущий успешный вход в систему: ' . $info : '';
         return $this->render('index');
     }
 
