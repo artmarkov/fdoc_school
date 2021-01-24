@@ -60,6 +60,8 @@ class SmartselectController extends BaseController
                 return \main\manager\GroupSelect::create($route, 'user');
             case 'client':
                 return \manager_ClientSelect::create($route, Yii::$app->user->identity);
+            case 'employees':
+                return \manager_EmployeesSelect::create($route, Yii::$app->user->identity);
             case 'students':
                 return \manager_StudentsSelect::create($route, Yii::$app->user->identity);
             case 'parents':

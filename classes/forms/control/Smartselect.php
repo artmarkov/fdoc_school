@@ -157,6 +157,23 @@ class Smartselect extends BaseControl
                     }
                 }
                 break;
+            case 'employees':
+                if ($value != 0) {
+                    if (\ObjectFactory::employees(0)->exists($value)) {
+                        $o = \ObjectFactory::employees($value);
+                        $name = sprintf('#%06d', $value) . ' ' . $o->getval('surname', ''). ' ' . $o->getval('firstname', ''). ' ' . $o->getval('thirdname', '');
+                        $link = $name; // @todo
+                        $obj_link = \main\ui\LinkButton::create()
+                            ->setTitle('Карточка преподавателя')
+                            ->setStyle('btn-info')
+                            ->setIcon('glyphicon-info-sign')
+                            ->setLink(Url::to(['employees/edit', 'id' => $value]))
+                            ->render();
+                    } else {
+                        $name = 'Удаленная запись ' . sprintf('#%06d', $value);
+                    }
+                }
+                break;
             case 'students':
                 if ($value != 0) {
                     if (\ObjectFactory::students(0)->exists($value)) {

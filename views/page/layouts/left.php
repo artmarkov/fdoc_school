@@ -44,7 +44,7 @@
                             ['label' => 'Счета за обучение', 'icon' => 'fa fa-minus', 'url' => ['attandlog/index']],
                             ['label' => 'Табель учета педагогических часов', 'icon' => 'fa fa-minus', 'url' => ['attandlog/index']],
                             ['label' => 'Календарный график', 'icon' => 'fa fa-minus', 'url' => ['attandlog/index']],
-                            ['label' => 'Методические и творческие работы, сертификаты', 'icon' => 'fa fa-minus', 'url' => ['attandlog/index']],
+                            ['label' => 'Методические и творческие работы, сертификаты', 'icon' => 'fa fa-minus', 'url' => ['creative/index']],
                         ],
                     ],
                     [

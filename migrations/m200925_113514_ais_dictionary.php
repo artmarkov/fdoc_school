@@ -141,6 +141,23 @@ class m200925_113514_ais_dictionary extends \main\BaseMigration
             ['subject_cat', 'subject_cat', 'id', 'name', 'id', null, null, 'Категории дисциплин'],
         ])->execute();
 
+        $this->createTable('guide_creative', [
+            'id' => $this->primaryKey(),
+            'name' => $this->string(400)->notNull(),
+            'hide' => $this->boolean()->defaultValue(false),
+        ]);
+
+        $this->db->createCommand()->batchInsert('guide_creative', ['id', 'name'], [
+            ['1', 'Творческие работы'],
+            ['2', 'Методические работы'],
+            ['3', 'Сертификаты'],
+
+        ])->execute();
+
+        $this->db->createCommand()->batchInsert('refbooks', ['name', 'table_name', 'key_field', 'value_field', 'sort_field', 'ref_field', 'group_field', 'note'], [
+            ['guide_creative', 'guide_creative', 'id', 'name', 'id', null, null, 'Категория работ преподавателей'],
+        ])->execute();
+
     }
 
     /**
@@ -148,6 +165,8 @@ class m200925_113514_ais_dictionary extends \main\BaseMigration
      */
     public function safeDown()
     {
+        $this->db->createCommand()->delete('refbooks', ['name' => 'creative'])->execute();
+        $this->dropTable('guide_creative');
         $this->db->createCommand()->delete('refbooks', ['name' => 'subject_cat'])->execute();
         $this->db->createCommand()->delete('refbooks', ['name' => 'auditory_cat'])->execute();
         $this->db->createCommand()->delete('refbooks', ['name' => 'buildings'])->execute();

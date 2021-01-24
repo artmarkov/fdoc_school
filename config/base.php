@@ -107,6 +107,9 @@ $config = [
                 'own/department/<id:\d+>/view' => 'own/department-view',
                 'own/division/<id:\d+>' => 'own/division-edit',
                 'own/division/<id:\d+>/view' => 'own/division-view',
+                'creative/' => 'creative/index',
+                'creative/<id:\d+>' => 'creative/edit',
+                'creative/<id:\d+>/view' => 'creative/view',
                 ],
         ],
         'formatter' => [

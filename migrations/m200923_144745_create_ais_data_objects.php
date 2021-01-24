@@ -408,6 +408,16 @@ class m200923_144745_create_ais_data_objects extends \main\BaseMigration
                 ],
             ]
         ]);
+
+        $this->createEavTableGroup('creative');
+        $this->addColumn('creative_sort', 'type', $this->string(200));
+        $this->addColumn('creative_sort', 'name', $this->string(500));
+        $this->addColumn('creative_sort', 'applicant_departments', $this->string(2000));
+        $this->addColumn('creative_sort', 'applicant_teachers', $this->string(2000));
+        $this->addColumn('creative_sort', 'description', $this->string(4000));
+        $this->addColumn('creative_sort', 'count', $this->string(100));
+        $this->addColumn('creative_sort', 'hide', $this->string(10));
+
     }
     /**
      * {@inheritdoc}
@@ -415,6 +425,7 @@ class m200923_144745_create_ais_data_objects extends \main\BaseMigration
      */
     public function safeDown()
     {
+        $this->dropEavTableGroup('creative');
         $this->dropEavTableGroup('own');
         $this->dropTableWithHistory('own_department');
         $this->dropTableWithHistory('own_division');

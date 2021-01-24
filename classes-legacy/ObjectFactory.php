@@ -93,5 +93,14 @@ class ObjectFactory
         return self::load('own', $id);
     }
 
+    /**
+     * @param int $id
+     * @return Subject
+     */
+    public static function creative($id)
+    {
+        return self::load('creative', $id);
+    }
+
 
 }
