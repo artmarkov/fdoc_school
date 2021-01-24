@@ -28,9 +28,9 @@
                         'items' => [
                             ['label' => 'Контрагенты', 'icon' => 'fa fa-minus', 'url' => ['client/index']],
                             ['label' => 'Заявления', 'icon' => 'fa fa-minus', 'url' => ['order/index']],
-                            ['label' => 'Преподаватели и cотрудники', 'icon' => 'fa fa-minus', 'url' => ['employees/index']],
-                            ['label' => 'Ученики', 'icon' => 'fa fa-minus', 'url' => ['students/index']],
-                            ['label' => 'Родители', 'icon' => 'fa fa-minus', 'url' => ['parents/index']],
+                            ['label' => 'Список сотрудников', 'icon' => 'fa fa-minus', 'url' => ['employees/index']],
+                            ['label' => 'Список учеников', 'icon' => 'fa fa-minus', 'url' => ['students/index']],
+                            ['label' => 'Список родителей', 'icon' => 'fa fa-minus', 'url' => ['parents/index']],
                         ],
                     ],
                     [
@@ -44,7 +44,7 @@
                             ['label' => 'Счета за обучение', 'icon' => 'fa fa-minus', 'url' => ['attandlog/index']],
                             ['label' => 'Табель учета педагогических часов', 'icon' => 'fa fa-minus', 'url' => ['attandlog/index']],
                             ['label' => 'Календарный график', 'icon' => 'fa fa-minus', 'url' => ['attandlog/index']],
-                            ['label' => 'Методические и творческие работы, сертификаты', 'icon' => 'fa fa-minus', 'url' => ['creative/index']],
+                            ['label' => 'Работы и сертификаты', 'icon' => 'fa fa-minus', 'url' => ['creative/index']],
                         ],
                     ],
                     [

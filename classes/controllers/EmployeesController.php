@@ -2,7 +2,7 @@
 
 namespace main\controllers;
 
-use main\models\User;
+use main\forms\CreativeEdit;
 use Yii;
 use main\forms\core\Form;
 use yii\helpers\Url;
@@ -71,7 +71,7 @@ class EmployeesController extends BaseController
         $this->view->params['breadcrumbs'][] = $this->view->title;
         $this->view->params['tabMenu'] = $this->getMenu($id);
 
-        $model = $this->findModel($id,$readOnly);
+        $model = $this->findModel($id, $readOnly);
         $formClass = $model->getFormId();
 
         $time = Yii::$app->request->get('time');
@@ -100,17 +100,98 @@ class EmployeesController extends BaseController
     }
 
     /**
+     * Работы и сертификаты по сотруднику
+     * @param integer $id
+     * @param int $objectId
+     * @param string $mode create
+     * @return mixed
+     * @throws \yii\web\NotFoundHttpException
+     */
+    public function actionCreative($id, $objectId = null)
+    {
+        $model = $this->findModel($id, $readOnly);
+        $this->view->title = 'Работы и сертификаты';
+        $this->view->params['breadcrumbs'][] = ['label' => 'Список сотрудников', 'url' => ['employees/index']];
+        $this->view->params['breadcrumbs'][] = $this->view->title;
+        $this->view->params['tabMenu'] = $this->getMenu($id);
+
+        if ($objectId) {
+            $this->view->params['breadcrumbs'][] = 'Карточка работы сотрудника';
+
+            try {
+                if (Yii::$app->request->post('time')) {
+                    $time = \DateTime::createFromFormat('d-m-Y', Yii::$app->request->post('time'))->getTimestamp();
+                    return $this->redirect(Url::to(['creative/edit', 'id' => $id, 'time' => $time]));
+                }
+
+                $model = $this->findCreativeModel($id, $readOnly);
+
+                if (!$model->getApplicantExist($id)) {
+                    throw new \main\eav\object\BaseNotFoundException($model->object_type, $model->id);
+                }
+
+                $time = Yii::$app->request->get('time');
+                $o = $time ? $model->getSnapshot($time) : $model;
+
+                /** @var $f \main\forms\CreativeEdit */
+                $f = new CreativeEdit($o, Url::to(['employees/creative', 'id' => $id, 'objectId' => $objectId]));
+                if (Yii::$app->request->get('view') || $readOnly) {
+                    $f->setDisplayMode(Form::MODE_READ);
+                }
+                $f->setEmployeesId($id);
+                $f->setExitUrl(Url::to(['employees/creative', 'id' => $id]));
+                return $this->renderContent($f->handle());
+            } catch (\main\eav\object\BaseNotFoundException $e) {
+                throw new \yii\web\NotFoundHttpException($e->getMessage(), $e->getCode(), $e);
+            }
+        } else {
+
+            $m = \manager_CreativeByEmployees::create([$this->getRoute(), 'id' => $id], Yii::$app->user->identity);
+            $m->setEmployeesId($model->id);
+            $m->setDeleteUrl('/creative/delete');
+            $m->setReadOnly($readOnly);
+            if ($m->handleRequest(Yii::$app->request)) {
+                return $this->redirect(Url::to([$this->getRoute()]));
+            }
+
+            if ($m->handleRequest(Yii::$app->request)) {
+                return $this->redirect(Url::to([$this->getRoute(), 'id' => $id]));
+            }
+            return $this->renderContent($m->render());
+        }
+
+    }
+
+    /**
      * Возвращает экземпляр сотрудника по id, если не найден - 404 HTTP exception
      * @param integer $id
      * @param bool $readOnly
      * @return \main\eav\object\Employees экземпляр сотрудника
      * @throws \yii\web\NotFoundHttpException если объект не найден
      */
-    protected function findModel($id,&$readOnly=true)
+    protected function findModel($id, &$readOnly = true)
     {
         try {
             $o = \ObjectFactory::employees($id);
             $readOnly = Yii::$app->user->can('write@object', ['employees']) === false;
+            return $o;
+        } catch (\main\eav\object\BaseNotFoundException $e) {
+            throw new \yii\web\NotFoundHttpException($e->getMessage(), $e->getCode(), $e);
+        }
+    }
+
+    /**
+     * Возвращает экземпляр работы по id, если не найден - 404 HTTP exception
+     * @param integer $id
+     * @param bool $readOnly
+     * @return \main\eav\object\Creative экземпляр работы
+     * @throws \yii\web\NotFoundHttpException если объект не найден
+     */
+    protected function findCreativeModel($id, &$readOnly = true)
+    {
+        try {
+            $o = \ObjectFactory::creative($id);
+            $readOnly = Yii::$app->user->can('write@object', ['creative']) === false;
             return $o;
         } catch (\main\eav\object\BaseNotFoundException $e) {
             throw new \yii\web\NotFoundHttpException($e->getMessage(), $e->getCode(), $e);

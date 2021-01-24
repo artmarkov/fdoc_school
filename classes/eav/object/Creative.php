@@ -24,6 +24,18 @@ class Creative extends Base
         ]);
     }
 
+    public function getApplicantExist($ids)
+    {
+        foreach ($this->getdata('applicant') as $id => $item) {
+            if (isset($item['applicant_id'])) {
+                if ($ids === $item['applicant_id']) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
     public function getApplicantDepartmentList()
     {
         $result = $ids = [];
@@ -105,7 +117,7 @@ class Creative extends Base
                 $this->updateApplicantDepartmentList();
             } catch (BaseNotFoundException $ex) {
             }
-        } elseif (preg_match('/^applicant\.\d+\.applicant_id/', $field)) {
+        } elseif (preg_match('/^applicant\.\d+\.applicant_id/', $field) || preg_match('/^applicant\.\d+\.bonus\.\d+\.bonus/', $field)) {
             try {
                 $this->updateApplicantTeachersList();
             } catch (BaseNotFoundException $ex) {

@@ -11,12 +11,12 @@ class CreativeController extends BaseController
 {
 
     /**
-     * Реестр работ
+     * Методические и творческие работы, сертификаты
      * @return string
      */
     public function actionIndex()
     {
-        $this->view->title = 'Реестр работ';
+        $this->view->title = 'Работы и сертификаты';
         $this->view->params['breadcrumbs'][] = $this->view->title;
 
         $m = \manager_Creative::create($this->getRoute(), Yii::$app->user->identity);
@@ -29,13 +29,13 @@ class CreativeController extends BaseController
     }
 
     /**
-     * Регистрация работы
+     * Добавление работы
      * @return string
      */
     public function actionCreate()
     {
         $this->view->title = 'Добавление работы';
-        $this->view->params['breadcrumbs'][] = ['label' => 'Реестр работ', 'url' => ['creative/index']];
+        $this->view->params['breadcrumbs'][] = ['label' => 'Работы и сертификаты', 'url' => ['creative/index']];
         $this->view->params['breadcrumbs'][] = $this->view->title;
 
         $model = \ObjectFactory::creative(0);
@@ -51,7 +51,7 @@ class CreativeController extends BaseController
     }
 
     /**
-     * Карточка работы
+     * Карточка работы сотрудника
      * @param integer $id
      * @param bool $view
      * @return mixed
@@ -64,8 +64,8 @@ class CreativeController extends BaseController
             $time = \DateTime::createFromFormat('d-m-Y', Yii::$app->request->post('time'))->getTimestamp();
             return $this->redirect(Url::to(['creative/edit', 'id' => $id, 'time' => $time]));
         }
-        $this->view->title = 'Карточка работы';
-        $this->view->params['breadcrumbs'][] = ['label' => 'Реестр работ', 'url' => ['creative/index']];
+        $this->view->title = 'Карточка работы сотрудника';
+        $this->view->params['breadcrumbs'][] = ['label' => 'Работы и сертификаты', 'url' => ['creative/index']];
         $this->view->params['breadcrumbs'][] = $this->view->title;
         $this->view->params['tabMenu'] = $this->getMenu($id);
 
@@ -84,7 +84,7 @@ class CreativeController extends BaseController
     }
 
     /**
-     * Карточка пользователя в readonly
+     * Карточка работы сотрудника в readonly
      * @param integer $id
      * @return mixed
      * @throws \yii\web\NotFoundHttpException
@@ -116,7 +116,7 @@ class CreativeController extends BaseController
     protected function getMenu($id)
     {
         return [
-            [['creative/edit', 'id' => $id], 'Информация о работе'],
+            [['creative/edit', 'id' => $id], 'Карточка работы сотрудника'],
         ];
     }
 

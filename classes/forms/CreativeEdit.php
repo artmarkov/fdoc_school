@@ -14,7 +14,13 @@ class CreativeEdit extends form_ObjEdit
 {
 
     protected $timestamp;
+    protected $employeesId;
 
+    public function setEmployeesId($employeesId)
+    {
+        $this->employeesId = $employeesId;
+        return $this;
+    }
     /**
      * CreativeEdit constructor.
      * @param $model
@@ -42,10 +48,10 @@ class CreativeEdit extends form_ObjEdit
             'refbook' => 'department', 'required' => 1]);
         $fApplicant->addField('form_control_Smartselect', 'applicant_id', 'Заявитель', ['type' => 'employees', 'cssSize' => 'sm', 'submit' => 1, 'required' => 1]);
 
-        $fBonus = $fApplicant->addFieldset('form_core_Dynamic', 'bonus', 'Поощрение', $this->getDataSource()->inherit('bonus'), new form_auth_Acl('public'));
+        $fBonus = $fApplicant->addFieldset('form_core_Dynamic', 'bonus', 'Бонус', $this->getDataSource()->inherit('bonus'), new form_auth_Acl('public'));
         $fBonus->setRequireOneElement(true);
         $fBonus->addField('form_control_Month', 'period', 'Период', ['required' => 1]);
-        $fBonus->addField('form_control_TextFilter', 'bonus', 'Надбавка', ['required' => 1]);
+        $fBonus->addField('form_control_Text', 'bonus', 'Надбавка', ['required' => 1]);
 
 
         if ($obj instanceof \main\eav\object\Snapshot) { // режим отображения на прошлую дату
