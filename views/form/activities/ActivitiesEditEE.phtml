@@ -1,0 +1,365 @@
+<?php
+/* @var $url string */
+/* @var $formName string */
+/* @var $fields array */
+/* @var $fieldsets array */
+/* @var $hidden_fields array */
+/* @var $actions array */
+/* @var $helper_actions array */
+/* @var $timestamp int */
+/* @var $versionList array */
+/* @var $version string */
+/* @var $isNew boolean */
+?>
+<style>
+    .datepicker{z-index:1151 !important;}
+</style>
+<form class="form-horizontal form-compact" role="form" action="<?= $url ?>" name="<?= $formName ?>" method="post">
+
+    <div class="box box-solid box-primary">
+        <div class="box-header with-border">
+            <h3 class="box-title">Информация о сотруднике</h3>
+            <div class="box-tools pull-right">
+                <?php if (!$isNew): ?>
+                    <div class="btn-group btn-group-sm">
+                        <a class="btn btn-info" data-toggle="modal" href="#historyDateModal"><i class="fa fa-clock-o"></i> <?= $timestamp ? date('d-m-Y H:i:s',$timestamp) : 'Просмотр на дату'; ?></a>
+                        <?php if (count($versionList)>0): ?>
+                            <button data-toggle="dropdown" class="btn btn-info dropdown-toggle" type="button" aria-expanded="false">
+                                <span class="caret"></span>
+                                <span class="sr-only">Toggle Dropdown</span>
+                            </button>
+                            <ul class="dropdown-menu pull-right scrollable-menu form-versions" role="menu">
+                                <?php foreach($versionList as $k=>$v): ?>
+                                    <?php if ($k==$version): ?>
+                                        <li><a role="menuitem" href="<?= $url ?>"><?= $k.': '.date('d-m-Y H:i:s',$v).' (Текущая версия)' ?></a></li>
+                                    <?php else: ?>
+                                        <li><a role="menuitem" href="<?= $url.'?time='.$v ?>"><?= $k.': '.date('d-m-Y H:i:s',$v) ?></a></li>
+                                    <?php endif; ?>
+                                <?php endforeach; ?>
+                            </ul>
+                        <?php endif; ?>
+                    </div>
+                <?php endif; ?>
+                <?php if (!$timestamp): ?>
+                    <?= $helper_actions['history']['html'] ?>
+                <?php endif; ?>
+            </div><!-- /.box-tools -->
+        </div><!-- /.box-header -->
+        <div class="box-body">
+            <!-- Fields Поля -->
+            <div class="form-group form-group-sm <?= 0 == $fields['type']['renderMode'] ? ' hide' : '' ?><?= $fields['type']['error'] ? ' has-error' : '' ?>">
+                <label class="col-sm-4 control-label" for="type"><?= $fields['type']['label'] ?></label>
+                <div class="col-sm-8">
+                    <?= $fields['type']['html'] ?>
+                    <?php if ($fields['type']['error']): ?><span class="help-block"><?= $fields['type']['error'] ?></span><?php endif; ?>
+                </div>
+            </div>
+            <div class="form-group form-group-sm <?= 0 == $fields['name']['renderMode'] ? ' hide' : '' ?><?= $fields['name']['error'] ? ' has-error' : '' ?>">
+                <label class="col-sm-4 control-label" for="name"><?= $fields['name']['label'] ?></label>
+                <div class="col-sm-8">
+                    <?= $fields['name']['html'] ?>
+                    <?php if ($fields['name']['error']): ?><span class="help-block"><?= $fields['name']['error'] ?></span><?php endif; ?>
+                </div>
+            </div>
+            <div class="box box-solid box-primary">
+                <div class="box-header with-border">
+                    <h3 class="box-title">Основные сведения</h3>
+                </div><!-- /.box-header -->
+                <div class="box-body">
+<!--                    <div class="form-group form-group-sm --><?//= 0 == $fields['surname']['renderMode'] ? ' hide' : '' ?><!----><?//= $fields['surname']['error'] ? ' has-error' : '' ?><!--">-->
+<!--                        <label class="col-sm-4 control-label" for="surname">--><?//= $fields['surname']['label'] ?><!--</label>-->
+<!--                        <div class="col-sm-8">-->
+<!--                            --><?//= $fields['surname']['html'] ?>
+<!--                            --><?php //if ($fields['surname']['error']): ?><!--<span class="help-block">--><?//= $fields['surname']['error'] ?><!--</span>--><?php //endif; ?>
+<!--                        </div>-->
+<!--                    </div>-->
+
+                </div><!-- /.box-body -->
+            </div>
+            <div class="box box-solid box-primary">
+                <div class="box-header with-border">
+                    <h3 class="box-title">Должностные характеристики</h3>
+                </div><!-- /.box-header -->
+                <div class="box-body">
+<!--                    <div class="form-group form-group-sm --><?//= 0 == $fields['position']['renderMode'] ? ' hide' : '' ?><!----><?//= $fields['position']['error'] ? ' has-error' : '' ?><!--">-->
+<!--                        <label class="col-sm-4 control-label" for="position">--><?//= $fields['position']['label'] ?><!--</label>-->
+<!--                        <div class="col-sm-8">-->
+<!--                            --><?//= $fields['position']['html'] ?>
+<!--                            --><?php //if ($fields['position']['error']): ?><!--<span class="help-block">--><?//= $fields['position']['error'] ?><!--</span>--><?php //endif; ?>
+<!--                        </div>-->
+<!--                    </div>-->
+
+            </div>
+
+        </div>
+<!--            <div class="box box-solid box-primary direction-container"-->
+<!--                 data-lastid="--><?//= 0 == count($fieldsets['direction']['instances']) ? '1' : 1 + max(array_keys($fieldsets['direction']['instances'])) ?><!--">-->
+<!--                <div class="box-header with-border">-->
+<!--                    <h3 class="box-title">Сведения о трудовой деятельности</h3>-->
+<!--                </div><!-- /.box-header -->-->
+<!--                <div class="box-body">-->
+<!---->
+<!--                    --><?php //foreach ($fieldsets['direction']['instances'] as $fId => $f): ?>
+<!--                        <div class="box box-solid box-info" data-id="--><?//= $fId ?><!--">-->
+<!--                            <div class="box-header with-border">-->
+<!--                                <h3 class="box-title">--><?//= $f['title'] ?><!--</h3>-->
+<!--                                <div class="box-tools pull-right">-->
+<!--                                    <a class="btn btn-sm btn-sm-fix btn-info--><?//= $auth < 2 ? ' hidden' : '' ?><!--" id="direction:--><?//= $fId ?><!--:delete" href="#">Удалить</a>-->
+<!--                                </div>-->
+<!--                            </div><!-- /.box-header -->-->
+<!--                            <div class="box-body">-->
+<!---->
+<!--                                <div class="form-group form-group-sm --><?//= 0 == $f['fields']['activitytype']['renderMode'] ? ' hide' : '' ?><!----><?//= $f['fields']['activitytype']['error'] ? ' has-error' : '' ?><!--">-->
+<!--                                    <label class="col-sm-4 control-label" for="direction:--><?//= $fId ?><!--:activitytype">--><?//= $f['fields']['activitytype']['label'] ?><!--</label>-->
+<!--                                    <div class="col-sm-8">-->
+<!--                                        --><?//= $f['fields']['activitytype']['html'] ?>
+<!--                                        --><?php //if ($f['fields']['activitytype']['error']): ?><!--<span class="help-block">--><?//= $f['fields']['activitytype']['error'] ?><!--</span>--><?php //endif; ?>
+<!--                                    </div>-->
+<!--                                </div>-->
+<!--                                <div class="form-group form-group-sm --><?//= 0 == $f['fields']['worktype']['renderMode'] ? ' hide' : '' ?><!----><?//= $f['fields']['worktype']['error'] ? ' has-error' : '' ?><!--">-->
+<!--                                    <label class="col-sm-4 control-label" for="direction:--><?//= $fId ?><!--:worktype">--><?//= $f['fields']['worktype']['label'] ?><!--</label>-->
+<!--                                    <div class="col-sm-8">-->
+<!--                                        --><?//= $f['fields']['worktype']['html'] ?>
+<!--                                        --><?php //if ($f['fields']['worktype']['error']): ?><!--<span class="help-block">--><?//= $f['fields']['worktype']['error'] ?><!--</span>--><?php //endif; ?>
+<!--                                    </div>-->
+<!--                                </div>-->
+<!--                                 <div class="form-group form-group-sm --><?//= 0 == $f['fields']['specialty']['renderMode'] ? ' hide' : '' ?><!----><?//= $f['fields']['specialty']['error'] ? ' has-error' : '' ?><!--">-->
+<!--                                    <label class="col-sm-4 control-label" for="direction:--><?//= $fId ?><!--:specialty">--><?//= $f['fields']['specialty']['label'] ?><!--</label>-->
+<!--                                    <div class="col-sm-8">-->
+<!--                                        --><?//= $f['fields']['specialty']['html'] ?>
+<!--                                        --><?php //if ($f['fields']['specialty']['error']): ?><!--<span class="help-block">--><?//= $f['fields']['specialty']['error'] ?><!--</span>--><?php //endif; ?>
+<!--                                    </div>-->
+<!--                                </div>-->
+<!--                                <div class="form-group form-group-sm --><?//= 0 == $f['fields']['stake_category']['renderMode'] ? ' hide' : '' ?><!----><?//= $f['fields']['stake_category']['error'] ? ' has-error' : '' ?><!--">-->
+<!--                                    <label class="col-sm-4 control-label" for="direction:--><?//= $fId ?><!--:stake_category">--><?//= $f['fields']['stake_category']['label'] ?><!--</label>-->
+<!--                                    <div class="col-sm-8">-->
+<!--                                        --><?//= $f['fields']['stake_category']['html'] ?>
+<!--                                        --><?php //if ($f['fields']['stake_category']['error']): ?><!--<span class="help-block">--><?//= $f['fields']['stake_category']['error'] ?><!--</span>--><?php //endif; ?>
+<!--                                    </div>-->
+<!--                                </div>-->
+<!--                                 <div class="form-group form-group-sm --><?//= 0 == $f['fields']['stake']['renderMode'] ? ' hide' : '' ?><!----><?//= $f['fields']['stake']['error'] ? ' has-error' : '' ?><!--">-->
+<!--                                    <label class="col-sm-4 control-label" for="direction:--><?//= $fId ?><!--:stake">--><?//= $f['fields']['stake']['label'] ?><!--</label>-->
+<!--                                    <div class="col-sm-8">-->
+<!--                                        --><?//= $f['fields']['stake']['html'] ?>
+<!--                                        --><?php //if ($f['fields']['stake']['error']): ?><!--<span class="help-block">--><?//= $f['fields']['stake']['error'] ?><!--</span>--><?php //endif; ?>
+<!--                                    </div>-->
+<!--                                </div>-->
+<!--                                 <div class="form-group form-group-sm --><?//= 0 == $f['fields']['department']['renderMode'] ? ' hide' : '' ?><!----><?//= $f['fields']['department']['error'] ? ' has-error' : '' ?><!--">-->
+<!--                                    <label class="col-sm-4 control-label" for="direction:--><?//= $fId ?><!--:department">--><?//= $f['fields']['department']['label'] ?><!--</label>-->
+<!--                                    <div class="col-sm-8">-->
+<!--                                        --><?//= $f['fields']['department']['html'] ?>
+<!--                                        --><?php //if ($f['fields']['department']['error']): ?><!--<span class="help-block">--><?//= $f['fields']['department']['error'] ?><!--</span>--><?php //endif; ?>
+<!--                                    </div>-->
+<!--                                </div>-->
+<!---->
+<!---->
+<!--                            </div><!-- /.box-body -->-->
+<!--                        </div><!-- /.box -->-->
+<!--                    --><?php //endforeach; ?>
+<!--                </div><!-- /.box-body -->-->
+<!--                <div class="box-footer">-->
+<!--                    <a class="btn btn-default--><?//= $auth < 2 ? ' hidden' : '' ?><!--" id="direction:add" href="#">Добавить</a>-->
+<!--                </div>-->
+<!--            </div><!-- /.box -->-->
+<!--            <div class="box box-solid box-primary advance-container"-->
+<!--                 data-lastid="--><?//= 0 == count($fieldsets['advance']['instances']) ? '1' : 1 + max(array_keys($fieldsets['advance']['instances'])) ?><!--">-->
+<!--                <div class="box-header with-border">-->
+<!--                    <h3 class="box-title">Сведения о достижениях</h3>-->
+<!--                </div><!-- /.box-header -->-->
+<!--                <div class="box-body">-->
+<!---->
+<!--                    --><?php //foreach ($fieldsets['advance']['instances'] as $fId => $f): ?>
+<!--                        <div class="box box-solid box-info" data-id="--><?//= $fId ?><!--">-->
+<!--                            <div class="box-header with-border">-->
+<!--                                <h3 class="box-title">--><?//= $f['title'] ?><!--</h3>-->
+<!--                                <div class="box-tools pull-right">-->
+<!--                                    <a class="btn btn-sm btn-sm-fix btn-info--><?//= $auth < 2 ? ' hidden' : '' ?><!--" id="advance:--><?//= $fId ?><!--:delete" href="#">Удалить</a>-->
+<!--                                </div>-->
+<!--                            </div><!-- /.box-header -->-->
+<!--                            <div class="box-body">-->
+<!---->
+<!--                                <div class="form-group form-group-sm --><?//= 0 == $f['fields']['advance_type']['renderMode'] ? ' hide' : '' ?><!----><?//= $f['fields']['advance_type']['error'] ? ' has-error' : '' ?><!--">-->
+<!--                                    <label class="col-sm-4 control-label" for="advance:--><?//= $fId ?><!--:advance_type">--><?//= $f['fields']['advance_type']['label'] ?><!--</label>-->
+<!--                                    <div class="col-sm-8">-->
+<!--                                        --><?//= $f['fields']['advance_type']['html'] ?>
+<!--                                        --><?php //if ($f['fields']['advance_type']['error']): ?><!--<span class="help-block">--><?//= $f['fields']['advance_type']['error'] ?><!--</span>--><?php //endif; ?>
+<!--                                    </div>-->
+<!--                                </div>-->
+<!--                                <div class="form-group form-group-sm --><?//= 0 == $f['fields']['advance_bonus']['renderMode'] ? ' hide' : '' ?><!----><?//= $f['fields']['advance_bonus']['error'] ? ' has-error' : '' ?><!--">-->
+<!--                                    <label class="col-sm-4 control-label" for="advance:--><?//= $fId ?><!--:advance_bonus">--><?//= $f['fields']['advance_bonus']['label'] ?><!--</label>-->
+<!--                                    <div class="col-sm-8">-->
+<!--                                        --><?//= $f['fields']['advance_bonus']['html'] ?>
+<!--                                        --><?php //if ($f['fields']['advance_bonus']['error']): ?><!--<span class="help-block">--><?//= $f['fields']['advance_bonus']['error'] ?><!--</span>--><?php //endif; ?>
+<!--                                    </div>-->
+<!--                                </div>-->
+<!--                                <div class="form-group form-group-sm --><?//= 0 == $f['fields']['advance_reason']['renderMode'] ? ' hide' : '' ?><!----><?//= $f['fields']['advance_reason']['error'] ? ' has-error' : '' ?><!--">-->
+<!--                                    <label class="col-sm-4 control-label" for="advance:--><?//= $fId ?><!--:advance_reason">--><?//= $f['fields']['advance_reason']['label'] ?><!--</label>-->
+<!--                                    <div class="col-sm-8">-->
+<!--                                        --><?//= $f['fields']['advance_reason']['html'] ?>
+<!--                                        --><?php //if ($f['fields']['advance_reason']['error']): ?><!--<span class="help-block">--><?//= $f['fields']['advance_reason']['error'] ?><!--</span>--><?php //endif; ?>
+<!--                                    </div>-->
+<!--                                </div>-->
+<!--                            </div><!-- /.box-body -->-->
+<!--                        </div><!-- /.box -->-->
+<!--                    --><?php //endforeach; ?>
+<!--                </div><!-- /.box-body -->-->
+<!--                <div class="box-footer">-->
+<!--                    <div class="form-group form-group-sm --><?//= 0 == $fields['common_bonus']['renderMode'] ? ' hide' : '' ?><!----><?//= $fields['common_bonus']['error'] ? ' has-error' : '' ?><!--">-->
+<!--                        <label class="col-sm-4 control-label" for="common_bonus">--><?//= $fields['common_bonus']['label'] ?><!--</label>-->
+<!--                        <div class="col-sm-8">-->
+<!--                            --><?//= $fields['common_bonus']['html'] ?>
+<!--                            --><?php //if ($fields['common_bonus']['error']): ?><!--<span class="help-block">--><?//= $fields['common_bonus']['error'] ?><!--</span>--><?php //endif; ?>
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                    <a class="btn btn-default--><?//= $auth < 2 ? ' hidden' : '' ?><!--" id="advance:add" href="#">Добавить</a>-->
+<!--                </div>-->
+<!--            </div><!-- /.box -->-->
+        <!-- Actions Действия -->
+        <div class="box-footer">
+            <?= $actions['save']['html'] ?>
+            <?= $actions['saveexit']['html'] ?>
+            <?= $actions['exit']['html'] ?>
+        </div>
+
+        <!-- Скрытые поля -->
+        <?= $hidden_fields['action']['html'] ?>
+    </div
+</form>
+<!--<div class="modal" id="historyDateModal">-->
+<!--    <div class="modal-dialog">-->
+<!--        <form role="form" method="post" action="--><?//= $url ?><!--">-->
+<!--            <div class="modal-content">-->
+<!--                <div class="modal-header">-->
+<!--                    <button aria-label="Close" data-dismiss="modal" class="close" type="button"><span aria-hidden="true">&times;</span></button>-->
+<!--                    <h4 class="modal-title">Выбор даты</h4>-->
+<!--                </div>-->
+<!--                <div class="modal-body">-->
+<!--                    <div class="input-group date margin" data-provide="datepicker" data-date-format="dd-mm-yyyy" data-date-clear-btn="true" data-date-language="ru" data-date-today-highlight="true" data-date-autoclose="true">-->
+<!--                        <input type="text" class="form-control" name="time" value="--><?//= $timestamp?date('d-m-Y',$timestamp):'' ?><!--"/>-->
+<!--                        <span class="input-group-addon"><i class="fa fa-calendar"></i></span></div>-->
+<!--                </div>-->
+<!--                <div class="modal-footer">-->
+<!--                    <a class="btn btn-default pull-left" href="--><?//= $url ?><!--">Сбросить</a>-->
+<!--                    <button class="btn btn-primary" type="submit" value="save">Выбрать</button>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--        </form>-->
+<!--    </div>-->
+<!--</div>-->
+<!--<script id="direction-template" type="text/x-handlebars-template">-->
+<!--    <div class="box box-solid box-info" data-id="{{id}}">-->
+<!--        <div class="box-header with-border">-->
+<!--            <h3 class="box-title">--><?//= $fieldsets['direction']['template']['title'] ?><!--</h3>-->
+<!--            <div class="box-tools pull-right">-->
+<!--                <a class="btn btn-sm btn-sm-fix btn-info" id="direction:{{id}}:delete" href="#">Удалить</a>-->
+<!--            </div>-->
+<!--        </div><!-- /.box-header -->-->
+<!--        <div class="box-body">-->
+<!--            --><?php //foreach ($fieldsets['direction']['template']['fields'] as $v): ?>
+<!--                <div class="form-group form-group-sm --><?//= 0 == $v['renderMode'] ? ' hide' : '' ?><!--">-->
+<!--                    <label class="col-sm-4 control-label" for="--><?//= $v['id'] ?><!--">--><?//= $v['label'] ?><!--</label>-->
+<!--                    <div class="col-sm-8">-->
+<!--                        --><?//= $v['html'] ?>
+<!--                    </div>-->
+<!--                </div>-->
+<!--            --><?php //endforeach; ?>
+<!--        </div><!-- /.box-body -->-->
+<!--    </div><!-- /.box -->-->
+<!--</script>-->
+<!--<script id="advance-template" type="text/x-handlebars-template">-->
+<!--    <div class="box box-solid box-info" data-id="{{id}}">-->
+<!--        <div class="box-header with-border">-->
+<!--            <h3 class="box-title">--><?//= $fieldsets['advance']['template']['title'] ?><!--</h3>-->
+<!--            <div class="box-tools pull-right">-->
+<!--                <a class="btn btn-sm btn-sm-fix btn-info" id="advance:{{id}}:delete" href="#">Удалить</a>-->
+<!--            </div>-->
+<!--        </div><!-- /.box-header -->-->
+<!--        <div class="box-body">-->
+<!--            --><?php //foreach ($fieldsets['advance']['template']['fields'] as $v): ?>
+<!--                <div class="form-group form-group-sm --><?//= 0 == $v['renderMode'] ? ' hide' : '' ?><!--">-->
+<!--                    <label class="col-sm-4 control-label" for="--><?//= $v['id'] ?><!--">--><?//= $v['label'] ?><!--</label>-->
+<!--                    <div class="col-sm-8">-->
+<!--                        --><?//= $v['html'] ?>
+<!--                    </div>-->
+<!--                </div>-->
+<!--            --><?php //endforeach; ?>
+<!--        </div><!-- /.box-body -->-->
+<!--    </div><!-- /.box -->-->
+<!--</script>-->
+<!--<script>-->
+<!--    var form = {-->
+<!--        tmplDirection: null,-->
+<!--        tmplAdvance: null,-->
+<!--        init: function () {-->
+<!--            var self = this;-->
+<!--            this.tmplDirection = Handlebars.compile($('#direction-template').html());-->
+<!--            app.formInitContainer($('div.direction-container'), 'direction', this.tmplDirection);-->
+<!--            this.tmplAdvance = Handlebars.compile($('#advance-template').html());-->
+<!--            app.formInitContainer($('div.advance-container'), 'advance', this.tmplAdvance);-->
+<!---->
+<!--        }-->
+<!--    };-->
+<!--    $().ready(function () {-->
+<!--        form.init();-->
+<!--    });-->
+<!--</script>-->
+<!--<script type="text/javascript">-->
+<!---->
+<!--    $('#form\\:intphone').keypress(function (e) {-->
+<!--        var txt = String.fromCharCode(e.which);-->
+<!--        if (e.which !== 0 && e.which !== 8) {-->
+<!--            if ((txt.match(/[A-Za-zа-яА-Я.№:;,\/' @#$%^&_="?!\\]/)) || ($('#form\\:intphone').val().length >= 25)) {-->
+<!--                return false;-->
+<!--            }-->
+<!--        }-->
+<!--    });-->
+<!--    $('#form\\:extphone').keypress(function (e) {-->
+<!--        var txt = String.fromCharCode(e.which);-->
+<!--        if (e.which !== 0 && e.which !== 8) {-->
+<!--            if ((txt.match(/[A-Za-zа-яА-Я.№:;,\/' @#$%^&_="?!\\]/)) || ($('#form\\:extphone').val().length >= 25)) {-->
+<!--                return false;-->
+<!--            }-->
+<!--        }-->
+<!--    });-->
+<!--    $('#form\\:mobphone').keypress(function (e) {-->
+<!--        var txt = String.fromCharCode(e.which);-->
+<!--        if (e.which !== 0 && e.which !== 8) {-->
+<!--            if ((txt.match(/[A-Za-zа-яА-Я.№:;,\/' @#$%^&_="?!\\]/)) || ($('#form\\:mobphone').val().length >= 25)) {-->
+<!--                return false;-->
+<!--            }-->
+<!--        }-->
+<!--    });-->
+<!---->
+<!--    $('#form\\:email').keypress(function (e) {-->
+<!--        var txt = String.fromCharCode(e.which);-->
+<!--        if (e.which !== 0 && e.which !== 8) {-->
+<!--            if ((txt.match(/[а-яА-Я]/)) || ($('#form\\:email').val().length >= 300)) {-->
+<!--                return false;-->
+<!--            }-->
+<!--        }-->
+<!--    });-->
+<!---->
+<!--</script>-->
+<?php //if (isset($isValid)): ?>
+<!--    <script>-->
+<!--        $(document).ready(function() {-->
+<!--            $('#errormodal').modal() ;-->
+<!--        });-->
+<!--    </script>-->
+<?php //endif; ?>
+
+<div id="errormodal" class="modal fade" role="dialog" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h3 class="modal-title" style="text-align:center;"> Запись не сохранена! </h3>
+            </div>
+            <div class="modal-body">
+                <h4 style="color:red; text-align:center;">Не все обязательные поля заполнены корректно.</h4>
+                <hr>
+                <p style="text-align:center;">* Для сохранения записи заполните поля, выделенные красным цветом, и повторно нажмите кнопку "Сохранить" </p>
+            </div>
+        </div>
+    </div>
+</div>

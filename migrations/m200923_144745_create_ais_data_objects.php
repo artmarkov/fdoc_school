@@ -418,6 +418,22 @@ class m200923_144745_create_ais_data_objects extends \main\BaseMigration
         $this->addColumn('creative_sort', 'count', $this->string(100));
         $this->addColumn('creative_sort', 'hide', $this->string(10));
 
+        $this->createEavTableGroup('activities');
+        $this->addColumn('activities_sort', 'type', $this->string(200));
+        $this->addColumn('activities_sort', 'name', $this->string(500));
+        $this->addColumn('activities_sort', 'place', $this->string(500));
+        $this->addColumn('activities_sort', 'department', $this->string(2000));
+        $this->addColumn('activities_sort', 'category', $this->string(200));
+        $this->addColumn('activities_sort', 'activities_url', $this->string(500));
+        $this->addColumn('activities_sort', 'form_partic', $this->string(200));
+        $this->addColumn('activities_sort', 'visit_poss', $this->string(200));
+        $this->addColumn('activities_sort', 'description', $this->string(4000));
+        $this->addColumn('activities_sort', 'rider', $this->string(4000));
+        $this->addColumn('activities_sort', 'result', $this->string(4000));
+        $this->addColumn('activities_sort', 'num_users', $this->string(10));
+        $this->addColumn('activities_sort', 'num_winners', $this->string(10));
+        $this->addColumn('activities_sort', 'num_visitors', $this->string(10));
+
     }
     /**
      * {@inheritdoc}
@@ -425,6 +441,7 @@ class m200923_144745_create_ais_data_objects extends \main\BaseMigration
      */
     public function safeDown()
     {
+        $this->dropEavTableGroup('activities');
         $this->dropEavTableGroup('creative');
         $this->dropEavTableGroup('own');
         $this->dropTableWithHistory('own_department');

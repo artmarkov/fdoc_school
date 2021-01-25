@@ -165,7 +165,7 @@ class m200925_113514_ais_dictionary extends \main\BaseMigration
      */
     public function safeDown()
     {
-        $this->db->createCommand()->delete('refbooks', ['name' => 'creative'])->execute();
+        $this->db->createCommand()->delete('refbooks', ['name' => 'guide_creative'])->execute();
         $this->dropTable('guide_creative');
         $this->db->createCommand()->delete('refbooks', ['name' => 'subject_cat'])->execute();
         $this->db->createCommand()->delete('refbooks', ['name' => 'auditory_cat'])->execute();

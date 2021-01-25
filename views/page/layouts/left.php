@@ -39,7 +39,7 @@
                         'url' => '#',
                         'options' => ['class' => 'treeview'],
                         'items' => [
-                            ['label' => 'План работы школы', 'icon' => 'fa fa-minus', 'url' => ['attandlog/index']],
+                            ['label' => 'План мероприятий', 'icon' => 'fa fa-minus', 'url' => ['activities/index']],
                             ['label' => 'Учебные планы', 'icon' => 'fa fa-minus', 'url' => ['attandlog/index']],
                             ['label' => 'Счета за обучение', 'icon' => 'fa fa-minus', 'url' => ['attandlog/index']],
                             ['label' => 'Табель учета педагогических часов', 'icon' => 'fa fa-minus', 'url' => ['attandlog/index']],

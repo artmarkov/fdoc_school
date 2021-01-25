@@ -112,6 +112,9 @@ $config = [
                 'creative/' => 'creative/index',
                 'creative/<id:\d+>' => 'creative/edit',
                 'creative/<id:\d+>/view' => 'creative/view',
+                'activities/' => 'activities/index',
+                'activities/<id:\d+>' => 'activities/edit',
+                'activities/<id:\d+>/view' => 'activities/view',
                 ],
         ],
         'formatter' => [
