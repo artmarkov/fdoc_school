@@ -5,7 +5,8 @@ use \yii\helpers\Url;
 class manager_Activities extends manager_Base
 {
     protected $type = 'activities';
-    protected $columnsDefaults = ['o_id', 'type', 'name', 'place', 'department', 'category', 'form_partic', 'visit_poss', 'description', 'rider', 'result', 'num_users', 'num_winners', 'num_visitors', 'command'];
+    protected $columnsDefaults = ['o_id', 'author', 'name', 'time_in', 'time_out', 'places', 'departments', 'category',
+        'form_partic', 'visit_poss', 'description', 'rider', 'result', 'num_users', 'num_winners', 'num_visitors', 'command'];
     protected $editRoute = '/activities/edit';
     protected $createRoute = '/activities/create';
     protected $viewRoute = '/activities/view';
@@ -54,11 +55,13 @@ class manager_Activities extends manager_Base
     protected function getColumnValue($o, $field)
     {
         switch ($field) {
+            case 'author':
             case 'name':
-            case 'place':
-            case 'department':
+            case 'time_in':
+            case 'time_out':
+            case 'places':
+            case 'departments':
             case 'category':
-            case 'activities_url':
             case 'form_partic':
             case 'visit_poss':
             case 'description':

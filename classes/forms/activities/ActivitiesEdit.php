@@ -35,7 +35,21 @@ abstract class ActivitiesEdit extends \main\forms\ObjEdit
             'list' => \main\eav\object\Activities::TYPE_EVENTS,
             'required' => '1'
         ]);
-        $this->addField('form_control_TextFilter', 'name', 'Название мероприятия');
+        $this->addField('form_control_Text', 'author', 'Автор записи', ['required' => 1]);
+        $this->addField('form_control_Text', 'name', 'Название', ['required' => 1]);
+        $this->addField('form_control_Date', 'time_in', 'Дата и время начала', ['required' => 1]);
+        $this->addField('form_control_DateTime', 'time_out', 'Дата и время окончания', ['required' => 1]);
+        $this->addField('form_control_TextFilter', 'places', 'Место проведения', ['required' => 1]);
+        $this->addField('form_control_TextFilter', 'departments', 'Отдел', ['required' => 1]);
+        $this->addField('form_control_TextFilter', 'category', 'Категория', ['required' => 1]);
+        $this->addField('form_control_TextFilter', 'form_partic', 'Форма участия', ['required' => 1]);
+        $this->addField('form_control_TextFilter', 'visit_poss', 'Возможность посещения', ['required' => 1]);
+        $this->addField('form_control_TextFilter', 'description', 'Описание мероприятия', ['required' => 1]);
+        $this->addField('form_control_TextFilter', 'rider', 'Технические требования', ['required' => 1]);
+        $this->addField('form_control_TextFilter', 'result', 'Итоги мероприятия', ['required' => 1]);
+        $this->addField('form_control_TextFilter', 'num_users', 'Количество участников', ['required' => 1]);
+        $this->addField('form_control_TextFilter', 'num_winners', 'Количество победителей', ['required' => 1]);
+        $this->addField('form_control_TextFilter', 'num_visitors', 'Количество зрителей', ['required' => 1]);
         if ($obj instanceof \main\eav\object\Snapshot) { // режим отображения на прошлую дату
             $this->timestamp = $obj->getTimestamp();
         }

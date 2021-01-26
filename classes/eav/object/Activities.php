@@ -23,15 +23,17 @@ class Activities extends Base
     public static function rules()
     {
         return ArrayHelper::merge(parent::rules(), [
-            ['type', 'name' => 'Тип меропрятия', function ($v) {
+            ['type', 'name' => 'Тип мероприятия', function ($v) {
                 $v->valueNum = $v->value;
                 $v->value = array_key_exists($v->value, self::TYPE_EVENTS) ? self::TYPE_EVENTS[$v->value] : '';
             }],
-            ['name', 'name' => 'Название мероприятия'],
-            ['place', 'name' => 'Место проведения'],
-            ['department', 'name' => 'Отдел'],
+            ['author', 'name' => 'Автор записи'],
+            ['name', 'name' => 'Название'],
+            ['time_in', 'name' => 'Дата и время начала'],
+            ['time_out', 'name' => 'Дата и время окончания'],
+            ['places', 'name' => 'Место проведения'],
+            ['departments', 'name' => 'Отдел'],
             ['category', 'name' => 'Категория'],
-            ['activities_url', 'name' => 'Ссылка на мероприятие (сайт/соцсети)'],
             ['form_partic', 'name' => 'Форма участия'],
             ['visit_poss', 'name' => 'Возможность посещения'],
             ['description', 'name' => 'Описание мероприятия'],

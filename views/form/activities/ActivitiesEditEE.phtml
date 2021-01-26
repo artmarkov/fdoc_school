@@ -18,7 +18,7 @@
 
     <div class="box box-solid box-primary">
         <div class="box-header with-border">
-            <h3 class="box-title">Информация о сотруднике</h3>
+            <h3 class="box-title"><?= $title ?></h3>
             <div class="box-tools pull-right">
                 <?php if (!$isNew): ?>
                     <div class="btn-group btn-group-sm">
@@ -47,20 +47,15 @@
         </div><!-- /.box-header -->
         <div class="box-body">
             <!-- Fields Поля -->
-            <div class="form-group form-group-sm <?= 0 == $fields['type']['renderMode'] ? ' hide' : '' ?><?= $fields['type']['error'] ? ' has-error' : '' ?>">
-                <label class="col-sm-4 control-label" for="type"><?= $fields['type']['label'] ?></label>
-                <div class="col-sm-8">
-                    <?= $fields['type']['html'] ?>
-                    <?php if ($fields['type']['error']): ?><span class="help-block"><?= $fields['type']['error'] ?></span><?php endif; ?>
+            <?php foreach ($fields as $id => $field): ?>
+                <div class="form-group form-group-sm <?= 0 == $field['renderMode'] ? ' hide' : '' ?><?= $field['error'] ? ' has-error' : '' ?>">
+                    <label class="col-sm-4 control-label" for="<?= $field['id'] ?>"><?= $field['label'] ?><?= $field['required'] ? '*' : '' ?></label>
+                    <div class="col-sm-8">
+                        <?= $field['html'] ?>
+                        <?php if ($field['error']): ?><span class="help-block"><?= $field['error'] ?></span><?php endif; ?>
+                    </div>
                 </div>
-            </div>
-            <div class="form-group form-group-sm <?= 0 == $fields['name']['renderMode'] ? ' hide' : '' ?><?= $fields['name']['error'] ? ' has-error' : '' ?>">
-                <label class="col-sm-4 control-label" for="name"><?= $fields['name']['label'] ?></label>
-                <div class="col-sm-8">
-                    <?= $fields['name']['html'] ?>
-                    <?php if ($fields['name']['error']): ?><span class="help-block"><?= $fields['name']['error'] ?></span><?php endif; ?>
-                </div>
-            </div>
+            <?php endforeach;?>
             <div class="box box-solid box-primary">
                 <div class="box-header with-border">
                     <h3 class="box-title">Основные сведения</h3>
