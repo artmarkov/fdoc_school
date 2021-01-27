@@ -6,6 +6,7 @@ namespace main\forms\control;
  * @property string $defaultValue
  * @property string $allowLoadSave
  * @property bool $required
+ * @property string $hint
  * @property bool $loaded
  * @property bool $modifiable
  * @property string $label
@@ -29,6 +30,7 @@ abstract class BaseControl extends AbstractControl
     protected $modifiable = null;
     // validation
     protected $required = false;
+    protected $hint = null;
     protected $validationError;
     protected $validationWarning;
     protected $allowLoadSave = true;
@@ -70,6 +72,9 @@ abstract class BaseControl extends AbstractControl
             case 'msgRequiredField':
                 $this->msgRequiredField = $val;
                 break;
+            case 'hint':
+                $this->hint = $val;
+                break;
             default:
                 parent::__set($prop, $val);
         }
@@ -101,6 +106,9 @@ abstract class BaseControl extends AbstractControl
                 break;
             case 'msgRequiredField':
                 return $this->msgRequiredField;
+                break;
+            case 'hint':
+                return $this->hint;
                 break;
             default:
                 return parent::__get($prop);
@@ -177,6 +185,7 @@ abstract class BaseControl extends AbstractControl
     {
         $data = parent::asArray();
         $data['required'] = $this->required;
+        $data['hint'] = $this->hint;
         $data['hidden'] = false;
         $data['label'] = $this->label;
         $data['error'] = $this->validationError;

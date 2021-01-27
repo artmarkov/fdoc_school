@@ -117,6 +117,17 @@ class ActivitiesController extends BaseController
         }
     }
 
+    public function actionSubcategoryOptions()
+    {
+        $id = \Yii::$app->request->post('id');
+        $line = '';
+        $data = \RefBook::find('activ_subcategory', $id)->getList();
+        foreach ($data as $id => $name) {
+            $line .= '<option value="'.$id.'">'.$name.'</option>';
+        }
+        return  $line;
+    }
+
     protected function getMenu($id)
     {
         return [

@@ -5,7 +5,7 @@ use \yii\helpers\Url;
 class manager_Employees extends manager_Base
 {
     protected $type = 'employees';
-    protected $columnsDefaults = ['o_id', 'type', 'surname', 'firstname', 'thirdname', 'birthday', 'mobphone', 'email', 'command'];
+    protected $columnsDefaults = ['o_id', 'type', 'position', 'surname', 'firstname', 'thirdname', 'birthday', 'mobphone', 'email', 'command'];
     protected $editRoute = '/employees/edit';
     protected $createRoute = '/employees/create';
     protected $viewRoute = '/employees/view';
@@ -54,6 +54,7 @@ class manager_Employees extends manager_Base
     protected function getColumnValue($o, $field)
     {
         switch ($field) {
+            case 'position':
             case 'surname':
             case 'firstname':
             case 'thirdname':

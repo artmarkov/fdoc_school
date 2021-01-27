@@ -134,25 +134,6 @@ $config = [
                 ]
             ]
         ],
-        'smev3Service' => [
-            'class' => '\smev3_service_BaseImpl',
-            'url' => env('SMEV3_URL'),
-            'testMessage' => env('SMEV3_TEST') == '1',
-        ],
-        'smev3AltService' => [
-            'class' => '\smev3_service_BaseImpl',
-            'url' => env('SMEV3ALT_URL'),
-            'testMessage' => env('SMEV3ALT_TEST') == '1',
-        ],
-        'smev3FileService' => [
-            'class' => '\smev3_service_FileImpl',
-            'url' => env('SMEV3_FS_URL'),
-        ],
-        'revocampService' => [
-            'class' => YII_ENV_DEV ? '\main\RevocampMockService' : '\main\RevocampService',
-            'url' => env('REVOCAMP_URL'),
-            'auth' => env('REVOCAMP_AUTH')
-        ],
     ],
     'params' => [
         'appEmail' => env('APP_EMAIL'),
@@ -166,10 +147,6 @@ $config = [
             'user' => env('OD_SFTP_USER'),
             'password' => env('OD_SFTP_PASSWORD'),
             'path' => env('OD_SFTP_PATH')
-        ],
-        'fgis_do' => [
-            'access_key' => env('FGIS_DO_ACCESS_KEY'),
-            'provider' => env('FGIS_DO_PROVIDER')
         ],
     ],
 ];

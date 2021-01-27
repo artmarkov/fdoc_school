@@ -34,6 +34,10 @@ class Employees extends Base
                 $v->valueNum = $v->value;
                 $v->value = array_key_exists($v->value, self::TYPE_LIST) ? self::TYPE_LIST[$v->value] : '';
             }],
+            ['position', 'name' => 'Должность', function ($v) {
+                $v->valueNum = $v->value;
+                $v->value = \RefBook::find('position')->getValue($v->value);
+            }],
             ['name', 'name' => 'Полное Имя'],
             ['surname', 'name' => 'Фамилия'],
             ['firstname', 'name' => 'Имя'],

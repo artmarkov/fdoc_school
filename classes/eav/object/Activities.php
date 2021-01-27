@@ -11,6 +11,16 @@ class Activities extends Base
         'EE' => 'Внешнее мероприятие',
     ];
 
+    const FORM_PARTIC = [
+        '1' => 'Беcплатное',
+        '2' => 'Платное',
+    ];
+
+    const VISIT_POSS = [
+        '1' => 'Открытое мероприятие',
+        '2' => 'Закрытое мероприятие',
+    ];
+
     protected $formList = [
         'IE' => '\main\forms\activities\ActivitiesEditIE',
         'EE' => '\main\forms\activities\ActivitiesEditEE',
@@ -34,6 +44,7 @@ class Activities extends Base
             ['places', 'name' => 'Место проведения'],
             ['departments', 'name' => 'Отдел'],
             ['category', 'name' => 'Категория'],
+            ['subcategory', 'name' => 'Подкатегория'],
             ['form_partic', 'name' => 'Форма участия'],
             ['visit_poss', 'name' => 'Возможность посещения'],
             ['description', 'name' => 'Описание мероприятия'],

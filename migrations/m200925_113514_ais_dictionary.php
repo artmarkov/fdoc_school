@@ -18,7 +18,7 @@ class m200925_113514_ais_dictionary extends \main\BaseMigration
         ])->execute();
 
         $this->db->createCommand()->batchInsert('refbooks', ['name', 'table_name', 'key_field', 'value_field', 'sort_field', 'ref_field', 'group_field', 'note'], [
-            ['department', 'own_department', 'id', 'name', 'id', null, null, 'Отделы Школы Искусств'],
+            ['department', 'own_department', 'id', 'name', 'id', 'name', 'division_id', 'Отделы Школы Искусств'],
         ])->execute();
 
         $this->createTable('guide_advance', [
@@ -158,6 +158,80 @@ class m200925_113514_ais_dictionary extends \main\BaseMigration
             ['guide_creative', 'guide_creative', 'id', 'name', 'id', null, null, 'Категория работ преподавателей'],
         ])->execute();
 
+        $this->db->createCommand()->createView('view_teachers', '
+           SELECT o_id as id, type, position, name, surname, firstname, thirdname, gender, birthday, address, snils, extphone, intphone, mobphone, email, common_bonus
+	       FROM employees_sort 
+	       WHERE o_id IN (
+               SELECT o_id 
+               FROM employees_data 
+               WHERE o_field = \'type\' 
+               AND o_value = \'TC\'
+                ) 
+	        ORDER BY position, name;
+        ')->execute();
+
+        $this->db->createCommand()->batchInsert('refbooks', ['name', 'table_name', 'key_field', 'value_field', 'sort_field', 'ref_field', 'group_field', 'note'], [
+            ['teachers', 'view_teachers', 'id', 'name', 'id', null, null, 'Преподаватели'],
+        ])->execute();
+
+        $this->createTable('guide_activ_category', [
+            'id' => $this->primaryKey(),
+            'name' => $this->string(400)->notNull(),
+            'hide' => $this->boolean()->defaultValue(false),
+        ]);
+          $this->createTable('guide_activ_subcategory', [
+            'id' => $this->primaryKey(),
+            'name' => $this->string(400)->notNull(),
+            'category_id' => $this->string(100)->notNull(),
+            'hide' => $this->boolean()->defaultValue(false),
+        ]);
+
+        $this->db->createCommand()->batchInsert('guide_activ_category', ['id', 'name'], [
+            ['1', 'Учебная работа'],
+            ['2', 'Участие учащихся в творческих мероприятиях'],
+            ['3', 'Участие преподавателей в творческих мероприятиях'],
+            ['4', 'Методическая работа'],
+            ['5', 'Внеклассная работа'],
+
+        ])->execute();
+
+        $this->db->createCommand()->batchInsert('guide_activ_subcategory', ['id', 'name', 'category_id'], [
+            ['1', 'Педсоветы и совещания', '1'],
+            ['2', 'Технические зачеты', '1'],
+            ['3', 'Академические концерты и зачеты', '1'],
+            ['4', 'Прослушивания выпускников', '1'],
+            ['5', 'Выпускные экзамены', '1'],
+            ['6', 'Вступительные экзамены', '1'],
+            ['7', 'Просмотр работ ИЗО отделения', '1'],
+            ['8', 'Международные мероприятия', '2'],
+            ['9', 'Международные мероприятия', '3'],
+            ['10', 'Межрегиональные мероприятия', '2'],
+            ['11', 'Межрегиональные мероприятия', '3'],
+            ['12', 'Городские мероприятия', '2'],
+            ['13', 'Городские мероприятия', '3'],
+            ['14', 'Окружные мероприятия', '2'],
+            ['15', 'Окружные мероприятия', '3'],
+            ['17', 'Открытые уроки', '4'],
+            ['18', 'Курсы, семинары, конференции, консультации, мастер-классы и др.', '4'],
+            ['20', 'Прослушивания к концертам и конкурсам', '1'],
+            ['21', 'Школьные мероприятия(без описания)', '2'],
+            ['22', 'Внеклассная работа с учащимися', '5'],
+            ['23', 'Работа с родителями', '5'],
+            ['24', 'Посещение концертов', '5'],
+            ['25', 'Посещение выставок', '5'],
+            ['26', 'Районные мероприятия', '2'],
+            ['27', 'Районные мероприятия', '3'],
+            ['28', 'Школьные мероприятия(с описанием)', '2'],
+            ['29', 'Школьные мероприятия(с описанием)', '3'],
+            ['30', 'Школьные мероприятия(без описания)', '3']
+        ])->execute();
+
+        $this->db->createCommand()->batchInsert('refbooks', ['name', 'table_name', 'key_field', 'value_field', 'sort_field', 'ref_field', 'group_field', 'note'], [
+            ['activ_category', 'guide_activ_category', 'id', 'name', 'id', null, null, 'Категории мероприятия'],
+        ])->execute();
+        $this->db->createCommand()->batchInsert('refbooks', ['name', 'table_name', 'key_field', 'value_field', 'sort_field', 'ref_field', 'group_field', 'note'], [
+            ['activ_subcategory', 'guide_activ_subcategory', 'id', 'name', 'id', 'category_id', null, 'Подкатегории мероприятия'],
+        ])->execute();
     }
 
     /**
@@ -165,6 +239,13 @@ class m200925_113514_ais_dictionary extends \main\BaseMigration
      */
     public function safeDown()
     {
+
+        $this->db->createCommand()->delete('refbooks', ['name' => 'activ_subcategory'])->execute();
+        $this->db->createCommand()->delete('refbooks', ['name' => 'activ_category'])->execute();
+        $this->dropTable('activ_subcategory');
+        $this->dropTable('activ_category');
+        $this->db->createCommand()->delete('refbooks', ['name' => 'teachers'])->execute();
+        $this->db->createCommand()->dropView('view_teachers')->execute();
         $this->db->createCommand()->delete('refbooks', ['name' => 'guide_creative'])->execute();
         $this->dropTable('guide_creative');
         $this->db->createCommand()->delete('refbooks', ['name' => 'subject_cat'])->execute();

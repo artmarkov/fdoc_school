@@ -13,6 +13,7 @@ class m200923_144745_create_ais_data_objects extends \main\BaseMigration
     {
         $this->createEavTableGroup('employees');
         $this->addColumn('employees_sort', 'type', $this->string(200));
+        $this->addColumn('employees_sort', 'position', $this->string(200));
         $this->addColumn('employees_sort', 'name', $this->string(200));
         $this->addColumn('employees_sort', 'surname', $this->string(200));
         $this->addColumn('employees_sort', 'firstname', $this->string(200));
@@ -426,7 +427,9 @@ class m200923_144745_create_ais_data_objects extends \main\BaseMigration
         $this->addColumn('activities_sort', 'time_out', $this->string(200));
         $this->addColumn('activities_sort', 'places', $this->string(1000));
         $this->addColumn('activities_sort', 'departments', $this->string(1000));
+        $this->addColumn('activities_sort', 'employees', $this->string(1000));
         $this->addColumn('activities_sort', 'category', $this->string(200));
+        $this->addColumn('activities_sort', 'subcategory', $this->string(200));
         $this->addColumn('activities_sort', 'form_partic', $this->string(10));
         $this->addColumn('activities_sort', 'visit_poss', $this->string(10));
         $this->addColumn('activities_sort', 'description', $this->string(4000));

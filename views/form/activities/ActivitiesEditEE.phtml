@@ -14,7 +14,7 @@
 <style>
     .datepicker{z-index:1151 !important;}
 </style>
-<form class="form-horizontal form-compact" role="form" action="<?= $url ?>" name="<?= $formName ?>" method="post">
+<form class="form-horizontal form-compact" role="form" action="<?= $url ?>" name="<?= $formName ?>" method="post" enctype="multipart/form-data">
 
     <div class="box box-solid box-primary">
         <div class="box-header with-border">
@@ -47,168 +47,292 @@
         </div><!-- /.box-header -->
         <div class="box-body">
             <!-- Fields Поля -->
-            <?php foreach ($fields as $id => $field): ?>
-                <div class="form-group form-group-sm <?= 0 == $field['renderMode'] ? ' hide' : '' ?><?= $field['error'] ? ' has-error' : '' ?>">
-                    <label class="col-sm-4 control-label" for="<?= $field['id'] ?>"><?= $field['label'] ?><?= $field['required'] ? '*' : '' ?></label>
-                    <div class="col-sm-8">
-                        <?= $field['html'] ?>
-                        <?php if ($field['error']): ?><span class="help-block"><?= $field['error'] ?></span><?php endif; ?>
+            <div class="form-group form-group-sm <?= 0 == $fields['type']['renderMode'] ? ' hide' : '' ?><?= $fields['type']['error'] ? ' has-error' : '' ?>">
+                <label class="col-sm-4 control-label" for="<?= $fields['type']['id'] ?>"><?= $fields['type']['label'] ?><?= $fields['type']['required'] ? '*' : '' ?></label>
+                <div class="col-sm-8">
+                    <?= $fields['type']['html'] ?>
+                    <?php if ($fields['type']['error']): ?><span class="help-block"><?= $fields['type']['error'] ?></span><?php endif; ?>
+                    <small id="help_<?= $fields['type']['id'] ?>" class="form-text text-muted"><?= $fields['type']['hint'] ?></small>
+                </div>
+            </div>
+            <div class="form-group form-group-sm <?= 0 == $fields['author']['renderMode'] ? ' hide' : '' ?><?= $fields['author']['error'] ? ' has-error' : '' ?>">
+                <label class="col-sm-4 control-label" for="<?= $fields['author']['id'] ?>"><?= $fields['author']['label'] ?><?= $fields['author']['required'] ? '*' : '' ?></label>
+                <div class="col-sm-8">
+                    <?= $fields['author']['html'] ?>
+                    <?php if ($fields['author']['error']): ?><span class="help-block"><?= $fields['author']['error'] ?></span><?php endif; ?>
+                    <small id="help_<?= $fields['author']['id'] ?>" class="form-text text-muted"><?= $fields['author']['hint'] ?></small>
+                </div>
+            </div>
+            <div class="box box-solid box-primary">
+                <div class="box-header with-border">
+                    <h3 class="box-title">Основной блок</h3>
+                </div><!-- /.box-header -->
+                <div class="box-body">
+                    <div class="form-group form-group-sm <?= 0 == $fields['time_in']['renderMode'] ? ' hide' : '' ?><?= $fields['time_in']['error'] ? ' has-error' : '' ?>">
+                        <label class="col-sm-4 control-label" for="<?= $fields['time_in']['id'] ?>"><?= $fields['time_in']['label'] ?><?= $fields['time_in']['required'] ? '*' : '' ?></label>
+                        <div class="col-sm-8">
+                            <?= $fields['time_in']['html'] ?>
+                            <?php if ($fields['time_in']['error']): ?><span class="help-block"><?= $fields['time_in']['error'] ?></span><?php endif; ?>
+                            <small id="help_<?= $fields['time_in']['id'] ?>" class="form-text text-muted"><?= $fields['time_in']['hint'] ?></small>
+                        </div>
+                    </div>
+                    <div class="form-group form-group-sm <?= 0 == $fields['time_out']['renderMode'] ? ' hide' : '' ?><?= $fields['time_out']['error'] ? ' has-error' : '' ?>">
+                        <label class="col-sm-4 control-label" for="<?= $fields['time_out']['id'] ?>"><?= $fields['time_out']['label'] ?><?= $fields['time_out']['required'] ? '*' : '' ?></label>
+                        <div class="col-sm-8">
+                            <?= $fields['time_out']['html'] ?>
+                            <?php if ($fields['time_out']['error']): ?><span class="help-block"><?= $fields['time_out']['error'] ?></span><?php endif; ?>
+                            <small id="help_<?= $fields['time_out']['id'] ?>" class="form-text text-muted"><?= $fields['time_out']['hint'] ?></small>
+                        </div>
+                    </div>
+                    <div class="form-group form-group-sm <?= 0 == $fields['name']['renderMode'] ? ' hide' : '' ?><?= $fields['name']['error'] ? ' has-error' : '' ?>">
+                        <label class="col-sm-4 control-label" for="<?= $fields['name']['id'] ?>"><?= $fields['name']['label'] ?><?= $fields['name']['required'] ? '*' : '' ?></label>
+                        <div class="col-sm-8">
+                            <?= $fields['name']['html'] ?>
+                            <?php if ($fields['name']['error']): ?><span class="help-block"><?= $fields['name']['error'] ?></span><?php endif; ?>
+                            <small id="help_<?= $fields['name']['id'] ?>" class="form-text text-muted"><?= $fields['name']['hint'] ?></small>
+                        </div>
+                    </div>
+                    <div class="form-group form-group-sm <?= 0 == $fields['places']['renderMode'] ? ' hide' : '' ?><?= $fields['places']['error'] ? ' has-error' : '' ?>">
+                        <label class="col-sm-4 control-label" for="<?= $fields['places']['id'] ?>"><?= $fields['places']['label'] ?><?= $fields['places']['required'] ? '*' : '' ?></label>
+                        <div class="col-sm-8">
+                            <?= $fields['places']['html'] ?>
+                            <?php if ($fields['places']['error']): ?><span class="help-block"><?= $fields['places']['error'] ?></span><?php endif; ?>
+                            <small id="help_<?= $fields['places']['id'] ?>" class="form-text text-muted"><?= $fields['places']['hint'] ?></small>
+                        </div>
+                    </div>
+                    <div class="form-group form-group-sm <?= 0 == $fields['departments']['renderMode'] ? ' hide' : '' ?><?= $fields['departments']['error'] ? ' has-error' : '' ?>">
+                        <label class="col-sm-4 control-label" for="<?= $fields['departments']['id'] ?>"><?= $fields['departments']['label'] ?><?= $fields['departments']['required'] ? '*' : '' ?></label>
+                        <div class="col-sm-8">
+                            <?= $fields['departments']['html'] ?>
+                            <?php if ($fields['departments']['error']): ?><span class="help-block"><?= $fields['departments']['error'] ?></span><?php endif; ?>
+                            <small id="help_<?= $fields['departments']['id'] ?>" class="form-text text-muted"><?= $fields['departments']['hint'] ?></small>
+                        </div>
+                    </div>
+                    <div class="form-group form-group-sm <?= 0 == $fields['category']['renderMode'] ? ' hide' : '' ?><?= $fields['category']['error'] ? ' has-error' : '' ?>">
+                        <label class="col-sm-4 control-label" for="<?= $fields['category']['id'] ?>"><?= $fields['category']['label'] ?><?= $fields['category']['required'] ? '*' : '' ?></label>
+                        <div class="col-sm-8">
+                            <?= $fields['category']['html'] ?>
+                            <?php if ($fields['category']['error']): ?><span class="help-block"><?= $fields['category']['error'] ?></span><?php endif; ?>
+                            <small id="help_<?= $fields['category']['id'] ?>" class="form-text text-muted"><?= $fields['category']['hint'] ?></small>
+                        </div>
+                    </div>
+                    <div class="form-group form-group-sm <?= 0 == $fields['subcategory']['renderMode'] ? ' hide' : '' ?><?= $fields['subcategory']['error'] ? ' has-error' : '' ?>">
+                        <label class="col-sm-4 control-label" for="<?= $fields['subcategory']['id'] ?>"><?= $fields['subcategory']['label'] ?><?= $fields['subcategory']['required'] ? '*' : '' ?></label>
+                        <div class="col-sm-8">
+                            <?= $fields['subcategory']['html'] ?>
+                            <?php if ($fields['subcategory']['error']): ?><span class="help-block"><?= $fields['subcategory']['error'] ?></span><?php endif; ?>
+                            <small id="help_<?= $fields['subcategory']['id'] ?>" class="form-text text-muted"><?= $fields['subcategory']['hint'] ?></small>
+                        </div>
+                    </div>
+                    <div class="form-group form-group-sm <?= 0 == $fields['employees']['renderMode'] ? ' hide' : '' ?><?= $fields['employees']['error'] ? ' has-error' : '' ?>">
+                        <label class="col-sm-4 control-label" for="<?= $fields['employees']['id'] ?>"><?= $fields['employees']['label'] ?><?= $fields['employees']['required'] ? '*' : '' ?></label>
+                        <div class="col-sm-8">
+                            <?= $fields['employees']['html'] ?>
+                            <?php if ($fields['employees']['error']): ?><span class="help-block"><?= $fields['employees']['error'] ?></span><?php endif; ?>
+                            <small id="help_<?= $fields['employees']['id'] ?>" class="form-text text-muted"><?= $fields['employees']['hint'] ?></small>
+                        </div>
+                    </div>
+                    <div class="form-group form-group-sm <?= 0 == $fields['form_partic']['renderMode'] ? ' hide' : '' ?><?= $fields['form_partic']['error'] ? ' has-error' : '' ?>">
+                        <label class="col-sm-4 control-label" for="<?= $fields['form_partic']['id'] ?>"><?= $fields['form_partic']['label'] ?><?= $fields['form_partic']['required'] ? '*' : '' ?></label>
+                        <div class="col-sm-8">
+                            <?= $fields['form_partic']['html'] ?>
+                            <?php if ($fields['form_partic']['error']): ?><span class="help-block"><?= $fields['form_partic']['error'] ?></span><?php endif; ?>
+                            <small id="help_<?= $fields['form_partic']['id'] ?>" class="form-text text-muted"><?= $fields['form_partic']['hint'] ?></small>
+                        </div>
+                    </div>
+                    <div class="form-group form-group-sm form_partic <?= 0 == $fields['partic_price']['renderMode'] ? ' hide' : '' ?><?= $fields['partic_price']['error'] ? ' has-error' : '' ?>">
+                        <label class="col-sm-4 control-label" for="<?= $fields['partic_price']['id'] ?>"><?= $fields['partic_price']['label'] ?><?= $fields['partic_price']['required'] ? '*' : '' ?></label>
+                        <div class="col-sm-8">
+                            <?= $fields['partic_price']['html'] ?>
+                            <?php if ($fields['partic_price']['error']): ?><span class="help-block"><?= $fields['partic_price']['error'] ?></span><?php endif; ?>
+                            <small id="help_<?= $fields['partic_price']['id'] ?>" class="form-text text-muted"><?= $fields['partic_price']['hint'] ?></small>
+                        </div>
+                    </div>
+                    <div class="form-group form-group-sm <?= 0 == $fields['visit_poss']['renderMode'] ? ' hide' : '' ?><?= $fields['visit_poss']['error'] ? ' has-error' : '' ?>">
+                        <label class="col-sm-4 control-label" for="<?= $fields['visit_poss']['id'] ?>"><?= $fields['visit_poss']['label'] ?><?= $fields['visit_poss']['required'] ? '*' : '' ?></label>
+                        <div class="col-sm-8">
+                            <?= $fields['visit_poss']['html'] ?>
+                            <?php if ($fields['visit_poss']['error']): ?><span class="help-block"><?= $fields['visit_poss']['error'] ?></span><?php endif; ?>
+                            <small id="help_<?= $fields['visit_poss']['id'] ?>" class="form-text text-muted"><?= $fields['visit_poss']['hint'] ?></small>
+                        </div>
+                    </div>
+                    <div class="form-group form-group-sm visit_poss <?= 0 == $fields['poss_content']['renderMode'] ? ' hide' : '' ?><?= $fields['poss_content']['error'] ? ' has-error' : '' ?>">
+                        <label class="col-sm-4 control-label" for="<?= $fields['poss_content']['id'] ?>"><?= $fields['poss_content']['label'] ?><?= $fields['poss_content']['required'] ? '*' : '' ?></label>
+                        <div class="col-sm-8">
+                            <?= $fields['poss_content']['html'] ?>
+                            <?php if ($fields['poss_content']['error']): ?><span class="help-block"><?= $fields['poss_content']['error'] ?></span><?php endif; ?>
+                            <small id="help_<?= $fields['poss_content']['id'] ?>" class="form-text text-muted"><?= $fields['poss_content']['hint'] ?></small>
+                        </div>
                     </div>
                 </div>
-            <?php endforeach;?>
+            </div>
             <div class="box box-solid box-primary">
                 <div class="box-header with-border">
-                    <h3 class="box-title">Основные сведения</h3>
+                    <h3 class="box-title">Дополнительный блок</h3>
                 </div><!-- /.box-header -->
                 <div class="box-body">
-<!--                    <div class="form-group form-group-sm --><?//= 0 == $fields['surname']['renderMode'] ? ' hide' : '' ?><!----><?//= $fields['surname']['error'] ? ' has-error' : '' ?><!--">-->
-<!--                        <label class="col-sm-4 control-label" for="surname">--><?//= $fields['surname']['label'] ?><!--</label>-->
-<!--                        <div class="col-sm-8">-->
-<!--                            --><?//= $fields['surname']['html'] ?>
-<!--                            --><?php //if ($fields['surname']['error']): ?><!--<span class="help-block">--><?//= $fields['surname']['error'] ?><!--</span>--><?php //endif; ?>
-<!--                        </div>-->
-<!--                    </div>-->
+                    <div class="form-group form-group-sm <?= 0 == $fields['description']['renderMode'] ? ' hide' : '' ?><?= $fields['description']['error'] ? ' has-error' : '' ?>">
+                        <label class="col-sm-4 control-label" for="<?= $fields['description']['id'] ?>"><?= $fields['description']['label'] ?><?= $fields['description']['required'] ? '*' : '' ?></label>
+                        <div class="col-sm-8">
+                            <?= $fields['description']['html'] ?>
+                            <?php if ($fields['description']['error']): ?><span class="help-block"><?= $fields['description']['error'] ?></span><?php endif; ?>
+                            <span class="help-block" style="color: green" id="count_<?= $fields['description']['id'] ?>"></span>
+                            <small id="help_<?= $fields['description']['id'] ?>" class="form-text text-muted"><?= $fields['description']['hint'] ?></small>
 
+                        </div>
+                    </div>
+                    <div class="form-group form-group-sm <?= 0 == $fields['rider']['renderMode'] ? ' hide' : '' ?><?= $fields['rider']['error'] ? ' has-error' : '' ?>">
+                        <label class="col-sm-4 control-label" for="<?= $fields['rider']['id'] ?>"><?= $fields['rider']['label'] ?><?= $fields['rider']['required'] ? '*' : '' ?></label>
+                        <div class="col-sm-8">
+                            <?= $fields['rider']['html'] ?>
+                            <?php if ($fields['rider']['error']): ?><span class="help-block"><?= $fields['rider']['error'] ?></span><?php endif; ?>
+                            <small id="help_<?= $fields['rider']['id'] ?>" class="form-text text-muted"><?= $fields['rider']['hint'] ?></small>
+                        </div>
+                    </div>
+                    <div class="form-group form-group-sm <?= 0 == $fields['site_url']['renderMode'] ? ' hide' : '' ?><?= $fields['site_url']['error'] ? ' has-error' : '' ?>">
+                        <label class="col-sm-4 control-label" for="<?= $fields['site_url']['id'] ?>"><?= $fields['site_url']['label'] ?><?= $fields['site_url']['required'] ? '*' : '' ?></label>
+                        <div class="col-sm-8">
+                            <?= $fields['site_url']['html'] ?>
+                            <?php if ($fields['site_url']['error']): ?><span class="help-block"><?= $fields['site_url']['error'] ?></span><?php endif; ?>
+                            <small id="help_<?= $fields['site_url']['id'] ?>" class="form-text text-muted"><?= $fields['site_url']['hint'] ?></small>
+                        </div>
+                    </div>
+                    <div class="form-group form-group-sm <?= 0 == $fields['site_media']['renderMode'] ? ' hide' : '' ?><?= $fields['site_media']['error'] ? ' has-error' : '' ?>">
+                        <label class="col-sm-4 control-label" for="<?= $fields['site_media']['id'] ?>"><?= $fields['site_media']['label'] ?><?= $fields['site_media']['required'] ? '*' : '' ?></label>
+                        <div class="col-sm-8">
+                            <?= $fields['site_media']['html'] ?>
+                            <?php if ($fields['site_media']['error']): ?><span class="help-block"><?= $fields['site_media']['error'] ?></span><?php endif; ?>
+                            <small id="help_<?= $fields['site_media']['id'] ?>" class="form-text text-muted"><?= $fields['site_media']['hint'] ?></small>
+                        </div>
+                    </div>
+                    <div class="form-group form-group-sm <?= 0 == $fields['afisha_file']['renderMode'] ? ' hide' : '' ?><?= $fields['afisha_file']['error'] ? ' has-error' : '' ?>">
+                        <label class="col-sm-4 control-label" for="<?= $fields['afisha_file']['id'] ?>"><?= $fields['afisha_file']['label'] ?><?= $fields['afisha_file']['required'] ? '*' : '' ?></label>
+                        <div class="col-sm-8">
+                            <?= $fields['afisha_file']['html'] ?>
+                            <?php if ($fields['afisha_file']['error']): ?><span class="help-block"><?= $fields['afisha_file']['error'] ?></span><?php endif; ?>
+                            <small id="help_<?= $fields['afisha_file']['id'] ?>" class="form-text text-muted"><?= $fields['afisha_file']['hint'] ?></small>
+                        </div>
+                    </div>
+                    <div class="form-group form-group-sm <?= 0 == $fields['program_file']['renderMode'] ? ' hide' : '' ?><?= $fields['program_file']['error'] ? ' has-error' : '' ?>">
+                        <label class="col-sm-4 control-label" for="<?= $fields['program_file']['id'] ?>"><?= $fields['program_file']['label'] ?><?= $fields['program_file']['required'] ? '*' : '' ?></label>
+                        <div class="col-sm-8">
+                            <?= $fields['program_file']['html'] ?>
+                            <?php if ($fields['program_file']['error']): ?><span class="help-block"><?= $fields['program_file']['error'] ?></span><?php endif; ?>
+                            <small id="help_<?= $fields['program_file']['id'] ?>" class="form-text text-muted"><?= $fields['program_file']['hint'] ?></small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="box box-solid box-primary">
+                <div class="box-header with-border">
+                    <h3 class="box-title">Общие итоги мероприятия</h3>
+                </div><!-- /.box-header -->
+                <div class="box-body">
+                    <div class="form-group form-group-sm <?= 0 == $fields['result']['renderMode'] ? ' hide' : '' ?><?= $fields['result']['error'] ? ' has-error' : '' ?>">
+                        <label class="col-sm-4 control-label" for="<?= $fields['result']['id'] ?>"><?= $fields['result']['label'] ?><?= $fields['result']['required'] ? '*' : '' ?></label>
+                        <div class="col-sm-8">
+                            <?= $fields['result']['html'] ?>
+                            <?php if ($fields['result']['error']): ?><span class="help-block"><?= $fields['result']['error'] ?></span><?php endif; ?>
+                            <small id="help_<?= $fields['result']['id'] ?>" class="form-text text-muted"><?= $fields['result']['hint'] ?></small>
+                        </div>
+                    </div>
+                    <div class="form-group form-group-sm <?= 0 == $fields['num_users']['renderMode'] ? ' hide' : '' ?><?= $fields['num_users']['error'] ? ' has-error' : '' ?>">
+                        <label class="col-sm-4 control-label" for="<?= $fields['num_users']['id'] ?>"><?= $fields['num_users']['label'] ?><?= $fields['num_users']['required'] ? '*' : '' ?></label>
+                        <div class="col-sm-8">
+                            <?= $fields['num_users']['html'] ?>
+                            <?php if ($fields['num_users']['error']): ?><span class="help-block"><?= $fields['num_users']['error'] ?></span><?php endif; ?>
+                            <small id="help_<?= $fields['num_users']['id'] ?>" class="form-text text-muted"><?= $fields['num_users']['hint'] ?></small>
+                        </div>
+                    </div>
+                    <div class="form-group form-group-sm <?= 0 == $fields['num_winners']['renderMode'] ? ' hide' : '' ?><?= $fields['num_winners']['error'] ? ' has-error' : '' ?>">
+                        <label class="col-sm-4 control-label" for="<?= $fields['num_winners']['id'] ?>"><?= $fields['num_winners']['label'] ?><?= $fields['num_winners']['required'] ? '*' : '' ?></label>
+                        <div class="col-sm-8">
+                            <?= $fields['num_winners']['html'] ?>
+                            <?php if ($fields['num_winners']['error']): ?><span class="help-block"><?= $fields['num_winners']['error'] ?></span><?php endif; ?>
+                            <small id="help_<?= $fields['num_winners']['id'] ?>" class="form-text text-muted"><?= $fields['num_winners']['hint'] ?></small>
+                        </div>
+                    </div>
+                    <div class="form-group form-group-sm <?= 0 == $fields['num_visitors']['renderMode'] ? ' hide' : '' ?><?= $fields['num_visitors']['error'] ? ' has-error' : '' ?>">
+                        <label class="col-sm-4 control-label" for="<?= $fields['num_visitors']['id'] ?>"><?= $fields['num_visitors']['label'] ?><?= $fields['num_visitors']['required'] ? '*' : '' ?></label>
+                        <div class="col-sm-8">
+                            <?= $fields['num_visitors']['html'] ?>
+                            <?php if ($fields['num_visitors']['error']): ?><span class="help-block"><?= $fields['num_visitors']['error'] ?></span><?php endif; ?>
+                            <small id="help_<?= $fields['num_visitors']['id'] ?>" class="form-text text-muted"><?= $fields['num_visitors']['hint'] ?></small>
+                        </div>
+                    </div>
                 </div><!-- /.box-body -->
             </div>
-            <div class="box box-solid box-primary">
+            <div class="box box-solid box-primary applicant-container"
+                 data-lastid="<?= 0 == count($fieldsets['applicant']['instances']) ? '1' : 1 + max(array_keys($fieldsets['applicant']['instances'])) ?>">
                 <div class="box-header with-border">
-                    <h3 class="box-title">Должностные характеристики</h3>
+                    <h3 class="box-title">Сведения о заявителях</h3>
                 </div><!-- /.box-header -->
                 <div class="box-body">
-<!--                    <div class="form-group form-group-sm --><?//= 0 == $fields['position']['renderMode'] ? ' hide' : '' ?><!----><?//= $fields['position']['error'] ? ' has-error' : '' ?><!--">-->
-<!--                        <label class="col-sm-4 control-label" for="position">--><?//= $fields['position']['label'] ?><!--</label>-->
-<!--                        <div class="col-sm-8">-->
-<!--                            --><?//= $fields['position']['html'] ?>
-<!--                            --><?php //if ($fields['position']['error']): ?><!--<span class="help-block">--><?//= $fields['position']['error'] ?><!--</span>--><?php //endif; ?>
-<!--                        </div>-->
-<!--                    </div>-->
+                    <?php foreach ($fieldsets['applicant']['instances'] as $fId => $f): ?>
+                        <div class="box box-solid box-info" data-id="<?= $fId ?>">
+                            <div class="box-header with-border">
+                                <h3 class="box-title"><?= $f['title'] ?></h3>
+                                <div class="box-tools pull-right">
+                                    <a class="btn btn-sm btn-sm-fix btn-info<?= $auth < 2 ? ' hidden' : '' ?>" id="applicant:<?= $fId ?>:delete" href="#">Удалить</a>
+                                </div>
+                            </div><!-- /.box-header -->
+                            <div class="box-body">
 
-            </div>
+                                <div class="form-group form-group-sm <?= 0 == $f['fields']['department']['renderMode'] ? ' hide' : '' ?><?= $f['fields']['department']['error'] ? ' has-error' : '' ?>">
+                                    <label class="col-sm-4 control-label" for="lic:applicant:<?= $fId ?>:name">Отдел</label>
+                                    <div class="col-sm-8">
+                                        <?= $f['fields']['department']['html'] ?>
+                                        <?php if ($f['fields']['department']['error']): ?><span class="help-block"><?= $f['fields']['department']['error'] ?></span><?php endif; ?>
+                                    </div>
+                                </div>
 
-        </div>
-<!--            <div class="box box-solid box-primary direction-container"-->
-<!--                 data-lastid="--><?//= 0 == count($fieldsets['direction']['instances']) ? '1' : 1 + max(array_keys($fieldsets['direction']['instances'])) ?><!--">-->
-<!--                <div class="box-header with-border">-->
-<!--                    <h3 class="box-title">Сведения о трудовой деятельности</h3>-->
-<!--                </div><!-- /.box-header -->-->
-<!--                <div class="box-body">-->
-<!---->
-<!--                    --><?php //foreach ($fieldsets['direction']['instances'] as $fId => $f): ?>
-<!--                        <div class="box box-solid box-info" data-id="--><?//= $fId ?><!--">-->
-<!--                            <div class="box-header with-border">-->
-<!--                                <h3 class="box-title">--><?//= $f['title'] ?><!--</h3>-->
-<!--                                <div class="box-tools pull-right">-->
-<!--                                    <a class="btn btn-sm btn-sm-fix btn-info--><?//= $auth < 2 ? ' hidden' : '' ?><!--" id="direction:--><?//= $fId ?><!--:delete" href="#">Удалить</a>-->
-<!--                                </div>-->
-<!--                            </div><!-- /.box-header -->-->
-<!--                            <div class="box-body">-->
-<!---->
-<!--                                <div class="form-group form-group-sm --><?//= 0 == $f['fields']['activitytype']['renderMode'] ? ' hide' : '' ?><!----><?//= $f['fields']['activitytype']['error'] ? ' has-error' : '' ?><!--">-->
-<!--                                    <label class="col-sm-4 control-label" for="direction:--><?//= $fId ?><!--:activitytype">--><?//= $f['fields']['activitytype']['label'] ?><!--</label>-->
-<!--                                    <div class="col-sm-8">-->
-<!--                                        --><?//= $f['fields']['activitytype']['html'] ?>
-<!--                                        --><?php //if ($f['fields']['activitytype']['error']): ?><!--<span class="help-block">--><?//= $f['fields']['activitytype']['error'] ?><!--</span>--><?php //endif; ?>
-<!--                                    </div>-->
-<!--                                </div>-->
-<!--                                <div class="form-group form-group-sm --><?//= 0 == $f['fields']['worktype']['renderMode'] ? ' hide' : '' ?><!----><?//= $f['fields']['worktype']['error'] ? ' has-error' : '' ?><!--">-->
-<!--                                    <label class="col-sm-4 control-label" for="direction:--><?//= $fId ?><!--:worktype">--><?//= $f['fields']['worktype']['label'] ?><!--</label>-->
-<!--                                    <div class="col-sm-8">-->
-<!--                                        --><?//= $f['fields']['worktype']['html'] ?>
-<!--                                        --><?php //if ($f['fields']['worktype']['error']): ?><!--<span class="help-block">--><?//= $f['fields']['worktype']['error'] ?><!--</span>--><?php //endif; ?>
-<!--                                    </div>-->
-<!--                                </div>-->
-<!--                                 <div class="form-group form-group-sm --><?//= 0 == $f['fields']['specialty']['renderMode'] ? ' hide' : '' ?><!----><?//= $f['fields']['specialty']['error'] ? ' has-error' : '' ?><!--">-->
-<!--                                    <label class="col-sm-4 control-label" for="direction:--><?//= $fId ?><!--:specialty">--><?//= $f['fields']['specialty']['label'] ?><!--</label>-->
-<!--                                    <div class="col-sm-8">-->
-<!--                                        --><?//= $f['fields']['specialty']['html'] ?>
-<!--                                        --><?php //if ($f['fields']['specialty']['error']): ?><!--<span class="help-block">--><?//= $f['fields']['specialty']['error'] ?><!--</span>--><?php //endif; ?>
-<!--                                    </div>-->
-<!--                                </div>-->
-<!--                                <div class="form-group form-group-sm --><?//= 0 == $f['fields']['stake_category']['renderMode'] ? ' hide' : '' ?><!----><?//= $f['fields']['stake_category']['error'] ? ' has-error' : '' ?><!--">-->
-<!--                                    <label class="col-sm-4 control-label" for="direction:--><?//= $fId ?><!--:stake_category">--><?//= $f['fields']['stake_category']['label'] ?><!--</label>-->
-<!--                                    <div class="col-sm-8">-->
-<!--                                        --><?//= $f['fields']['stake_category']['html'] ?>
-<!--                                        --><?php //if ($f['fields']['stake_category']['error']): ?><!--<span class="help-block">--><?//= $f['fields']['stake_category']['error'] ?><!--</span>--><?php //endif; ?>
-<!--                                    </div>-->
-<!--                                </div>-->
-<!--                                 <div class="form-group form-group-sm --><?//= 0 == $f['fields']['stake']['renderMode'] ? ' hide' : '' ?><!----><?//= $f['fields']['stake']['error'] ? ' has-error' : '' ?><!--">-->
-<!--                                    <label class="col-sm-4 control-label" for="direction:--><?//= $fId ?><!--:stake">--><?//= $f['fields']['stake']['label'] ?><!--</label>-->
-<!--                                    <div class="col-sm-8">-->
-<!--                                        --><?//= $f['fields']['stake']['html'] ?>
-<!--                                        --><?php //if ($f['fields']['stake']['error']): ?><!--<span class="help-block">--><?//= $f['fields']['stake']['error'] ?><!--</span>--><?php //endif; ?>
-<!--                                    </div>-->
-<!--                                </div>-->
-<!--                                 <div class="form-group form-group-sm --><?//= 0 == $f['fields']['department']['renderMode'] ? ' hide' : '' ?><!----><?//= $f['fields']['department']['error'] ? ' has-error' : '' ?><!--">-->
-<!--                                    <label class="col-sm-4 control-label" for="direction:--><?//= $fId ?><!--:department">--><?//= $f['fields']['department']['label'] ?><!--</label>-->
-<!--                                    <div class="col-sm-8">-->
-<!--                                        --><?//= $f['fields']['department']['html'] ?>
-<!--                                        --><?php //if ($f['fields']['department']['error']): ?><!--<span class="help-block">--><?//= $f['fields']['department']['error'] ?><!--</span>--><?php //endif; ?>
-<!--                                    </div>-->
-<!--                                </div>-->
-<!---->
-<!---->
-<!--                            </div><!-- /.box-body -->-->
-<!--                        </div><!-- /.box -->-->
-<!--                    --><?php //endforeach; ?>
-<!--                </div><!-- /.box-body -->-->
-<!--                <div class="box-footer">-->
-<!--                    <a class="btn btn-default--><?//= $auth < 2 ? ' hidden' : '' ?><!--" id="direction:add" href="#">Добавить</a>-->
-<!--                </div>-->
-<!--            </div><!-- /.box -->-->
-<!--            <div class="box box-solid box-primary advance-container"-->
-<!--                 data-lastid="--><?//= 0 == count($fieldsets['advance']['instances']) ? '1' : 1 + max(array_keys($fieldsets['advance']['instances'])) ?><!--">-->
-<!--                <div class="box-header with-border">-->
-<!--                    <h3 class="box-title">Сведения о достижениях</h3>-->
-<!--                </div><!-- /.box-header -->-->
-<!--                <div class="box-body">-->
-<!---->
-<!--                    --><?php //foreach ($fieldsets['advance']['instances'] as $fId => $f): ?>
-<!--                        <div class="box box-solid box-info" data-id="--><?//= $fId ?><!--">-->
-<!--                            <div class="box-header with-border">-->
-<!--                                <h3 class="box-title">--><?//= $f['title'] ?><!--</h3>-->
-<!--                                <div class="box-tools pull-right">-->
-<!--                                    <a class="btn btn-sm btn-sm-fix btn-info--><?//= $auth < 2 ? ' hidden' : '' ?><!--" id="advance:--><?//= $fId ?><!--:delete" href="#">Удалить</a>-->
-<!--                                </div>-->
-<!--                            </div><!-- /.box-header -->-->
-<!--                            <div class="box-body">-->
-<!---->
-<!--                                <div class="form-group form-group-sm --><?//= 0 == $f['fields']['advance_type']['renderMode'] ? ' hide' : '' ?><!----><?//= $f['fields']['advance_type']['error'] ? ' has-error' : '' ?><!--">-->
-<!--                                    <label class="col-sm-4 control-label" for="advance:--><?//= $fId ?><!--:advance_type">--><?//= $f['fields']['advance_type']['label'] ?><!--</label>-->
-<!--                                    <div class="col-sm-8">-->
-<!--                                        --><?//= $f['fields']['advance_type']['html'] ?>
-<!--                                        --><?php //if ($f['fields']['advance_type']['error']): ?><!--<span class="help-block">--><?//= $f['fields']['advance_type']['error'] ?><!--</span>--><?php //endif; ?>
-<!--                                    </div>-->
-<!--                                </div>-->
-<!--                                <div class="form-group form-group-sm --><?//= 0 == $f['fields']['advance_bonus']['renderMode'] ? ' hide' : '' ?><!----><?//= $f['fields']['advance_bonus']['error'] ? ' has-error' : '' ?><!--">-->
-<!--                                    <label class="col-sm-4 control-label" for="advance:--><?//= $fId ?><!--:advance_bonus">--><?//= $f['fields']['advance_bonus']['label'] ?><!--</label>-->
-<!--                                    <div class="col-sm-8">-->
-<!--                                        --><?//= $f['fields']['advance_bonus']['html'] ?>
-<!--                                        --><?php //if ($f['fields']['advance_bonus']['error']): ?><!--<span class="help-block">--><?//= $f['fields']['advance_bonus']['error'] ?><!--</span>--><?php //endif; ?>
-<!--                                    </div>-->
-<!--                                </div>-->
-<!--                                <div class="form-group form-group-sm --><?//= 0 == $f['fields']['advance_reason']['renderMode'] ? ' hide' : '' ?><!----><?//= $f['fields']['advance_reason']['error'] ? ' has-error' : '' ?><!--">-->
-<!--                                    <label class="col-sm-4 control-label" for="advance:--><?//= $fId ?><!--:advance_reason">--><?//= $f['fields']['advance_reason']['label'] ?><!--</label>-->
-<!--                                    <div class="col-sm-8">-->
-<!--                                        --><?//= $f['fields']['advance_reason']['html'] ?>
-<!--                                        --><?php //if ($f['fields']['advance_reason']['error']): ?><!--<span class="help-block">--><?//= $f['fields']['advance_reason']['error'] ?><!--</span>--><?php //endif; ?>
-<!--                                    </div>-->
-<!--                                </div>-->
-<!--                            </div><!-- /.box-body -->-->
-<!--                        </div><!-- /.box -->-->
-<!--                    --><?php //endforeach; ?>
-<!--                </div><!-- /.box-body -->-->
-<!--                <div class="box-footer">-->
-<!--                    <div class="form-group form-group-sm --><?//= 0 == $fields['common_bonus']['renderMode'] ? ' hide' : '' ?><!----><?//= $fields['common_bonus']['error'] ? ' has-error' : '' ?><!--">-->
-<!--                        <label class="col-sm-4 control-label" for="common_bonus">--><?//= $fields['common_bonus']['label'] ?><!--</label>-->
-<!--                        <div class="col-sm-8">-->
-<!--                            --><?//= $fields['common_bonus']['html'] ?>
-<!--                            --><?php //if ($fields['common_bonus']['error']): ?><!--<span class="help-block">--><?//= $fields['common_bonus']['error'] ?><!--</span>--><?php //endif; ?>
-<!--                        </div>-->
-<!--                    </div>-->
-<!--                    <a class="btn btn-default--><?//= $auth < 2 ? ' hidden' : '' ?><!--" id="advance:add" href="#">Добавить</a>-->
-<!--                </div>-->
-<!--            </div><!-- /.box -->-->
+                                <div class="form-group form-group-sm <?= 0 == $f['fields']['applicant_id']['renderMode'] ? ' hide' : '' ?><?= $f['fields']['applicant_id']['error'] ? ' has-error' : '' ?>">
+                                    <label class="col-sm-4 control-label" for="lic:applicant:<?= $fId ?>:applicant_id">Преподаватель</label>
+                                    <div class="col-sm-8">
+                                        <?= $f['fields']['applicant_id']['html'] ?>
+                                        <?php if ($f['fields']['applicant_id']['error']): ?><span class="help-block"><?= $f['fields']['applicant_id']['error'] ?></span><?php endif; ?>
+                                    </div>
+                                </div>
+
+                                <div class="form-group form-group-sm">
+                                    <label class="col-sm-4 control-label">Бонусы</label>
+                                    <div class="col-sm-8">
+                                        <div class="box box-solid box-default bonus-container" data-lastid="<?= 0 == count($fieldsets['applicant']['instances'][$fId]['fieldsets']['bonus']['instances']) ? '1' : 1 + max(array_keys($fieldsets['applicant']['instances'][$fId]['fieldsets']['bonus']['instances'])) ?>">
+                                            <div class="box-body">
+                                                <?php foreach ($fieldsets['applicant']['instances'][$fId]['fieldsets']['bonus']['instances'] as $bonusId => $fBonus): ?>
+                                                    <div class="box box-solid box-default" data-id="<?= $bonusId ?>">
+                                                        <div class="box-body">
+                                                            <div class="form-group">
+                                                                <div class="col-sm-7 <?= 0 == $fBonus['fields']['period']['renderMode'] ? ' hide' : '' ?><?= $fBonus['fields']['period']['error'] ? ' has-error' : '' ?>">
+                                                                    <?= $fBonus['fields']['period']['html'] ?>
+                                                                    <?php if ($fBonus['fields']['period']['error']): ?><span class="help-block"><?= $fBonus['fields']['period']['error'] ?></span><?php endif; ?>
+                                                                </div>
+                                                                <div class="col-sm-4 <?= 0 == $fBonus['fields']['bonus']['renderMode'] ? ' hide' : '' ?><?= $fBonus['fields']['bonus']['error'] ? ' has-error' : '' ?>">
+                                                                    <?= $fBonus['fields']['bonus']['html'] ?>
+                                                                    <?php if ($fBonus['fields']['bonus']['error']): ?><span class="help-block"><?= $fBonus['fields']['bonus']['error'] ?></span><?php endif; ?>
+                                                                </div>
+                                                                <div class="col-sm-1">
+                                                                    <a class="btn pull-right btn-sm btn-sm-fix btn-danger<?= $auth < 2 ? ' hidden' : '' ?>" id="applicant:<?= $fId ?>:bonus:<?= $bonusId ?>:delete" href="#"><i class="fa fa-times"></i></a>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                <?php endforeach; ?>
+                                            </div><!-- /.box-body -->
+                                            <div class="box-footer">
+                                                <a class="btn btn-default<?= $auth < 2 ? ' hidden' : '' ?>" id="applicant:<?= $fId ?>:bonus:add" href="#"><i class="fa fa-plus"></i></a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div><!-- /.box-body -->
+                        </div><!-- /.box -->
+                    <?php endforeach; ?>
+                </div><!-- /.box-body -->
+                <div class="box-footer">
+                    <a class="btn btn-default<?= $auth < 2 ? ' hidden' : '' ?>" id="applicant:add" href="#">Добавить заявителя</a>
+                </div>
+            </div><!-- /.box -->
         <!-- Actions Действия -->
         <div class="box-footer">
             <?= $actions['save']['html'] ?>
@@ -220,128 +344,202 @@
         <?= $hidden_fields['action']['html'] ?>
     </div
 </form>
-<!--<div class="modal" id="historyDateModal">-->
-<!--    <div class="modal-dialog">-->
-<!--        <form role="form" method="post" action="--><?//= $url ?><!--">-->
-<!--            <div class="modal-content">-->
-<!--                <div class="modal-header">-->
-<!--                    <button aria-label="Close" data-dismiss="modal" class="close" type="button"><span aria-hidden="true">&times;</span></button>-->
-<!--                    <h4 class="modal-title">Выбор даты</h4>-->
-<!--                </div>-->
-<!--                <div class="modal-body">-->
-<!--                    <div class="input-group date margin" data-provide="datepicker" data-date-format="dd-mm-yyyy" data-date-clear-btn="true" data-date-language="ru" data-date-today-highlight="true" data-date-autoclose="true">-->
-<!--                        <input type="text" class="form-control" name="time" value="--><?//= $timestamp?date('d-m-Y',$timestamp):'' ?><!--"/>-->
-<!--                        <span class="input-group-addon"><i class="fa fa-calendar"></i></span></div>-->
-<!--                </div>-->
-<!--                <div class="modal-footer">-->
-<!--                    <a class="btn btn-default pull-left" href="--><?//= $url ?><!--">Сбросить</a>-->
-<!--                    <button class="btn btn-primary" type="submit" value="save">Выбрать</button>-->
-<!--                </div>-->
-<!--            </div>-->
-<!--        </form>-->
-<!--    </div>-->
-<!--</div>-->
-<!--<script id="direction-template" type="text/x-handlebars-template">-->
-<!--    <div class="box box-solid box-info" data-id="{{id}}">-->
-<!--        <div class="box-header with-border">-->
-<!--            <h3 class="box-title">--><?//= $fieldsets['direction']['template']['title'] ?><!--</h3>-->
-<!--            <div class="box-tools pull-right">-->
-<!--                <a class="btn btn-sm btn-sm-fix btn-info" id="direction:{{id}}:delete" href="#">Удалить</a>-->
-<!--            </div>-->
-<!--        </div><!-- /.box-header -->-->
-<!--        <div class="box-body">-->
-<!--            --><?php //foreach ($fieldsets['direction']['template']['fields'] as $v): ?>
-<!--                <div class="form-group form-group-sm --><?//= 0 == $v['renderMode'] ? ' hide' : '' ?><!--">-->
-<!--                    <label class="col-sm-4 control-label" for="--><?//= $v['id'] ?><!--">--><?//= $v['label'] ?><!--</label>-->
-<!--                    <div class="col-sm-8">-->
-<!--                        --><?//= $v['html'] ?>
-<!--                    </div>-->
-<!--                </div>-->
-<!--            --><?php //endforeach; ?>
-<!--        </div><!-- /.box-body -->-->
-<!--    </div><!-- /.box -->-->
-<!--</script>-->
-<!--<script id="advance-template" type="text/x-handlebars-template">-->
-<!--    <div class="box box-solid box-info" data-id="{{id}}">-->
-<!--        <div class="box-header with-border">-->
-<!--            <h3 class="box-title">--><?//= $fieldsets['advance']['template']['title'] ?><!--</h3>-->
-<!--            <div class="box-tools pull-right">-->
-<!--                <a class="btn btn-sm btn-sm-fix btn-info" id="advance:{{id}}:delete" href="#">Удалить</a>-->
-<!--            </div>-->
-<!--        </div><!-- /.box-header -->-->
-<!--        <div class="box-body">-->
-<!--            --><?php //foreach ($fieldsets['advance']['template']['fields'] as $v): ?>
-<!--                <div class="form-group form-group-sm --><?//= 0 == $v['renderMode'] ? ' hide' : '' ?><!--">-->
-<!--                    <label class="col-sm-4 control-label" for="--><?//= $v['id'] ?><!--">--><?//= $v['label'] ?><!--</label>-->
-<!--                    <div class="col-sm-8">-->
-<!--                        --><?//= $v['html'] ?>
-<!--                    </div>-->
-<!--                </div>-->
-<!--            --><?php //endforeach; ?>
-<!--        </div><!-- /.box-body -->-->
-<!--    </div><!-- /.box -->-->
-<!--</script>-->
-<!--<script>-->
-<!--    var form = {-->
-<!--        tmplDirection: null,-->
-<!--        tmplAdvance: null,-->
-<!--        init: function () {-->
-<!--            var self = this;-->
-<!--            this.tmplDirection = Handlebars.compile($('#direction-template').html());-->
-<!--            app.formInitContainer($('div.direction-container'), 'direction', this.tmplDirection);-->
-<!--            this.tmplAdvance = Handlebars.compile($('#advance-template').html());-->
-<!--            app.formInitContainer($('div.advance-container'), 'advance', this.tmplAdvance);-->
-<!---->
-<!--        }-->
-<!--    };-->
-<!--    $().ready(function () {-->
-<!--        form.init();-->
-<!--    });-->
-<!--</script>-->
-<!--<script type="text/javascript">-->
-<!---->
-<!--    $('#form\\:intphone').keypress(function (e) {-->
-<!--        var txt = String.fromCharCode(e.which);-->
-<!--        if (e.which !== 0 && e.which !== 8) {-->
-<!--            if ((txt.match(/[A-Za-zа-яА-Я.№:;,\/' @#$%^&_="?!\\]/)) || ($('#form\\:intphone').val().length >= 25)) {-->
-<!--                return false;-->
-<!--            }-->
-<!--        }-->
-<!--    });-->
-<!--    $('#form\\:extphone').keypress(function (e) {-->
-<!--        var txt = String.fromCharCode(e.which);-->
-<!--        if (e.which !== 0 && e.which !== 8) {-->
-<!--            if ((txt.match(/[A-Za-zа-яА-Я.№:;,\/' @#$%^&_="?!\\]/)) || ($('#form\\:extphone').val().length >= 25)) {-->
-<!--                return false;-->
-<!--            }-->
-<!--        }-->
-<!--    });-->
-<!--    $('#form\\:mobphone').keypress(function (e) {-->
-<!--        var txt = String.fromCharCode(e.which);-->
-<!--        if (e.which !== 0 && e.which !== 8) {-->
-<!--            if ((txt.match(/[A-Za-zа-яА-Я.№:;,\/' @#$%^&_="?!\\]/)) || ($('#form\\:mobphone').val().length >= 25)) {-->
-<!--                return false;-->
-<!--            }-->
-<!--        }-->
-<!--    });-->
-<!---->
-<!--    $('#form\\:email').keypress(function (e) {-->
-<!--        var txt = String.fromCharCode(e.which);-->
-<!--        if (e.which !== 0 && e.which !== 8) {-->
-<!--            if ((txt.match(/[а-яА-Я]/)) || ($('#form\\:email').val().length >= 300)) {-->
-<!--                return false;-->
-<!--            }-->
-<!--        }-->
-<!--    });-->
-<!---->
-<!--</script>-->
-<?php //if (isset($isValid)): ?>
-<!--    <script>-->
-<!--        $(document).ready(function() {-->
-<!--            $('#errormodal').modal() ;-->
-<!--        });-->
-<!--    </script>-->
-<?php //endif; ?>
+<div class="modal" id="historyDateModal">
+    <div class="modal-dialog">
+        <form role="form" method="post" action="<?= $url ?>">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button aria-label="Close" data-dismiss="modal" class="close" type="button"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">Выбор даты</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="input-group date margin" data-provide="datepicker" data-date-format="dd-mm-yyyy" data-date-clear-btn="true" data-date-language="ru" data-date-today-highlight="true" data-date-autoclose="true">
+                        <input type="text" class="form-control" name="time" value="<?= $timestamp?date('d-m-Y',$timestamp):'' ?>"/>
+                        <span class="input-group-addon"><i class="fa fa-calendar"></i></span></div>
+                </div>
+                <div class="modal-footer">
+                    <a class="btn btn-default pull-left" href="<?= $url ?>">Сбросить</a>
+                    <button class="btn btn-primary" type="submit" value="save">Выбрать</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<script id="applicant-template" type="text/x-handlebars-template">
+    <div class="box box-solid box-info" data-id="{{id}}">
+        <div class="box-header with-border">
+            <h3 class="box-title">Заявитель</h3>
+            <div class="box-tools pull-right">
+                <a class="btn btn-sm btn-sm-fix btn-info" id="applicant:{{id}}:delete" href="#">Удалить</a>
+            </div>
+        </div><!-- /.box-header -->
+        <div class="box-body">
+
+            <div class="form-group form-group-sm <?= 0 == $fieldsets['applicant']['template']['fields']['department']['renderMode'] ? ' hide' : '' ?>">
+                <label class="col-sm-4 control-label" for="lic:applicant:{{id}}:department">Отдел</label>
+                <div class="col-sm-8">
+                    <?= $fieldsets['applicant']['template']['fields']['department']['html'] ?>
+                </div>
+            </div>
+
+            <div class="form-group form-group-sm <?= 0 == $fieldsets['applicant']['template']['fields']['applicant_id']['renderMode'] ? ' hide' : '' ?>">
+                <label class="col-sm-4 control-label" for="lic:applicant:{{id}}:applicant_id">Преподаватель</label>
+                <div class="col-sm-8">
+                    <?= $fieldsets['applicant']['template']['fields']['applicant_id']['html'] ?>
+                </div>
+            </div>
+
+            <div class="form-group form-group-sm">
+                <label class="col-sm-4 control-label">Бонусы</label>
+                <div class="col-sm-8">
+                    <div class="box box-solid box-default bonus-container" data-lastid="1">
+                        <div class="box-body">
+                        </div><!-- /.box-body -->
+                        <div class="box-footer">
+                            <a class="btn btn-default" id="applicant:{{id}}:bonus:add" data-id="{{id}}" href="#"><i class="fa fa-plus"></i></a>
+                        </div>
+                    </div><!-- /.box -->
+                </div>
+            </div>
+
+        </div><!-- /.box-body -->
+    </div><!-- /.box -->
+</script>
+<script>
+    $(function(){
+        $('#f\\:category').change(function(){
+            let id = $(this).val();
+            $.ajax({
+                type: "POST",
+                url: '<?= \yii\helpers\Url::to(['activities/subcategory-options']) ?>',
+                data: {id: id},
+                success: function (data) {
+                    $('#f\\:subcategory').html(data);
+                }
+            });
+
+        });
+
+
+
+
+    });
+</script>
+<script id="bonus-template" type="text/x-handlebars-template">
+    <div class="box box-solid box-default" data-id="{{id}}">
+        <div class="box-body">
+            <div class="form-group">
+                <div class="col-sm-7 <?= 0 == $fieldsets['applicant']['template']['fieldsets']['bonus']['template']['fields']['period']['renderMode'] ? ' hide' : '' ?>">
+                    <?= $fieldsets['applicant']['template']['fieldsets']['bonus']['template']['fields']['period']['html'] ?>
+                </div>
+                <div class="col-sm-4<?= 0 == $fieldsets['applicant']['template']['fieldsets']['bonus']['template']['fields']['bonus']['renderMode'] ? ' hide' : '' ?>">
+                    <?= $fieldsets['applicant']['template']['fieldsets']['bonus']['template']['fields']['bonus']['html'] ?>
+                </div>
+                <div class="col-sm-1">
+                    <a class="btn pull-right btn-sm btn-sm-fix btn-danger" id="applicant:{{parentId}}:bonus:{{id}}:delete" href="#"><i class="fa fa-times"></i></a>
+                </div>
+            </div>
+        </div>
+    </div>
+</script>
+<script>
+    var form = {
+        tmplApplicant: null,
+        tmplBonus: null,
+        init: function () {
+            var self = this;
+            this.tmplApplicant = Handlebars.compile($('#applicant-template').html());
+            this.tmplBonus = Handlebars.compile($('#bonus-template').html());
+            app.formInitContainer($('div.applicant-container'), 'applicant', this.tmplApplicant, {}, function(id, div) {
+                self.formBonusInitContainer(id, $('div.bonus-container', div)); // Поощрения
+            });
+
+            $('input[name="f\\:form_partic"]').on('ifChecked', function () {
+                self.toggleType($(this).val(), '.form_partic');
+            });
+            self.toggleType($('input[name="f\\:form_partic"]:checked').val(), '.form_partic');
+            $('input[name="f\\:visit_poss"]').on('ifChecked', function () {
+                self.toggleType($(this).val(), '.visit_poss');
+            });
+            self.toggleType($('input[name="f\\:visit_poss"]:checked').val(), '.visit_poss');
+
+            // колличество символов
+            document.getElementById('f:description').addEventListener("input", function () {
+                document.getElementById('count_f:description').innerText = 'Введено: ' + this.value.length + ' символа(ов), включая пробелы.';
+                // console.log(currentLength);
+            });
+        },
+        toggleType: function (value, container) {
+            value === '1' ? $(container).hide() : $(container).show();
+        },
+        formBonusInitContainer: function (parentId, div) {
+            var self = this;
+            $('#applicant\\:' + parentId + '\\:bonus\\:add', div).click(function () { // активируем кнопку добавить подраздел
+                var id = div.data('lastid');
+                div.children('div.box-body').append(self.tmplBonus({parentId: parentId, id: id})); // вставить шаблон
+                self.formBonusInitSection(parentId, $('div.box[data-id=' + id + ']', div));
+                div.data('lastid', id + 1);
+                return false;
+            });
+            // настройка секций
+            div.children('div.box-body').children('div.box').each(function (i, e) {
+                self.formBonusInitSection(parentId, $(this));
+            });
+        },
+        formBonusInitSection: function (parentId, div) {
+            var self = this;
+            $('#applicant\\:' + parentId + '\\:bonus\\:' + div.data('id') + '\\:delete', div).click(app.deleteSectionCallback); // активировать кнопку удалить
+            app.activateFormFields(div);
+        }
+    };
+    $().ready(function () {
+        form.init();
+    });
+</script>
+<script type="text/javascript">
+
+    $('#form\\:intphone').keypress(function (e) {
+        var txt = String.fromCharCode(e.which);
+        if (e.which !== 0 && e.which !== 8) {
+            if ((txt.match(/[A-Za-zа-яА-Я.№:;,\/' @#$%^&_="?!\\]/)) || ($('#form\\:intphone').val().length >= 25)) {
+                return false;
+            }
+        }
+    });
+    $('#form\\:extphone').keypress(function (e) {
+        var txt = String.fromCharCode(e.which);
+        if (e.which !== 0 && e.which !== 8) {
+            if ((txt.match(/[A-Za-zа-яА-Я.№:;,\/' @#$%^&_="?!\\]/)) || ($('#form\\:extphone').val().length >= 25)) {
+                return false;
+            }
+        }
+    });
+    $('#form\\:mobphone').keypress(function (e) {
+        var txt = String.fromCharCode(e.which);
+        if (e.which !== 0 && e.which !== 8) {
+            if ((txt.match(/[A-Za-zа-яА-Я.№:;,\/' @#$%^&_="?!\\]/)) || ($('#form\\:mobphone').val().length >= 25)) {
+                return false;
+            }
+        }
+    });
+
+    $('#form\\:email').keypress(function (e) {
+        var txt = String.fromCharCode(e.which);
+        if (e.which !== 0 && e.which !== 8) {
+            if ((txt.match(/[а-яА-Я]/)) || ($('#form\\:email').val().length >= 300)) {
+                return false;
+            }
+        }
+    });
+
+</script>
+<?php if (isset($isValid)): ?>
+    <script>
+        $(document).ready(function() {
+            $('#errormodal').modal() ;
+        });
+    </script>
+<?php endif; ?>
 
 <div id="errormodal" class="modal fade" role="dialog" tabindex="-1">
     <div class="modal-dialog">
