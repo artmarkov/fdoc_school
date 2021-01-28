@@ -65,7 +65,7 @@
             </div>
             <div class="box box-solid box-primary">
                 <div class="box-header with-border">
-                    <h3 class="box-title">Основной блок</h3>
+                    <h3 class="box-title">Основная информация</h3>
                 </div><!-- /.box-header -->
                 <div class="box-body">
                     <div class="form-group form-group-sm <?= 0 == $fields['time_in']['renderMode'] ? ' hide' : '' ?><?= $fields['time_in']['error'] ? ' has-error' : '' ?>">
@@ -168,7 +168,7 @@
             </div>
             <div class="box box-solid box-primary">
                 <div class="box-header with-border">
-                    <h3 class="box-title">Дополнительный блок</h3>
+                    <h3 class="box-title">Дополнительная информация</h3>
                 </div><!-- /.box-header -->
                 <div class="box-body">
                     <div class="form-group form-group-sm <?= 0 == $fields['description']['renderMode'] ? ' hide' : '' ?><?= $fields['description']['error'] ? ' has-error' : '' ?>">
@@ -405,26 +405,7 @@
         </div><!-- /.box-body -->
     </div><!-- /.box -->
 </script>
-<script>
-    $(function(){
-        $('#f\\:category').change(function(){
-            let id = $(this).val();
-            $.ajax({
-                type: "POST",
-                url: '<?= \yii\helpers\Url::to(['activities/subcategory-options']) ?>',
-                data: {id: id},
-                success: function (data) {
-                    $('#f\\:subcategory').html(data);
-                }
-            });
 
-        });
-
-
-
-
-    });
-</script>
 <script id="bonus-template" type="text/x-handlebars-template">
     <div class="box box-solid box-default" data-id="{{id}}">
         <div class="box-body">
@@ -443,6 +424,40 @@
     </div>
 </script>
 <script>
+    // Связанные списки
+    $(function () {
+        // начальная загрузка
+        let id = $('#f\\:category').val();
+        let ids = $('#f\\:subcategory').val();
+        $('#f\\:subcategory').attr("disabled", true);
+        $('#f\\:subcategory').html(null);
+        $.ajax({
+            type: "POST",
+            url: '<?= \yii\helpers\Url::to(['activities/subcategory-options']) ?>',
+            data: {id: id, ids: ids},
+            success: function (data) {
+                $('#f\\:subcategory').html(data);
+                $('#f\\:subcategory').attr("disabled", false);
+            }
+        });
+        // обработка события
+        $('#f\\:category').change(function () {
+            let id = $(this).val();
+            let ids = $('#f\\:subcategory').val();
+            $('#f\\:subcategory').attr("disabled", true);
+            $('#f\\:subcategory').html(null);
+            $.ajax({
+                type: "POST",
+                url: '<?= \yii\helpers\Url::to(['activities/subcategory-options']) ?>',
+                data: {id: id, ids: ids},
+                success: function (data) {
+                    $('#f\\:subcategory').html(data);
+                    $('#f\\:subcategory').attr("disabled", false);
+                }
+            });
+        });
+    });
+
     var form = {
         tmplApplicant: null,
         tmplBonus: null,

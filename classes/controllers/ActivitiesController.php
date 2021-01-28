@@ -2,7 +2,6 @@
 
 namespace main\controllers;
 
-use main\forms\CreativeEdit;
 use Yii;
 use main\forms\core\Form;
 use yii\helpers\Url;
@@ -117,13 +116,19 @@ class ActivitiesController extends BaseController
         }
     }
 
+    /**
+     * Связанные списки
+     * @return string
+     */
     public function actionSubcategoryOptions()
     {
         $id = \Yii::$app->request->post('id');
+        $ids = \Yii::$app->request->post('ids');
         $line = '';
         $data = \RefBook::find('activ_subcategory', $id)->getList();
         foreach ($data as $id => $name) {
-            $line .= '<option value="'.$id.'">'.$name.'</option>';
+            $sel = $id == $ids ? 'selected' : '';
+            $line .= '<option value="'.$id.'" ' . $sel . '>'.$name.'</option>';
         }
         return  $line;
     }
@@ -132,6 +137,8 @@ class ActivitiesController extends BaseController
     {
         return [
             [['activities/edit', 'id' => $id], 'Информация о мероприятии'],
+            [['activities/employees', 'id' => $id], 'Ответственные за мероприятие'],
+            [['activities/student', 'id' => $id], 'Участники и отчет о выполнении'],
         ];
     }
 
