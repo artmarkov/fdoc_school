@@ -67,7 +67,8 @@
         "box/spout": "^3.1",
         "primipilus/yii2-telegram-target": "^1.1",
         "dragonmantank/cron-expression": "^3.0",
-        "kartik-v/yii2-widget-datetimepicker": "dev-master"
+        "kartik-v/yii2-widget-datetimepicker": "dev-master",
+        "kartik-v/yii2-widget-depdrop": "dev-master"
     },
     "require-dev": {
         "yiisoft/yii2-gii": "~2.0.0",
