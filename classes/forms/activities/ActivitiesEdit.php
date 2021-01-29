@@ -9,6 +9,7 @@ use main\forms\core\DispMode as form_dispMode;
 use main\forms\core\Form;
 use main\forms\datasource\DbObject as form_datasource_Object;
 use main\forms\core\Renderer as form_render_Flight;
+use yii\helpers\Url;
 
 abstract class ActivitiesEdit extends \main\forms\ObjEdit
 {
@@ -74,14 +75,12 @@ abstract class ActivitiesEdit extends \main\forms\ObjEdit
         $this->addField('form_control_TextNumber', 'num_winners', 'Количество победителей', ['required' => 0]);
         $this->addField('form_control_TextNumber', 'num_visitors', 'Количество зрителей', ['required' => 0]);
 
-        $fApplicant = $this->addFieldset('form_core_Dynamic', 'applicant', 'Заявитель', $this->getDataSource()->inherit('applicant'), new form_auth_Acl('public'));
-        $fApplicant->setRequireOneElement(true);
-        $fApplicant->addField('form_control_Select', 'department', 'Отдел', [
-            'refbook' => 'department', 'required' => 1]);
-        $fApplicant->addField('form_control_Smartselect', 'applicant_id', 'Заявитель', ['type' => 'employees', 'cssSize' => 'sm', 'submit' => 1, 'required' => 1]);
+        $fApplicant = $this->addFieldset('form_core_Dynamic', 'applicant', 'Преподаватель', $this->getDataSource()->inherit('applicant'), new form_auth_Acl('public'));
+        $fApplicant->setRequireOneElement(false);
+        $fApplicant->addField('form_control_Smartselect', 'applicant_id', 'Преподаватель', ['type' => 'employees', 'cssSize' => 'sm', 'submit' => 0, 'required' => 1]);
 
         $fBonus = $fApplicant->addFieldset('form_core_Dynamic', 'bonus', 'Бонус', $this->getDataSource()->inherit('bonus'), new form_auth_Acl('public'));
-        $fBonus->setRequireOneElement(true);
+        $fBonus->setRequireOneElement(false);
         $fBonus->addField('form_control_Month', 'period', 'Период', ['required' => 1]);
         $fBonus->addField('form_control_Text', 'bonus', 'Надбавка', ['required' => 1]);
 
@@ -89,6 +88,23 @@ abstract class ActivitiesEdit extends \main\forms\ObjEdit
         if ($obj instanceof \main\eav\object\Snapshot) { // режим отображения на прошлую дату
             $this->timestamp = $obj->getTimestamp();
         }
+
+
+        $a = $this->addActionControl('sign-send', 'Отправить на подпись', 'actionSignSend');
+        $a->iconClass = 'fa fa-send-o';
+
+
+        $a = $this->addActionControl('sign-by', 'Подписать', 'actionSignBy');
+        $a->cssClass = 'btn-success';
+        $a->iconClass = 'fa fa-check';
+
+        $a = $this->addActionControl('sign-return', 'Вертуть на доработку', 'actionSignReturn');
+        $a->cssClass = 'btn-info';
+        $a->iconClass = 'fa fa-send-o';
+
+        $a = $this->addActionControl('make-changes', 'Внести изменения', 'actionMakeChanges');
+        $a->iconClass = 'fa fa-check';
+
     }
 
     protected function applyAuth() {
@@ -118,11 +134,51 @@ abstract class ActivitiesEdit extends \main\forms\ObjEdit
         if(2 == $this->getField('visit_poss')->value) {
             $this->getField('poss_content')->required = 1;
         }
+
+        if (0) { // скрываем кнопку current
+            $this->getActionControl('sign-by')->setRenderMode(Form::MODE_NONE);
+            $this->getActionControl('sign-send')->setRenderMode(Form::MODE_NONE);
+        }elseif (1) { // скрываем кнопку waiting
+            $this->getActionControl('sign-send')->setRenderMode(Form::MODE_NONE);
+        }elseif (0) { // скрываем кнопку draft
+            $this->getActionControl('sign-return')->setRenderMode(Form::MODE_NONE);
+            $this->getActionControl('make-changes')->setRenderMode(Form::MODE_NONE);
+        }elseif (1) { // скрываем кнопку expired
+            $this->getActionControl('sign-by')->setRenderMode(Form::MODE_NONE);
+            $this->getActionControl('sign-send')->setRenderMode(Form::MODE_NONE);
+            $this->getActionControl('sign-return')->setRenderMode(Form::MODE_NONE);
+            $this->getActionControl('make-changes')->setRenderMode(Form::MODE_NONE);
+        }
     }
 
     protected function asArray()
     {
         $data = parent::asArray();
+
+        /* @var $d Activities */
+
+        $data['stateInfo'] = null;
+        if (!$this->getDataSource()->isNew()) {
+            $signDesc = 'waiting';
+            $data['stateInfo'] = [
+                'statusName' => Activities::SIGNED_DESC[$signDesc],
+                'cssClass' => $signDesc === 'draft' ? 'box-default' : ($signDesc == 'current' ? 'box-success' : ($signDesc == 'waiting' ? 'box-warning' : 'box-danger')),
+                'sign' => $signDesc === 'current' ? [
+                    'date_recipient' => '25-03-2021 12:15',
+                    'recipient' => 'Пыжов Роман Валентинович',
+                    'date_sender' => '25-03-2021 12:15',
+                    'sender' => 'Вознесенская Анна Николаевна',
+
+                ] : (($signDesc === 'waiting') ? [
+                    'date_recipient' => '- в ожидании -',
+                    'recipient' => 'Пыжов Роман Валентинович',
+                    'date_sender' => '25-03-2021 12:15',
+                    'sender' => 'Вознесенская Анна Николаевна',
+                ] : null),
+
+            ];
+        }
+
         $data['timestamp'] = $this->timestamp;
         $data['versionList'] = $this->getDataSource()->getVersionList();
         $data['version'] = $this->getDataSource()->getVersion();
@@ -130,4 +186,20 @@ abstract class ActivitiesEdit extends \main\forms\ObjEdit
         return $data;
     }
 
+    protected function actionSignSend()
+    {
+        return;
+    }
+    protected function actionSignBy()
+    {
+        return;
+    }
+    protected function actionSignReturn()
+    {
+        return;
+    }
+    protected function actionMakeChanges()
+    {
+        return;
+    }
 }

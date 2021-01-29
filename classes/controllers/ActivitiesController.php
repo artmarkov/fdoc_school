@@ -97,7 +97,7 @@ class ActivitiesController extends BaseController
     {
         return $this->actionEdit($id, true);
     }
-    
+
     /**
      * Возвращает экземпляр мероприятия по id, если не найден - 404 HTTP exception
      * @param integer $id
@@ -137,8 +137,7 @@ class ActivitiesController extends BaseController
     {
         return [
             [['activities/edit', 'id' => $id], 'Информация о мероприятии'],
-            [['activities/employees', 'id' => $id], 'Ответственные за мероприятие'],
-            [['activities/student', 'id' => $id], 'Участники и отчет о выполнении'],
+            [['activities/realization', 'id' => $id], 'Сведения о выполнении'],
         ];
     }
 

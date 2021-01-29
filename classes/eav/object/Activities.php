@@ -30,6 +30,13 @@ class Activities extends Base
         'EE' => 'Внешнее мероприятие'
     ];
 
+    const SIGNED_DESC = [
+        'draft' => 'Черновик',
+        'expired' => 'Просрочено',
+        'current' => 'Подписан',
+        'waiting' => 'На подписи',
+    ];
+
     public static function rules()
     {
         return ArrayHelper::merge(parent::rules(), [
