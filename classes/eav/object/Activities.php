@@ -62,7 +62,17 @@ class Activities extends Base
             ['num_visitors', 'name' => 'Количество зрителей'],
         ]);
     }
-
+    /**
+     * @throws \yii\db\Exception
+     */
+    function onCreate()
+    {
+        $this->setval('sign.status', 'draft');
+    }
+    public function setStatus($status)
+    {
+        $this->setval('sign.status', $status);
+    }
 
     public function getFormId($type = null)
     {
