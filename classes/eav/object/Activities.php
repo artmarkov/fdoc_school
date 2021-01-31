@@ -56,12 +56,15 @@ class Activities extends Base
             ['time_in', 'name' => 'Дата и время начала'],
             ['time_out', 'name' => 'Дата и время окончания'],
             ['places', 'name' => 'Место проведения'],
-            ['departments', 'name' => 'Отдел'],
-            ['applicant_teachers', 'name' => 'Ответственные'],
-            ['applicant_teachers', 'name' => 'Ответственные', function ($v) {
+            ['departments', 'name' => 'Отдел', function ($v) {
                 $v->valueNum = $v->value;
-                $v->value = self::getTeachersList($v->value);
+                $v->value = self::getDepartmentList($v->value);
             }],
+//            ['applicant_teachers', 'name' => 'Ответственные', function ($v) {
+//                $v->valueNum = $v->value;
+//                $v->value = self::getTeachersList($v->value);
+//            }],
+            ['applicant_teachers', 'name' => 'Ответственные'],
             ['category', 'name' => 'Категория', function ($v) {
                 $v->valueNum = $v->value;
                 $v->value = \RefBook::find('activ_category')->getValue($v->value);
@@ -120,38 +123,79 @@ class Activities extends Base
         return $this->typeList[!$type ? $this->getType() : $type];
     }
 
-    public static function getTeachersList($applicant_teachers)
+    public static function getDepartmentList($departments)
     {
         $result = [];
-        foreach (explode(',', $applicant_teachers) as $id => $item) {
-            $result[] = \RefBook::find('teachers_fio')->getValue($item);
+        foreach (explode(',', $departments) as $id => $item) {
+            $result[] = \RefBook::find('department')->getValue($item);
         }
-        return implode('<br/>', $result);
+        return implode(', ', $result);
     }
+
+//    public function getNewTeachersList()
+//    {
+//        $result = array_diff(explode(',', $this->getval('teachers')), $this->getApplicantList());
+//        return $result;
+//    }
 
     public function getApplicantTeachersList()
     {
-        $result = $ids = [];
+        $result = [];
+        foreach ($this->getTeachersList() as $id) {
+            $result[] = \RefBook::find('teachers_fio')->getValue($id) . ' - ' . $this->getApplicantBonus($id) . '%';
+        }
+        return $result;
+    }
+
+    public function getTeachersList()
+    {
+        $result = array_unique(array_merge($this->getApplicantList(), explode(',', $this->getval('teachers'))));
+        return $result;
+    }
+
+    public function getApplicantList()
+    {
+        $result = [];
         foreach ($this->getdata('applicant') as $id => $item) {
             if (isset($item['applicant_id'])) {
-                if (false === array_search($item['applicant_id'], $ids)) {
-                    $ids[] = $item['applicant_id'];
-                    $result[] = \RefBook::find('teachers_fio')->getValue($item['applicant_id']) . ' - ' . $this->getApplicantBonus($item['applicant_id']) . '%';
+                if (false === array_search($item['applicant_id'], $result)) {
+                    $result[] = $item['applicant_id'];
                 }
             }
         }
         return $result;
     }
-
     /**
      * Обновляет поле applicant_teachers
      * @throws \yii\db\Exception
      */
     public function updateApplicantTeachersList()
     {
-        $str = implode(',', $this->getApplicantTeachersList());
+        $str = implode('<br />', $this->getApplicantTeachersList());
         $this->setval('applicant_teachers', mb_strlen($str) < 2000 ? $str : mb_substr($str, 0, 1997) . '...');
     }
+    /**
+     * Обновляет поле teachers
+     * @throws \yii\db\Exception
+     */
+    public function updateTeachersList()
+    {
+        $str = implode(',', $this->getTeachersList());
+        $this->setval('teachers', $str);
+    }
+    /**
+     * Добавляет новые элементы в applicant
+     * @throws \yii\db\Exception
+     */
+//    public function updateApplicantList()
+//    {
+//        $data = [];
+//        foreach ($this->getNewTeachersList() as $id => $item) {
+//           $data['applicant'][$id]['applicant_id'] = $item;
+//        }
+//        print_r($this->getNewTeachersList());
+//        $this->setdata($data);
+//    }
 
     public function getApplicantBonus($id)
     {
@@ -179,14 +223,15 @@ class Activities extends Base
      */
     public function onFieldChange($field, $value, $valueOld)
     {
-        if (preg_match('/^applicant\.\d+\.department/', $field)) {
+        if ('teachers' == $field) {
             try {
-               // $this->updateApplicantDepartmentList();
+               // $this->updateApplicantList();
             } catch (BaseNotFoundException $ex) {
             }
         } elseif (preg_match('/^applicant\.\d+\.applicant_id/', $field) || preg_match('/^applicant\.\d+\.bonus\.\d+\.bonus/', $field)) {
             try {
                 $this->updateApplicantTeachersList();
+                $this->updateTeachersList();
             } catch (BaseNotFoundException $ex) {
             }
         } else {

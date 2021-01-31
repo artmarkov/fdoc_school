@@ -178,12 +178,12 @@
                             <small id="help_<?= $fields['region_partners']['id'] ?>" class="form-text text-muted"><?= $fields['region_partners']['hint'] ?></small>
                         </div>
                     </div>
-                    <div class="form-group form-group-sm <?= 0 == $fields['applicant_teachers']['renderMode'] ? ' hide' : '' ?><?= $fields['applicant_teachers']['error'] ? ' has-error' : '' ?>">
-                        <label class="col-sm-4 control-label" for="<?= $fields['applicant_teachers']['id'] ?>"><?= $fields['applicant_teachers']['label'] ?><?= $fields['applicant_teachers']['required'] ? '*' : '' ?></label>
+                    <div class="form-group form-group-sm <?= 0 == $fields['teachers']['renderMode'] ? ' hide' : '' ?><?= $fields['teachers']['error'] ? ' has-error' : '' ?>">
+                        <label class="col-sm-4 control-label" for="<?= $fields['teachers']['id'] ?>"><?= $fields['teachers']['label'] ?><?= $fields['teachers']['required'] ? '*' : '' ?></label>
                         <div class="col-sm-8">
-                            <?= $fields['applicant_teachers']['html'] ?>
-                            <?php if ($fields['applicant_teachers']['error']): ?><span class="help-block"><?= $fields['applicant_teachers']['error'] ?></span><?php endif; ?>
-                            <small id="help_<?= $fields['applicant_teachers']['id'] ?>" class="form-text text-muted"><?= $fields['applicant_teachers']['hint'] ?></small>
+                            <?= $fields['teachers']['html'] ?>
+                            <?php if ($fields['teachers']['error']): ?><span class="help-block"><?= $fields['teachers']['error'] ?></span><?php endif; ?>
+                            <small id="help_<?= $fields['teachers']['id'] ?>" class="form-text text-muted"><?= $fields['teachers']['hint'] ?></small>
                         </div>
                     </div>
                     <div class="form-group form-group-sm <?= 0 == $fields['form_partic']['renderMode'] ? ' hide' : '' ?><?= $fields['form_partic']['error'] ? ' has-error' : '' ?>">

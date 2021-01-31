@@ -44,7 +44,7 @@ abstract class ActivitiesEdit extends \main\forms\ObjEdit
         $this->addField('form_control_TextFilter', 'places', 'Место проведения', ['required' => 1, 'hint' => 'Укажите место проведения в соответствии с фактическим местом, где проводится мероприятие (в случае, если мероприятие будет проводиться на разных площадках, указывается основное место его проведения. Данные вводятся в формате полного названия места. Например: Парк культуры и отдыха имени Горького). Если мероприятие проводится дистанционно, то местом проведения указывается «сеть интернет».']);
         $this->addField('form_control_Select2', 'departments', 'Отдел', [
             'list' => \RefBook::find('department')->getList(), 'required' => 1]);
-        $this->addField('form_control_Select2', 'applicant_teachers', 'Ответственные', [
+        $this->addField('form_control_Select2', 'teachers', 'Ответственные', [
             'list' => \RefBook::find('teachers')->getList(), 'required' => 0]);
 
          $this->addField('form_control_Select', 'category', 'Категория', [

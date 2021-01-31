@@ -5,7 +5,7 @@ use \yii\helpers\Url;
 class manager_Activities extends manager_Base
 {
     protected $type = 'activities';
-    protected $columnsDefaults = ['o_id', 'type', 'sign_status', 'name', 'time_in', 'time_out', 'places', 'departments', 'applicant_teachers', 'subcategory', 'description', 'rider', 'result', 'command'];
+    protected $columnsDefaults = ['o_id', 'type', 'name', 'time_in', 'time_out', 'places', 'departments', 'applicant_teachers', 'subcategory', 'description', 'rider', 'result', 'command'];
     protected $editRoute = '/activities/edit';
     protected $createRoute = '/activities/create';
     protected $viewRoute = '/activities/view';
@@ -73,9 +73,11 @@ class manager_Activities extends manager_Base
                 return \RefBook::find('activ_category')->getValue($o->getval($field));
             case 'subcategory':
                 return \RefBook::find('activ_subcategory')->getValue($o->getval($field));
-            case 'applicant_teachers':
-                return \main\eav\object\Activities::getTeachersList($o->getval($field));
             case 'departments':
+                return \main\eav\object\Activities::getDepartmentList($o->getval($field));
+            case 'applicant_teachers':
+//                return \main\eav\object\Activities::getTeachersList($o->getval($field));
+
             case 'name':
             case 'time_in':
             case 'time_out':
@@ -119,4 +121,8 @@ class manager_Activities extends manager_Base
         return true;
     }
 
+    protected function getRowStyle($o)
+    {
+        return $o->getval('sign_status') == 'current' ? 'background:#cfefbe' : '';
+    }
 }
