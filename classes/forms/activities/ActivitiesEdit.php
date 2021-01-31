@@ -5,11 +5,9 @@ namespace main\forms\activities;
 use Yii;
 use main\eav\object\Activities;
 use main\forms\auth\Acl as form_auth_Acl;
-use main\forms\core\DispMode as form_dispMode;
 use main\forms\core\Form;
 use main\forms\datasource\DbObject as form_datasource_Object;
 use main\forms\core\Renderer as form_render_Flight;
-use yii\helpers\Url;
 
 abstract class ActivitiesEdit extends \main\forms\ObjEdit
 {
@@ -38,6 +36,7 @@ abstract class ActivitiesEdit extends \main\forms\ObjEdit
             'required' => '1'
         ]);
         $this->addField('form_control_Smartselect', 'author', 'Автор записи', ['type' => 'employees', 'cssSize' => 'sm', 'submit' => 1, 'required' => 1]);
+        $this->addField('form_control_Smartselect', 'signer', 'Подписант', ['type' => 'employees', 'cssSize' => 'sm', 'submit' => 1, 'required' => 1]);
 
         $this->addField('form_control_Text', 'name', 'Название', ['required' => 1, 'hint' => 'Введите официальное название мероприятия, которое указано в положении. Например: «X Международный фестиваль «Ипполитовская хоровая весна». В случае проведения самостоятельного мероприятия вместе с более крупным, укажите название более крупного мероприятия, используя связку «в рамках», например: Мастер-класс по лепке из глины в рамках Большого фестиваля детских школ искусств. Название указывается в кавычках. Если мероприятие посвящено какому-либо событию и (или) памятной дате, вводится пояснение с указанием основной цели мероприятия. Например: Концерт «Симфония весны», посвящённый Международному женскому дню 8 Марта.']);
         $this->addField('form_control_DateTime2', 'time_in', 'Дата и время начала', ['required' => 1, 'hint' => 'Выберите запланированную дату и укажите время проведения мероприятия. Если на момент введения Вы не обладаете информацией о точном времени проведения мероприятия, указывается приблизительное время.']);
@@ -45,13 +44,13 @@ abstract class ActivitiesEdit extends \main\forms\ObjEdit
         $this->addField('form_control_TextFilter', 'places', 'Место проведения', ['required' => 1, 'hint' => 'Укажите место проведения в соответствии с фактическим местом, где проводится мероприятие (в случае, если мероприятие будет проводиться на разных площадках, указывается основное место его проведения. Данные вводятся в формате полного названия места. Например: Парк культуры и отдыха имени Горького). Если мероприятие проводится дистанционно, то местом проведения указывается «сеть интернет».']);
         $this->addField('form_control_Select2', 'departments', 'Отдел', [
             'list' => \RefBook::find('department')->getList(), 'required' => 1]);
-        $this->addField('form_control_Select2', 'employees', 'Ответственные', [
+        $this->addField('form_control_Select2', 'applicant_teachers', 'Ответственные', [
             'list' => \RefBook::find('teachers')->getList(), 'required' => 0]);
 
-         $this->addField('form_control_Select3', 'category', 'Категория', [
+         $this->addField('form_control_Select', 'category', 'Категория', [
              'refbook' => 'activ_category', 'required' => 1]);
          // связанные списки
-         $this->addField('form_control_Select3', 'subcategory', 'Подкатегория', [
+         $this->addField('form_control_Select', 'subcategory', 'Подкатегория', [
             'list' => \RefBook::find('activ_subcategory', $obj->getval('category'))->getList(), 'required' => 1]);
 
         $this->addField('form_control_Radio', 'form_partic', 'Форма участия', [
@@ -62,7 +61,7 @@ abstract class ActivitiesEdit extends \main\forms\ObjEdit
             'list' => \main\eav\object\Activities::VISIT_POSS, 'required' => 1, 'inline' => false, 'defaultValue' => 1]);
         $this->addField('form_control_Text', 'poss_content', 'Комментарий по посещению', ['required' => 0, 'hint' => 'Укажите, является запланированное мероприятие открытым или закрытым. Открытое мероприятие - вход возможен для всех желающих (в независимости от того, платный он или нет). Закрытое мероприятие - вход возможен для ограниченного круга лиц, например: «Приглашаются выпускники и их родители».']);
 
-        $this->addField('form_control_Text', 'region_partners', 'Зарубежные и региональные партнеры: (только для категорий 3.1 и 3.2) ', ['required' => 0, 'hint' => '']);
+        $this->addField('form_control_Text', 'region_partners', 'Зарубежные и региональные партнеры', ['required' => 0, 'hint' => 'Только для подкатегорий 3.1 и 3.2']);
         $this->addField('form_control_TextUrl', 'site_url', 'Ссылка на мероприятие (сайт/соцсети)', ['required' => 0, 'hint' => '']);
         $this->addField('form_control_TextUrl', 'site_media', 'Ссылка на медиаресурс', ['required' => 0, 'hint' => '']);
         $this->addField('form_control_FileAttachment', 'afisha_file', 'Образ афиши', ['required' => 0, 'hint' => '']);
@@ -77,7 +76,7 @@ abstract class ActivitiesEdit extends \main\forms\ObjEdit
 
         $fApplicant = $this->addFieldset('form_core_Dynamic', 'applicant', 'Преподаватель', $this->getDataSource()->inherit('applicant'), new form_auth_Acl('public'));
         $fApplicant->setRequireOneElement(true);
-        $fApplicant->addField('form_control_Smartselect', 'applicant_id', 'Преподаватель', ['type' => 'employees', 'cssSize' => 'sm', 'submit' => 0, 'required' => 1]);
+        $fApplicant->addField('form_control_Smartselect', 'applicant_id', 'Преподаватель', ['type' => 'employees', 'cssSize' => 'sm', 'submit' => 1, 'required' => 0]);
 
         $fBonus = $fApplicant->addFieldset('form_core_Dynamic', 'bonus', 'Бонус', $this->getDataSource()->inherit('bonus'), new form_auth_Acl('public'));
         $fBonus->setRequireOneElement(false);
@@ -85,12 +84,10 @@ abstract class ActivitiesEdit extends \main\forms\ObjEdit
         $fBonus->addField('form_control_Text', 'bonus', 'Надбавка', ['required' => 1]);
 
         // блок подписи
-        $this->addField('form_control_Hidden', 'sign.date_receipt', 'Дата отправки', ['required' => 0]);
-        $this->addField('form_control_Hidden', 'sign.recipient', 'Отправитель', ['required' => 0]);
-        $this->addField('form_control_Hidden', 'sign.date_sender', 'Дата получения', ['required' => 0]);
-        $this->addField('form_control_Text', 'sign.sender', 'Получатель', ['required' => 0]);
-        $this->addField('form_control_Text', 'sign.status', 'Статус подписи', ['required' => 0]);
-        $this->addField('form_control_Textarea', 'sign.content', 'Сообщение', ['required' => 0]);
+        $this->addField('form_control_Text', 'sign_status', 'Статус подписи');
+
+        $this->addField('form_control_Text', 'content_signer', 'Сообщение подписанта');
+        $this->addField('form_control_Text', 'content_author', 'Сообщение автора');
 
 
         if ($obj instanceof \main\eav\object\Snapshot) { // режим отображения на прошлую дату
@@ -100,17 +97,22 @@ abstract class ActivitiesEdit extends \main\forms\ObjEdit
         $a = $this->addActionControl('sign-send', 'Отправить', 'actionSignSend');
         $a->cssClass = 'btn-success';
         $a->iconClass = 'fa fa-send-o';
-        $a = $this->addActionControl('sign-by', 'Подписать и уведомить', 'actionSignBy');
+        $a = $this->addActionControl('sign-by', 'Подписать', 'actionSignBy');
         $a->cssClass = 'btn-success';
         $a->iconClass = 'fa fa-check';
-        $a = $this->addActionControl('sign-return', 'Вертуть на доработку', 'actionSignReturn');
+        $a = $this->addActionControl('sign-return', 'Отправить', 'actionSignReturn');
         $a->cssClass = 'btn-info';
         $a->iconClass = 'fa fa-send-o';
         $a = $this->addActionControl('make-changes', 'Внести изменения', 'actionMakeChanges');
         $a->iconClass = 'fa fa-check';
+        $a->msgConfirm = 'Вы уверены?';
         $a = $this->addActionControl('sign-send-modal', 'Отправить на подпись', '','main\forms\control\ModalButton');
         $a->href = '#signSendModal';
         $a->cssClass = 'btn-success';
+        $a->iconClass = 'fa fa-send-o';
+        $a = $this->addActionControl('sign-return-modal', 'Отправить на доработку', '','main\forms\control\ModalButton');
+        $a->href = '#signReturnModal';
+        $a->cssClass = 'btn-info';
         $a->iconClass = 'fa fa-send-o';
     }
 
@@ -142,22 +144,23 @@ abstract class ActivitiesEdit extends \main\forms\ObjEdit
             $this->getField('poss_content')->required = 1;
         }
 
-        switch ($this->getField('sign.status')->value) {
+        switch ($this->getField('sign_status')->value) {
             case 'current':
                 $this->getActionControl('sign-by')->setRenderMode(Form::MODE_NONE);
-                $this->getActionControl('sign-send')->setRenderMode(Form::MODE_NONE);
+                $this->getActionControl('sign-send-modal')->setRenderMode(Form::MODE_NONE);
                 break;
             case 'waiting':
                 $this->getActionControl('sign-send-modal')->setRenderMode(Form::MODE_NONE);
                 break;
             case 'draft':
-                $this->getActionControl('sign-return')->setRenderMode(Form::MODE_NONE);
+                $this->getActionControl('sign-return-modal')->setRenderMode(Form::MODE_NONE);
                 $this->getActionControl('make-changes')->setRenderMode(Form::MODE_NONE);
                 break;
             case 'expired':
+            default:
                 $this->getActionControl('sign-by')->setRenderMode(Form::MODE_NONE);
                 $this->getActionControl('sign-send-modal')->setRenderMode(Form::MODE_NONE);
-                $this->getActionControl('sign-return')->setRenderMode(Form::MODE_NONE);
+                $this->getActionControl('sign-return-modal')->setRenderMode(Form::MODE_NONE);
                 $this->getActionControl('make-changes')->setRenderMode(Form::MODE_NONE);
                 break;
         }
@@ -171,17 +174,13 @@ abstract class ActivitiesEdit extends \main\forms\ObjEdit
 
         $data['stateInfo'] = null;
         if (!$this->getDataSource()->isNew()) {
-            $signStatus = $this->getField('sign.status')->value;
+            $signStatus = $this->getField('sign_status')->value;
             $data['stateInfo'] = [
                 'statusName' => Activities::SIGNED_DESC[$signStatus],
                 'cssClass' => $signStatus === 'draft' ? 'box-default' : ($signStatus == 'current' ? 'box-success' : ($signStatus == 'waiting' ? 'box-warning' : 'box-danger')),
-                'sign' => [
-                    'date_receipt' =>  $this->getField('sign.date_receipt')->value ?? '- не задано -',
-                    'recipient' => $this->getField('sign.recipient')->value ?? '- не задано -',
-                    'date_sender' => $this->getField('sign.date_sender')->value ?? '- не задано -',
-                    'sender' => $this->getField('sign.sender')->value ?? '- не задано -',
-                ]
+
             ];
+            $data['hist'] = $this->getStatusHistory();
         }
 
         $data['timestamp'] = $this->timestamp;
@@ -191,23 +190,70 @@ abstract class ActivitiesEdit extends \main\forms\ObjEdit
         return $data;
     }
 
+    /**
+     * Возвращает историю измений статуса
+     * @param bool $enrich
+     * @return array
+     */
+    public function getStatusHistory()
+    {
+        $data = [];
+        foreach ($this->getHistory() as $k => $v){
+            if (preg_match('/(sign_status|content_signer|content_author)/is', $k)) {
+                $data[] = $v;
+            }
+        }
+       array_walk($data, function (&$v, $k)  {
+            if($v['field'] == 'f:sign_status') {
+                $v['value']  = array_key_exists($v['value'], \main\eav\object\Activities::SIGNED_DESC) ? \main\eav\object\Activities::SIGNED_DESC[$v['value']] : '';
+            }
+        });
+        return $data;
+    }
+
     protected function actionSignSend()
     {
         /** @var Activities $activities */
-        $activities = $this->getDataSource()->getObj();
-        $activities->setStatus('waiting');
-        $this->resetForm();
+        if ($this->actionSaveGeneric()) {
+            $activities = $this->getDataSource()->getObj();
+            $content = \Yii::$app->request->post('author_content');
+            $activities->setdata([
+                'sign_status' => 'waiting',
+                'content_author' => $content,
+                ]);
+            \main\ui\Notice::registerSuccess('Уведомление отправлено успешно');
+            $this->resetForm();
+        }
     }
     protected function actionSignBy()
     {
-        $this->resetForm();
+        /** @var Activities $activities */
+        if ($this->actionSaveGeneric()) {
+            $activities = $this->getDataSource()->getObj();
+            $activities->setStatus('current');
+            \main\ui\Notice::registerSuccess('Мероприятие переведено в статус "Подписано"');
+            $this->resetForm();
+        }
     }
     protected function actionSignReturn()
     {
-        $this->resetForm();
+        /** @var Activities $activities */
+        if ($this->actionSaveGeneric()) {
+            $activities = $this->getDataSource()->getObj();
+            $content = \Yii::$app->request->post('signer_content');
+            $activities->setdata([
+                'sign_status' => 'draft',
+                'content_signer' => $content,
+            ]);
+            \main\ui\Notice::registerInfo('Уведомление отправлено, мероприятие переведено в статус "Черновик"');
+            $this->resetForm();
+        }
     }
     protected function actionMakeChanges()
     {
+        $activities = $this->getDataSource()->getObj();
+        $activities->setStatus('draft');
+        \main\ui\Notice::registerInfo('Мероприятие переведено в статус "Черновик"');
         $this->resetForm();
     }
 }

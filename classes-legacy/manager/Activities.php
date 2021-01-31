@@ -5,8 +5,7 @@ use \yii\helpers\Url;
 class manager_Activities extends manager_Base
 {
     protected $type = 'activities';
-    protected $columnsDefaults = ['o_id', 'author', 'name', 'time_in', 'time_out', 'places', 'departments', 'category',
-        'form_partic', 'visit_poss', 'description', 'rider', 'result', 'num_users', 'num_winners', 'num_visitors', 'command'];
+    protected $columnsDefaults = ['o_id', 'type', 'sign_status', 'name', 'time_in', 'time_out', 'places', 'departments', 'applicant_teachers', 'subcategory', 'description', 'rider', 'result', 'command'];
     protected $editRoute = '/activities/edit';
     protected $createRoute = '/activities/create';
     protected $viewRoute = '/activities/view';
@@ -55,15 +54,32 @@ class manager_Activities extends manager_Base
     protected function getColumnValue($o, $field)
     {
         switch ($field) {
+            case 'type':
+                return $o->getTypeName();
             case 'author':
+                return \RefBook::find('teachers')->getValue($o->getval($field));
+            case 'signer':
+                return \RefBook::find('teachers')->getValue($o->getval($field));
+            case 'sign_status':
+                $t = $o->getval($field);
+                return array_key_exists($t, \main\eav\object\Activities::SIGNED_DESC) ? \main\eav\object\Activities::SIGNED_DESC[$t] : '';
+            case 'form_partic':
+                $t = $o->getval($field);
+                return array_key_exists($t, \main\eav\object\Activities::FORM_PARTIC) ? \main\eav\object\Activities::FORM_PARTIC[$t] : '';
+            case 'visit_poss':
+                $t = $o->getval($field);
+                return array_key_exists($t, \main\eav\object\Activities::VISIT_POSS) ? \main\eav\object\Activities::VISIT_POSS[$t] : '';
+            case 'category':
+                return \RefBook::find('activ_category')->getValue($o->getval($field));
+            case 'subcategory':
+                return \RefBook::find('activ_subcategory')->getValue($o->getval($field));
+            case 'applicant_teachers':
+                return \main\eav\object\Activities::getTeachersList($o->getval($field));
+            case 'departments':
             case 'name':
             case 'time_in':
             case 'time_out':
             case 'places':
-            case 'departments':
-            case 'category':
-            case 'form_partic':
-            case 'visit_poss':
             case 'description':
             case 'rider':
             case 'result':
@@ -71,8 +87,6 @@ class manager_Activities extends manager_Base
             case 'num_winners':
             case 'num_visitors':
                 return $o->getval($field);
-            case 'type':
-                return $o->getTypeName();
         }
         return parent::getColumnValue($o, $field);
     }

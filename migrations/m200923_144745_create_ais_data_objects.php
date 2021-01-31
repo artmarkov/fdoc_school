@@ -421,17 +421,19 @@ class m200923_144745_create_ais_data_objects extends \main\BaseMigration
 
         $this->createEavTableGroup('activities');
         $this->addColumn('activities_sort', 'type', $this->string(200));
+        $this->addColumn('activities_sort', 'sign_status', $this->string(200));
         $this->addColumn('activities_sort', 'author', $this->string(500));
+        $this->addColumn('activities_sort', 'signer', $this->string(500));
         $this->addColumn('activities_sort', 'name', $this->string(500));
         $this->addColumn('activities_sort', 'time_in', $this->string(200));
         $this->addColumn('activities_sort', 'time_out', $this->string(200));
         $this->addColumn('activities_sort', 'places', $this->string(1000));
         $this->addColumn('activities_sort', 'departments', $this->string(1000));
-        $this->addColumn('activities_sort', 'employees', $this->string(1000));
+        $this->addColumn('activities_sort', 'applicant_teachers', $this->string(1000));
         $this->addColumn('activities_sort', 'category', $this->string(200));
         $this->addColumn('activities_sort', 'subcategory', $this->string(200));
-        $this->addColumn('activities_sort', 'form_partic', $this->string(10));
-        $this->addColumn('activities_sort', 'visit_poss', $this->string(10));
+        $this->addColumn('activities_sort', 'form_partic', $this->string(200));
+        $this->addColumn('activities_sort', 'visit_poss', $this->string(200));
         $this->addColumn('activities_sort', 'description', $this->string(4000));
         $this->addColumn('activities_sort', 'rider', $this->string(4000));
         $this->addColumn('activities_sort', 'result', $this->string(4000));

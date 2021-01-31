@@ -54,11 +54,13 @@ class manager_Students extends manager_Base
             case 'surname':
             case 'firstname':
             case 'thirdname':
-            case 'gender':
             case 'birthday':
             case 'snils':
             case 'mobphone':
             case 'email':
+            case 'gender':
+                $t = $o->getval($field);
+                return array_key_exists($t, \main\eav\object\Students::GENDER) ? \main\eav\object\Students::GENDER[$t] : '';
             case 'status':
                 return $o->getval($field);
             case 'address':

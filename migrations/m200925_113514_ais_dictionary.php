@@ -159,7 +159,9 @@ class m200925_113514_ais_dictionary extends \main\BaseMigration
         ])->execute();
 
         $this->db->createCommand()->createView('view_teachers', '
-           SELECT o_id as id, type, position, name, surname, firstname, thirdname, gender, birthday, address, snils, extphone, intphone, mobphone, email, common_bonus
+           SELECT o_id as id, type, position, name, 
+           concat(surname ,\' \', left(upper(firstname), 1), \'.\', left(upper(thirdname), 1), \'.\') as fio,
+           surname, firstname, thirdname, gender, birthday, address, snils, extphone, intphone, mobphone, email, common_bonus
 	       FROM employees_sort 
 	       WHERE o_id IN (
                SELECT o_id 
@@ -172,6 +174,10 @@ class m200925_113514_ais_dictionary extends \main\BaseMigration
 
         $this->db->createCommand()->batchInsert('refbooks', ['name', 'table_name', 'key_field', 'value_field', 'sort_field', 'ref_field', 'group_field', 'note'], [
             ['teachers', 'view_teachers', 'id', 'name', 'id', null, null, 'Преподаватели'],
+        ])->execute();
+
+        $this->db->createCommand()->batchInsert('refbooks', ['name', 'table_name', 'key_field', 'value_field', 'sort_field', 'ref_field', 'group_field', 'note'], [
+            ['teachers_fio', 'view_teachers', 'id', 'fio', 'id', null, null, 'Преподаватели'],
         ])->execute();
 
         $this->createTable('guide_activ_category', [
@@ -187,43 +193,43 @@ class m200925_113514_ais_dictionary extends \main\BaseMigration
         ]);
 
         $this->db->createCommand()->batchInsert('guide_activ_category', ['id', 'name'], [
-            ['1', 'Учебная работа'],
-            ['2', 'Участие учащихся в творческих мероприятиях'],
-            ['3', 'Участие преподавателей в творческих мероприятиях'],
-            ['4', 'Методическая работа'],
-            ['5', 'Внеклассная работа'],
+            ['1', '1. Учебная работа'],
+            ['2', '2. Участие учащихся в творческих мероприятиях'],
+            ['3', '3. Участие преподавателей в творческих мероприятиях'],
+            ['4', '4. Методическая работа'],
+            ['5', '5. Внеклассная работа'],
 
         ])->execute();
 
         $this->db->createCommand()->batchInsert('guide_activ_subcategory', ['id', 'name', 'category_id'], [
-            ['1', 'Педсоветы и совещания', '1'],
-            ['2', 'Технические зачеты', '1'],
-            ['3', 'Академические концерты и зачеты', '1'],
-            ['4', 'Прослушивания выпускников', '1'],
-            ['5', 'Выпускные экзамены', '1'],
-            ['6', 'Вступительные экзамены', '1'],
-            ['7', 'Просмотр работ ИЗО отделения', '1'],
-            ['8', 'Международные мероприятия', '2'],
-            ['9', 'Международные мероприятия', '3'],
-            ['10', 'Межрегиональные мероприятия', '2'],
-            ['11', 'Межрегиональные мероприятия', '3'],
-            ['12', 'Городские мероприятия', '2'],
-            ['13', 'Городские мероприятия', '3'],
-            ['14', 'Окружные мероприятия', '2'],
-            ['15', 'Окружные мероприятия', '3'],
-            ['17', 'Открытые уроки', '4'],
-            ['18', 'Курсы, семинары, конференции, консультации, мастер-классы и др.', '4'],
-            ['20', 'Прослушивания к концертам и конкурсам', '1'],
-            ['21', 'Школьные мероприятия(без описания)', '2'],
-            ['22', 'Внеклассная работа с учащимися', '5'],
-            ['23', 'Работа с родителями', '5'],
-            ['24', 'Посещение концертов', '5'],
-            ['25', 'Посещение выставок', '5'],
-            ['26', 'Районные мероприятия', '2'],
-            ['27', 'Районные мероприятия', '3'],
-            ['28', 'Школьные мероприятия(с описанием)', '2'],
-            ['29', 'Школьные мероприятия(с описанием)', '3'],
-            ['30', 'Школьные мероприятия(без описания)', '3']
+            ['11', '1.1. Педсоветы и совещания', '1'],
+            ['12', '1.2. Технические зачеты', '1'],
+            ['13', '1.3. Академические концерты и зачеты', '1'],
+            ['14', '1.4. Прослушивания выпускников', '1'],
+            ['15', '1.5. Выпускные экзамены', '1'],
+            ['16', '1.6. Вступительные экзамены', '1'],
+            ['17', '1.7. Просмотр работ ИЗО отделения', '1'],
+            ['18', '1.8. Прослушивания к концертам и конкурсам', '1'],
+            ['21', '2.1. Международные мероприятия', '2'],
+            ['22', '2.2. Межрегиональные мероприятия', '2'],
+            ['23', '2.3. Городские мероприятия', '2'],
+            ['24', '2.4. Окружные мероприятия', '2'],
+            ['25', '2.5. Школьные мероприятия(без описания)', '2'],
+            ['26', '2.6. Школьные мероприятия(с описанием)', '2'],
+            ['27', '2.7. Районные мероприятия', '2'],
+            ['31', '3.1. Международные мероприятия', '3'],
+            ['32', '3.2. Межрегиональные мероприятия', '3'],
+            ['33', '3.3. Городские мероприятия', '3'],
+            ['34', '3.4. Окружные мероприятия', '3'],
+            ['35', '3.5. Районные мероприятия', '3'],
+            ['36', '3.6. Школьные мероприятия(с описанием)', '3'],
+            ['37', '3.7. Школьные мероприятия(без описания)', '3'],
+            ['41', '4.1. Открытые уроки', '4'],
+            ['42', '4.2. Курсы, семинары, конференции, консультации, мастер-классы и др.', '4'],
+            ['51', '5.1. Внеклассная работа с учащимися', '5'],
+            ['52', '5.2. Работа с родителями', '5'],
+            ['53', '5.3. Посещение концертов', '5'],
+            ['54', '5.4. Посещение выставок', '5'],
         ])->execute();
 
         $this->db->createCommand()->batchInsert('refbooks', ['name', 'table_name', 'key_field', 'value_field', 'sort_field', 'ref_field', 'group_field', 'note'], [
@@ -242,8 +248,8 @@ class m200925_113514_ais_dictionary extends \main\BaseMigration
 
         $this->db->createCommand()->delete('refbooks', ['name' => 'activ_subcategory'])->execute();
         $this->db->createCommand()->delete('refbooks', ['name' => 'activ_category'])->execute();
-        $this->dropTable('activ_subcategory');
-        $this->dropTable('activ_category');
+        $this->dropTable('guide_activ_subcategory');
+        $this->dropTable('guide_activ_category');
         $this->db->createCommand()->delete('refbooks', ['name' => 'teachers'])->execute();
         $this->db->createCommand()->dropView('view_teachers')->execute();
         $this->db->createCommand()->delete('refbooks', ['name' => 'guide_creative'])->execute();

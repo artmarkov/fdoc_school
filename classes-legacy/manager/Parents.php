@@ -54,10 +54,12 @@ class manager_Parents extends manager_Base
             case 'surname':
             case 'firstname':
             case 'thirdname':
-            case 'gender':
             case 'birthday':
             case 'snils':
             case 'mobphone':
+            case 'gender':
+                $t = $o->getval($field);
+                return array_key_exists($t, \main\eav\object\Parents::GENDER) ? \main\eav\object\Parents::GENDER[$t] : '';
             case 'email':
                 return $o->getval($field);
             case 'address':

@@ -76,7 +76,7 @@ class Creative extends Base
     }
 
     /**
-     * Обновляет поле activity_teachers
+     * Обновляет поле applicant_teachers
      * @throws \yii\db\Exception
      */
     public function updateApplicantTeachersList()

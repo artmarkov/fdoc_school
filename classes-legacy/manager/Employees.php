@@ -55,19 +55,22 @@ class manager_Employees extends manager_Base
     {
         switch ($field) {
             case 'position':
+                return \RefBook::find('position')->getValue($o->getval($field));
+            case 'gender':
+                $t = $o->getval($field);
+                return array_key_exists($t, \main\eav\object\Employees::GENDER) ? \main\eav\object\Employees::GENDER[$t] : '';
+            case 'address':
+                return $o->getAddress();
+            case 'type':
+                return $o->getTypeName();
             case 'surname':
             case 'firstname':
             case 'thirdname':
-            case 'gender':
             case 'birthday':
             case 'snils':
             case 'mobphone':
             case 'email':
                 return $o->getval($field);
-            case 'address':
-                return $o->getAddress();
-            case 'type':
-                return $o->getTypeName();
         }
         return parent::getColumnValue($o, $field);
     }

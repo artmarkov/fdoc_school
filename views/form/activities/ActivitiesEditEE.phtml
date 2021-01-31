@@ -19,40 +19,41 @@
         <!-- Блок статуса подписи  -->
         <div class="box box-solid collapsed-box sign-info <?= $stateInfo['cssClass'] ?>">
             <div class="box-header with-border">
-                <h3 class="box-title">Статус записи: <?= $stateInfo['statusName'] ?></h3>
+                <h3 class="box-title"><i class="fa fa-hourglass-start" aria-hidden="true"></i> Текущий статус: <?= $stateInfo['statusName'] ?></h3>
                 <div class="box-tools pull-right">
                     <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-plus"></i></button>
                 </div><!-- /.box-tools -->
             </div><!-- /.box-header -->
             <div class="box-body">
-                <?php if ($stateInfo['sign']): ?>
-                    <div class="row">
-                        <div class="col-md-6">
-                            <dl>
-                                <dt>Подписано</dt>
-                                <dd><?= $stateInfo['sign']['date_receipt'] ?></dd>
-                                <dt>Подписант</dt>
-                                <dd><?= $stateInfo['sign']['recipient'] ?></dd>
-                            </dl>
-                        </div>
-                        <div class="col-md-6">
-                            <dl>
-                                <dt>Отправлено</dt>
-                                <dd><?= $stateInfo['sign']['date_sender'] ?></dd>
-                                <dt>Отправитель</dt>
-                                <dd><?= $stateInfo['sign']['sender'] ?></dd>
-                            </dl>
-                        </div>
-                    </div>
-                <?php else: ?>
-                    <div class="text-center">- нет данных -</div>
-                <?php endif; ?>
+                <div class="box-body table-responsive no-padding">
+                    <table id="history" class="table table-bordered table-striped">
+                        <thead>
+                        <tr>
+                            <th>Параметр</th>
+                            <th>Значение</th>
+                            <th>Дата</th>
+                            <th>Инициатор</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <?php foreach ($hist as $v): ?>
+                            <tr class="<?= $v['form']; ?>">
+                                <td><?= $v['label']; ?></td>
+                                <td><?= $v['value']; ?></td>
+                                <td><?= $v['mdate']; ?></td>
+                                <td><?= $v['musername']; ?></td>
+                            </tr>
+                        <?php endforeach; ?>
+                        </tbody>
+                    </table>
+                </div>
+                <!-- /.box-body -->
             </div>
         </div>
     <?php endif; ?>
     <div class="box box-solid box-primary">
         <div class="box-header with-border">
-            <h3 class="box-title"><?= $title ?></h3>
+            <h3 class="box-title"><i class="fa fa-black-tie" aria-hidden="true"></i> <?= $title ?></h3>
             <div class="box-tools pull-right">
                 <?php if (!$isNew): ?>
                     <div class="btn-group btn-group-sm">
@@ -80,7 +81,6 @@
             </div><!-- /.box-tools -->
         </div><!-- /.box-header -->
         <div class="box-body">
-
             <!-- Fields Поля -->
             <div class="form-group form-group-sm <?= 0 == $fields['type']['renderMode'] ? ' hide' : '' ?><?= $fields['type']['error'] ? ' has-error' : '' ?>">
                 <label class="col-sm-4 control-label" for="<?= $fields['type']['id'] ?>"><?= $fields['type']['label'] ?><?= $fields['type']['required'] ? '*' : '' ?></label>
@@ -98,9 +98,20 @@
                     <small id="help_<?= $fields['author']['id'] ?>" class="form-text text-muted"><?= $fields['author']['hint'] ?></small>
                 </div>
             </div>
+            <div class="form-group form-group-sm <?= 0 == $fields['signer']['renderMode'] ? ' hide' : '' ?><?= $fields['signer']['error'] ? ' has-error' : '' ?>">
+                <label class="col-sm-4 control-label"
+                       for="<?= $fields['signer']['id'] ?>"><?= $fields['signer']['label'] ?><?= $fields['signer']['required'] ? '*' : '' ?></label>
+                <div class="col-sm-8"><?= $fields['signer']['html'] ?><?php if ($fields['signer']['error']): ?><span class="help-block"><?= $fields['signer']['error'] ?></span><?php endif; ?>
+                    <small id="help_<?= $fields['signer']['id'] ?>"class="form-text text-muted"><?= $fields['signer']['hint'] ?></small>
+                </div>
+            </div>
+
             <div class="box box-solid box-primary">
                 <div class="box-header with-border">
                     <h3 class="box-title">Основная информация</h3>
+                    <div class="box-tools pull-right">
+                        <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+                    </div><!-- /.box-tools -->
                 </div><!-- /.box-header -->
                 <div class="box-body">
                     <div class="form-group form-group-sm <?= 0 == $fields['time_in']['renderMode'] ? ' hide' : '' ?><?= $fields['time_in']['error'] ? ' has-error' : '' ?>">
@@ -159,12 +170,20 @@
                             <small id="help_<?= $fields['subcategory']['id'] ?>" class="form-text text-muted"><?= $fields['subcategory']['hint'] ?></small>
                         </div>
                     </div>
-                    <div class="form-group form-group-sm <?= 0 == $fields['employees']['renderMode'] ? ' hide' : '' ?><?= $fields['employees']['error'] ? ' has-error' : '' ?>">
-                        <label class="col-sm-4 control-label" for="<?= $fields['employees']['id'] ?>"><?= $fields['employees']['label'] ?><?= $fields['employees']['required'] ? '*' : '' ?></label>
+                    <div class="form-group form-group-sm region_partners <?= 0 == $fields['region_partners']['renderMode'] ? ' hide' : '' ?><?= $fields['region_partners']['error'] ? ' has-error' : '' ?>">
+                        <label class="col-sm-4 control-label" for="<?= $fields['region_partners']['id'] ?>"><?= $fields['region_partners']['label'] ?><?= $fields['region_partners']['required'] ? '*' : '' ?></label>
                         <div class="col-sm-8">
-                            <?= $fields['employees']['html'] ?>
-                            <?php if ($fields['employees']['error']): ?><span class="help-block"><?= $fields['employees']['error'] ?></span><?php endif; ?>
-                            <small id="help_<?= $fields['employees']['id'] ?>" class="form-text text-muted"><?= $fields['employees']['hint'] ?></small>
+                            <?= $fields['region_partners']['html'] ?>
+                            <?php if ($fields['region_partners']['error']): ?><span class="help-block"><?= $fields['region_partners']['error'] ?></span><?php endif; ?>
+                            <small id="help_<?= $fields['region_partners']['id'] ?>" class="form-text text-muted"><?= $fields['region_partners']['hint'] ?></small>
+                        </div>
+                    </div>
+                    <div class="form-group form-group-sm <?= 0 == $fields['applicant_teachers']['renderMode'] ? ' hide' : '' ?><?= $fields['applicant_teachers']['error'] ? ' has-error' : '' ?>">
+                        <label class="col-sm-4 control-label" for="<?= $fields['applicant_teachers']['id'] ?>"><?= $fields['applicant_teachers']['label'] ?><?= $fields['applicant_teachers']['required'] ? '*' : '' ?></label>
+                        <div class="col-sm-8">
+                            <?= $fields['applicant_teachers']['html'] ?>
+                            <?php if ($fields['applicant_teachers']['error']): ?><span class="help-block"><?= $fields['applicant_teachers']['error'] ?></span><?php endif; ?>
+                            <small id="help_<?= $fields['applicant_teachers']['id'] ?>" class="form-text text-muted"><?= $fields['applicant_teachers']['hint'] ?></small>
                         </div>
                     </div>
                     <div class="form-group form-group-sm <?= 0 == $fields['form_partic']['renderMode'] ? ' hide' : '' ?><?= $fields['form_partic']['error'] ? ' has-error' : '' ?>">
@@ -204,6 +223,9 @@
             <div class="box box-solid box-primary">
                 <div class="box-header with-border">
                     <h3 class="box-title">Дополнительная информация</h3>
+                    <div class="box-tools pull-right">
+                        <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+                    </div><!-- /.box-tools -->
                 </div><!-- /.box-header -->
                 <div class="box-body">
                     <div class="form-group form-group-sm <?= 0 == $fields['description']['renderMode'] ? ' hide' : '' ?><?= $fields['description']['error'] ? ' has-error' : '' ?>">
@@ -322,9 +344,12 @@
                     <a class="btn btn-default<?= $auth < 2 ? ' hidden' : '' ?>" id="applicant:add" href="#">Добавить заявителя</a>
                 </div>
             </div><!-- /.box -->
-            <div class="box box-solid box-primary">
+            <div class="box box-solid collapsed-box box-primary">
                 <div class="box-header with-border">
                     <h3 class="box-title">Общие итоги мероприятия</h3>
+                    <div class="box-tools pull-right">
+                        <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-plus"></i></button>
+                    </div><!-- /.box-tools -->
                 </div><!-- /.box-header -->
                 <div class="box-body">
                     <div class="form-group form-group-sm <?= 0 == $fields['result']['renderMode'] ? ' hide' : '' ?><?= $fields['result']['error'] ? ' has-error' : '' ?>">
@@ -368,7 +393,7 @@
             <?= $actions['exit']['html'] ?>
             <?= $actions['sign-send-modal']['html'] ?>
             <?= $actions['sign-by']['html'] ?>
-            <?= $actions['sign-return']['html'] ?>
+            <?= $actions['sign-return-modal']['html'] ?>
             <?= $actions['make-changes']['html'] ?>
         </div>
 
@@ -473,6 +498,15 @@
                 // console.log(currentLength);
             });
 
+            // скрываем поле Региональные партнеры
+            let value = document.getElementById('f:subcategory').value;
+            (value === '31' || value === '32') ? $('.region_partners').show() : $('.region_partners').hide();
+
+            document.getElementById('f:subcategory').addEventListener("change", function () {
+                (this.value === '31' || this.value === '32') ? $('.region_partners').show() : $('.region_partners').hide();
+                 // console.log(this.value);
+            });
+
             // Связанные списки
             let cat = $('#f\\:category');
             let subcat = $('#f\\:subcategory');
@@ -560,27 +594,17 @@
     </div>
 </div>
 
-<div class="modal" id="signSendModal">
+<div class="modal modal-default fade in" id="signSendModal">
     <div class="modal-dialog">
-<!--       // <form role="form" method="post" action="--><?//= $url ?><!--">-->
             <div class="modal-content">
                 <div class="modal-header">
                     <button aria-label="Close" data-dismiss="modal" class="close" type="button"><span aria-hidden="true">&times;</span></button>
                     <h4 class="modal-title">Отправить на подпись</h4>
                 </div>
                 <div class="modal-body">
-                    <div class="form-group form-group-sm <?= 0 == $fields['sign.sender']['renderMode'] ? ' hide' : '' ?><?= $fields['sign.sender']['error'] ? ' has-error' : '' ?>">
-                        <label class="col-sm-4 control-label"
-                               for="<?= $fields['sign.sender']['id'] ?>"><?= $fields['sign.sender']['label'] ?><?= $fields['sign.sender']['required'] ? '*' : '' ?></label>
-                        <div class="col-sm-8"><?= $fields['sign.sender']['html'] ?><?php if ($fields['sign.sender']['error']): ?><span class="help-block"><?= $fields['sign.sender']['error'] ?></span><?php endif; ?>
-                            <small id="help_<?= $fields['sign.sender']['id'] ?>"class="form-text text-muted"><?= $fields['sign.sender']['hint'] ?></small>
-                        </div>
-                    </div>
-                    <div class="form-group form-group-sm <?= 0 == $fields['sign.content']['renderMode'] ? ' hide' : '' ?><?= $fields['sign.content']['error'] ? ' has-error' : '' ?>">
-                        <label class="col-sm-4 control-label" for="<?= $fields['sign.content']['id'] ?>"><?= $fields['sign.content']['label'] ?><?= $fields['sign.content']['required'] ? '*' : '' ?></label>
-                        <div class="col-sm-8"><?= $fields['sign.content']['html'] ?><?php if ($fields['sign.content']['error']): ?>
-                                <span class="help-block"><?= $fields['sign.content']['error'] ?></span><?php endif; ?>
-                            <small id="help_<?= $fields['sign.content']['id'] ?>"class="form-text text-muted"><?= $fields['sign.content']['hint'] ?></small>
+                    <div class="form-group form-group-sm ">
+                        <label class="col-sm-4 control-label" for="author_content">Сообщение автора</label>
+                        <div class="col-sm-8"><textarea id="author_content" name="author_content" cols="40" rows="3" class="form-control"></textarea>
                         </div>
                     </div>
                 </div>
@@ -589,6 +613,28 @@
                     <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Закрыть</button>
                 </div>
             </div>
-<!--       // </form>-->
+    </div>
+</div>
+
+
+<div class="modal modal-default fade in" id="signReturnModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button aria-label="Close" data-dismiss="modal" class="close" type="button"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Отправить на доработку</h4>
+            </div>
+            <div class="modal-body">
+                <div class="form-group form-group-sm ">
+                    <label class="col-sm-4 control-label" for="signer_content">Сообщение подписанта</label>
+                    <div class="col-sm-8"><textarea id="signer_content" name="signer_content" cols="40" rows="3" class="form-control"></textarea>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <?= $actions['sign-return']['html'] ?>
+                <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Закрыть</button>
+            </div>
+        </div>
     </div>
 </div>
