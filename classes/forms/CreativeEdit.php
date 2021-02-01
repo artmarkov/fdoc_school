@@ -50,8 +50,9 @@ class CreativeEdit extends form_ObjEdit
 
         $fBonus = $fApplicant->addFieldset('form_core_Dynamic', 'bonus', 'Бонус', $this->getDataSource()->inherit('bonus'), new form_auth_Acl('public'));
         $fBonus->setRequireOneElement(true);
-        $fBonus->addField('form_control_Month', 'period', 'Период', ['required' => 1]);
-        $fBonus->addField('form_control_Text', 'bonus', 'Надбавка', ['required' => 1]);
+        $fBonus->addField('form_control_Month', 'period', 'Период', ['placeholder' => 'Период', 'required' => 1]);
+        $fBonus->addField('form_control_Text', 'bonus', 'Надбавка(%)', ['placeholder' => 'Надбавка(%)', 'required' => 1]);
+
 
 
         if ($obj instanceof \main\eav\object\Snapshot) { // режим отображения на прошлую дату

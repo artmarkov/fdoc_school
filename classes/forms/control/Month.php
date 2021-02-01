@@ -15,8 +15,8 @@ class Month extends Text
     {
         if ($renderMode == \main\forms\core\Form::MODE_WRITE) {
             $p = sprintf('<div class="input-group date" id="%s" data-provide="datepicker" data-date-format="mm-yyyy"  data-date-min-view-mode = "1" data-date-max-view-mode = "2" data-date-clear-btn="true" data-date-language="ru" data-date-today-highlight="true" data-date-autoclose="true">
-            <input type="text" id="%s" name="%s" value="%s"%s class="form-control" />
-            <span class="input-group-addon"><i class="fa fa-calendar"></i></span></div>', $this->htmlControlName . ':wrapper', $this->htmlControlName, $this->htmlControlName, $this->getHtmlValue(), ($renderMode == \main\forms\core\Form::MODE_READ ? ' readonly' : '')
+            <input type="text" id="%s" name="%s" value="%s"%s%s class="form-control" />
+            <span class="input-group-addon"><i class="fa fa-calendar"></i></span></div>', $this->htmlControlName . ':wrapper', $this->htmlControlName, $this->htmlControlName, $this->getHtmlValue(), ($renderMode == \main\forms\core\Form::MODE_READ ? ' readonly' : ''), $this->getAttributesString()
             );
         } else {
             $p = parent::getHtmlControl($renderMode);

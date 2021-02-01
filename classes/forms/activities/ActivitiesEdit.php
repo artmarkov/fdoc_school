@@ -80,8 +80,8 @@ abstract class ActivitiesEdit extends \main\forms\ObjEdit
 
         $fBonus = $fApplicant->addFieldset('form_core_Dynamic', 'bonus', 'Бонус', $this->getDataSource()->inherit('bonus'), new form_auth_Acl('public'));
         $fBonus->setRequireOneElement(false);
-        $fBonus->addField('form_control_Month', 'period', 'Период', ['required' => 1]);
-        $fBonus->addField('form_control_Text', 'bonus', 'Надбавка', ['required' => 1]);
+        $fBonus->addField('form_control_Month', 'period', 'Период', ['placeholder' => 'Период', 'required' => 1]);
+        $fBonus->addField('form_control_Text', 'bonus', 'Надбавка(%)', ['placeholder' => 'Надбавка(%)', 'required' => 1]);
 
         // блок подписи
         $this->addField('form_control_Text', 'sign_status', 'Статус подписи');
