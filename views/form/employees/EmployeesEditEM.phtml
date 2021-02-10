@@ -15,133 +15,147 @@
 .datepicker{z-index:1151 !important;}
 </style>
 <form class="form-horizontal form-compact" role="form" action="<?= $url ?>" name="<?= $formName ?>" method="post">
-   <div class="box box-solid box-primary">
-      <div class="box-header with-border">
-         <h3 class="box-title">Информация о сотруднике</h3>
-         <div class="box-tools pull-right">
-            <?php if (!$isNew): ?>
-            <div class="btn-group btn-group-sm">
-               <a class="btn btn-info" data-toggle="modal" href="#historyDateModal"><i class="fa fa-clock-o"></i> <?= $timestamp ? date('d-m-Y H:i:s',$timestamp) : 'Просмотр на дату'; ?></a>
-               <?php if (count($versionList)>0): ?>
-               <button data-toggle="dropdown" class="btn btn-info dropdown-toggle" type="button" aria-expanded="false">
-                  <span class="caret"></span>
-                  <span class="sr-only">Toggle Dropdown</span>
-               </button>
-               <ul class="dropdown-menu pull-right scrollable-menu form-versions" role="menu">
-                  <?php foreach($versionList as $k=>$v): ?>
-                     <?php if ($k==$version): ?>
-                        <li><a role="menuitem" href="<?= $url ?>"><?= $k.': '.date('d-m-Y H:i:s',$v).' (Текущая версия)' ?></a></li>
-                     <?php else: ?>
-                        <li><a role="menuitem" href="<?= $url.'?time='.$v ?>"><?= $k.': '.date('d-m-Y H:i:s',$v) ?></a></li>
-                     <?php endif; ?>
-                  <?php endforeach; ?>
-               </ul>
-               <?php endif; ?>
+    <div class="box box-solid box-primary">
+        <div class="box-header with-border">
+            <h3 class="box-title">Информация о сотруднике</h3>
+            <div class="box-tools pull-right">
+                <?php if (!$isNew): ?>
+                    <div class="btn-group btn-group-sm">
+                        <a class="btn btn-info" data-toggle="modal" href="#historyDateModal"><i class="fa fa-clock-o"></i> <?= $timestamp ? date('d-m-Y H:i:s',$timestamp) : 'Просмотр на дату'; ?></a>
+                        <?php if (count($versionList)>0): ?>
+                            <button data-toggle="dropdown" class="btn btn-info dropdown-toggle" type="button" aria-expanded="false">
+                                <span class="caret"></span>
+                                <span class="sr-only">Toggle Dropdown</span>
+                            </button>
+                            <ul class="dropdown-menu pull-right scrollable-menu form-versions" role="menu">
+                                <?php foreach($versionList as $k=>$v): ?>
+                                    <?php if ($k==$version): ?>
+                                        <li><a role="menuitem" href="<?= $url ?>"><?= $k.': '.date('d-m-Y H:i:s',$v).' (Текущая версия)' ?></a></li>
+                                    <?php else: ?>
+                                        <li><a role="menuitem" href="<?= $url.'?time='.$v ?>"><?= $k.': '.date('d-m-Y H:i:s',$v) ?></a></li>
+                                    <?php endif; ?>
+                                <?php endforeach; ?>
+                            </ul>
+                        <?php endif; ?>
+                    </div>
+                <?php endif; ?>
+                <?php if (!$timestamp): ?>
+                    <?= $helper_actions['history']['html'] ?>
+                <?php endif; ?>
+            </div><!-- /.box-tools -->
+        </div><!-- /.box-header -->
+        <div class="box-body">
+            <!-- Fields Поля -->
+            <div class="form-group form-group-sm <?= 0 == $fields['type']['renderMode'] ? ' hide' : '' ?><?= $fields['type']['error'] ? ' has-error' : '' ?>">
+                <label class="col-sm-4 control-label" for="type"><?= $fields['type']['label'] ?></label>
+                <div class="col-sm-8">
+                    <?= $fields['type']['html'] ?>
+                    <?php if ($fields['type']['error']): ?><span class="help-block"><?= $fields['type']['error'] ?></span><?php endif; ?>
+                </div>
             </div>
-            <?php endif; ?>
-            <?php if (!$timestamp): ?>
-               <?= $helper_actions['history']['html'] ?>
-            <?php endif; ?>
-         </div><!-- /.box-tools -->
-      </div><!-- /.box-header -->
-           <div class="box-body">
-               <div class="form-group form-group-sm <?= 0 == $fields['type']['renderMode'] ? ' hide' : '' ?><?= $fields['type']['error'] ? ' has-error' : '' ?>">
-                   <label class="col-sm-4 control-label" for="type"><?= $fields['type']['label'] ?></label>
-                   <div class="col-sm-8">
-                       <?= $fields['type']['html'] ?>
-                       <?php if ($fields['type']['error']): ?><span class="help-block"><?= $fields['type']['error'] ?></span><?php endif; ?>
-                   </div>
-               </div>
-               <div class="form-group form-group-sm <?= 0 == $fields['name']['renderMode'] ? ' hide' : '' ?><?= $fields['name']['error'] ? ' has-error' : '' ?>">
-                   <label class="col-sm-4 control-label" for="name"><?= $fields['name']['label'] ?></label>
-                   <div class="col-sm-8">
-                       <?= $fields['name']['html'] ?>
-                       <?php if ($fields['name']['error']): ?><span class="help-block"><?= $fields['name']['error'] ?></span><?php endif; ?>
-                   </div>
-               </div>
-               <div class="form-group form-group-sm <?= 0 == $fields['surname']['renderMode'] ? ' hide' : '' ?><?= $fields['surname']['error'] ? ' has-error' : '' ?>">
-                   <label class="col-sm-4 control-label" for="surname"><?= $fields['surname']['label'] ?></label>
-                   <div class="col-sm-8">
-                       <?= $fields['surname']['html'] ?>
-                       <?php if ($fields['surname']['error']): ?><span class="help-block"><?= $fields['surname']['error'] ?></span><?php endif; ?>
-                   </div>
-               </div>
-               <div class="form-group form-group-sm <?= 0 == $fields['firstname']['renderMode'] ? ' hide' : '' ?><?= $fields['firstname']['error'] ? ' has-error' : '' ?>">
-                   <label class="col-sm-4 control-label" for="firstname"><?= $fields['firstname']['label'] ?></label>
-                   <div class="col-sm-8">
-                       <?= $fields['firstname']['html'] ?>
-                       <?php if ($fields['firstname']['error']): ?><span class="help-block"><?= $fields['firstname']['error'] ?></span><?php endif; ?>
-                   </div>
-               </div>
-               <div class="form-group form-group-sm <?= 0 == $fields['thirdname']['renderMode'] ? ' hide' : '' ?><?= $fields['thirdname']['error'] ? ' has-error' : '' ?>">
-                   <label class="col-sm-4 control-label" for="thirdname"><?= $fields['thirdname']['label'] ?></label>
-                   <div class="col-sm-8">
-                       <?= $fields['thirdname']['html'] ?>
-                       <?php if ($fields['thirdname']['error']): ?><span class="help-block"><?= $fields['thirdname']['error'] ?></span><?php endif; ?>
-                   </div>
-               </div>
-               <div class="form-group form-group-sm <?= 0 == $fields['snils']['renderMode'] ? ' hide' : '' ?><?= $fields['snils']['error'] ? ' has-error' : '' ?>">
-                   <label class="col-sm-4 control-label" for="snils"><?= $fields['snils']['label'] ?></label>
-                   <div class="col-sm-8">
-                       <?= $fields['snils']['html'] ?>
-                       <?php if ($fields['snils']['error']): ?><span class="help-block"><?= $fields['snils']['error'] ?></span><?php endif; ?>
-                   </div>
-               </div>
-               <div class="form-group form-group-sm <?= 0 == $fields['gender']['renderMode'] ? ' hide' : '' ?><?= $fields['gender']['error'] ? ' has-error' : '' ?>">
-                   <label class="col-sm-4 control-label" for="gender"><?= $fields['gender']['label'] ?></label>
-                   <div class="col-sm-8">
-                       <?= $fields['gender']['html'] ?>
-                       <?php if ($fields['gender']['error']): ?><span class="help-block"><?= $fields['gender']['error'] ?></span><?php endif; ?>
-                   </div>
-               </div>
-               <div class="form-group form-group-sm <?= 0 == $fields['birthday']['renderMode'] ? ' hide' : '' ?><?= $fields['birthday']['error'] ? ' has-error' : '' ?>">
-                   <label class="col-sm-4 control-label" for="birthday"><?= $fields['birthday']['label'] ?></label>
-                   <div class="col-sm-8">
-                       <?= $fields['birthday']['html'] ?>
-                       <?php if ($fields['birthday']['error']): ?><span class="help-block"><?= $fields['birthday']['error'] ?></span><?php endif; ?>
-                   </div>
-               </div>
-               <div class="form-group form-group-sm <?= 0 == $fields['email']['renderMode'] ? ' hide' : '' ?><?= $fields['email']['error'] ? ' has-error' : '' ?>">
-                   <label class="col-sm-4 control-label" for="email"><?= $fields['email']['label'] ?></label>
-                   <div class="col-sm-8">
-                       <?= $fields['email']['html'] ?>
-                       <?php if ($fields['email']['error']): ?><span class="help-block"><?= $fields['email']['error'] ?></span><?php endif; ?>
-                   </div>
-               </div>
-               <div class="form-group form-group-sm <?= 0 == $fields['extphone']['renderMode'] ? ' hide' : '' ?><?= $fields['extphone']['error'] ? ' has-error' : '' ?>">
-                   <label class="col-sm-4 control-label" for="extphone"><?= $fields['extphone']['label'] ?></label>
-                   <div class="col-sm-8">
-                       <?= $fields['extphone']['html'] ?>
-                       <?php if ($fields['extphone']['error']): ?><span class="help-block"><?= $fields['extphone']['error'] ?></span><?php endif; ?>
-                   </div>
-               </div>
-               <div class="form-group form-group-sm <?= 0 == $fields['intphone']['renderMode'] ? ' hide' : '' ?><?= $fields['intphone']['error'] ? ' has-error' : '' ?>">
-                   <label class="col-sm-4 control-label" for="intphone"><?= $fields['intphone']['label'] ?></label>
-                   <div class="col-sm-8">
-                       <?= $fields['intphone']['html'] ?>
-                       <?php if ($fields['intphone']['error']): ?><span class="help-block"><?= $fields['intphone']['error'] ?></span><?php endif; ?>
-                   </div>
-               </div>
-               <div class="form-group form-group-sm <?= 0 == $fields['mobphone']['renderMode'] ? ' hide' : '' ?><?= $fields['mobphone']['error'] ? ' has-error' : '' ?>">
-                   <label class="col-sm-4 control-label" for="mobphone"><?= $fields['mobphone']['label'] ?></label>
-                   <div class="col-sm-8">
-                       <?= $fields['mobphone']['html'] ?>
-                       <?php if ($fields['mobphone']['error']): ?><span class="help-block"><?= $fields['mobphone']['error'] ?></span><?php endif; ?>
-                   </div>
-               </div>
-               <div class="form-group form-group-sm <?= 0 == $fields['address']['renderMode'] ? ' hide' : '' ?><?= $fields['address']['error'] ? ' has-error' : '' ?>">
-                   <label class="col-sm-4 control-label" for="address"><?= $fields['address']['label'] ?></label>
-                   <div class="col-sm-8">
-                       <?= $fields['address']['html'] ?>
-                       <?php if ($fields['address']['error']): ?><span class="help-block"><?= $fields['address']['error'] ?></span><?php endif; ?>
-                   </div>
-               </div>
-               <div class="box box-solid box-info">
+            <div class="form-group form-group-sm <?= 0 == $fields['name']['renderMode'] ? ' hide' : '' ?><?= $fields['name']['error'] ? ' has-error' : '' ?>">
+                <label class="col-sm-4 control-label" for="name"><?= $fields['name']['label'] ?></label>
+                <div class="col-sm-8">
+                    <?= $fields['name']['html'] ?>
+                    <?php if ($fields['name']['error']): ?><span class="help-block"><?= $fields['name']['error'] ?></span><?php endif; ?>
+                </div>
+            </div>
+            <div class="box box-solid box-primary">
+                <div class="box-header with-border">
+                    <h3 class="box-title">Основные сведения</h3>
+                </div><!-- /.box-header -->
+                <div class="box-body">
+                    <div class="form-group form-group-sm <?= 0 == $fields['surname']['renderMode'] ? ' hide' : '' ?><?= $fields['surname']['error'] ? ' has-error' : '' ?>">
+                        <label class="col-sm-4 control-label" for="surname"><?= $fields['surname']['label'] ?></label>
+                        <div class="col-sm-8">
+                            <?= $fields['surname']['html'] ?>
+                            <?php if ($fields['surname']['error']): ?><span class="help-block"><?= $fields['surname']['error'] ?></span><?php endif; ?>
+                        </div>
+                    </div>
+                    <div class="form-group form-group-sm <?= 0 == $fields['firstname']['renderMode'] ? ' hide' : '' ?><?= $fields['firstname']['error'] ? ' has-error' : '' ?>">
+                        <label class="col-sm-4 control-label" for="firstname"><?= $fields['firstname']['label'] ?></label>
+                        <div class="col-sm-8">
+                            <?= $fields['firstname']['html'] ?>
+                            <?php if ($fields['firstname']['error']): ?><span class="help-block"><?= $fields['firstname']['error'] ?></span><?php endif; ?>
+                        </div>
+                    </div>
+                    <div class="form-group form-group-sm <?= 0 == $fields['thirdname']['renderMode'] ? ' hide' : '' ?><?= $fields['thirdname']['error'] ? ' has-error' : '' ?>">
+                        <label class="col-sm-4 control-label" for="thirdname"><?= $fields['thirdname']['label'] ?></label>
+                        <div class="col-sm-8">
+                            <?= $fields['thirdname']['html'] ?>
+                            <?php if ($fields['thirdname']['error']): ?><span class="help-block"><?= $fields['thirdname']['error'] ?></span><?php endif; ?>
+                        </div>
+                    </div>
+                    <div class="form-group form-group-sm <?= 0 == $fields['snils']['renderMode'] ? ' hide' : '' ?><?= $fields['snils']['error'] ? ' has-error' : '' ?>">
+                        <label class="col-sm-4 control-label" for="snils"><?= $fields['snils']['label'] ?></label>
+                        <div class="col-sm-8">
+                            <?= $fields['snils']['html'] ?>
+                            <?php if ($fields['snils']['error']): ?><span class="help-block"><?= $fields['snils']['error'] ?></span><?php endif; ?>
+                        </div>
+                    </div>
+                    <div class="form-group form-group-sm <?= 0 == $fields['gender']['renderMode'] ? ' hide' : '' ?><?= $fields['gender']['error'] ? ' has-error' : '' ?>">
+                        <label class="col-sm-4 control-label" for="gender"><?= $fields['gender']['label'] ?></label>
+                        <div class="col-sm-8">
+                            <?= $fields['gender']['html'] ?>
+                            <?php if ($fields['gender']['error']): ?><span class="help-block"><?= $fields['gender']['error'] ?></span><?php endif; ?>
+                        </div>
+                    </div>
+                    <div class="form-group form-group-sm <?= 0 == $fields['birthday']['renderMode'] ? ' hide' : '' ?><?= $fields['birthday']['error'] ? ' has-error' : '' ?>">
+                        <label class="col-sm-4 control-label" for="birthday"><?= $fields['birthday']['label'] ?></label>
+                        <div class="col-sm-8">
+                            <?= $fields['birthday']['html'] ?>
+                            <?php if ($fields['birthday']['error']): ?><span class="help-block"><?= $fields['birthday']['error'] ?></span><?php endif; ?>
+                        </div>
+                    </div>
+                    <div class="form-group form-group-sm <?= 0 == $fields['email']['renderMode'] ? ' hide' : '' ?><?= $fields['email']['error'] ? ' has-error' : '' ?>">
+                        <label class="col-sm-4 control-label" for="email"><?= $fields['email']['label'] ?></label>
+                        <div class="col-sm-8">
+                            <?= $fields['email']['html'] ?>
+                            <?php if ($fields['email']['error']): ?><span class="help-block"><?= $fields['email']['error'] ?></span><?php endif; ?>
+                        </div>
+                    </div>
+                    <div class="form-group form-group-sm <?= 0 == $fields['extphone']['renderMode'] ? ' hide' : '' ?><?= $fields['extphone']['error'] ? ' has-error' : '' ?>">
+                        <label class="col-sm-4 control-label" for="extphone"><?= $fields['extphone']['label'] ?></label>
+                        <div class="col-sm-8">
+                            <?= $fields['extphone']['html'] ?>
+                            <?php if ($fields['extphone']['error']): ?><span class="help-block"><?= $fields['extphone']['error'] ?></span><?php endif; ?>
+                        </div>
+                    </div>
+                    <div class="form-group form-group-sm <?= 0 == $fields['intphone']['renderMode'] ? ' hide' : '' ?><?= $fields['intphone']['error'] ? ' has-error' : '' ?>">
+                        <label class="col-sm-4 control-label" for="intphone"><?= $fields['intphone']['label'] ?></label>
+                        <div class="col-sm-8">
+                            <?= $fields['intphone']['html'] ?>
+                            <?php if ($fields['intphone']['error']): ?><span class="help-block"><?= $fields['intphone']['error'] ?></span><?php endif; ?>
+                        </div>
+                    </div>
+                    <div class="form-group form-group-sm <?= 0 == $fields['mobphone']['renderMode'] ? ' hide' : '' ?><?= $fields['mobphone']['error'] ? ' has-error' : '' ?>">
+                        <label class="col-sm-4 control-label" for="mobphone"><?= $fields['mobphone']['label'] ?></label>
+                        <div class="col-sm-8">
+                            <?= $fields['mobphone']['html'] ?>
+                            <?php if ($fields['mobphone']['error']): ?><span class="help-block"><?= $fields['mobphone']['error'] ?></span><?php endif; ?>
+                        </div>
+                    </div>
+                    <div class="form-group form-group-sm <?= 0 == $fields['address']['renderMode'] ? ' hide' : '' ?><?= $fields['address']['error'] ? ' has-error' : '' ?>">
+                        <label class="col-sm-4 control-label" for="address"><?= $fields['address']['label'] ?></label>
+                        <div class="col-sm-8">
+                            <?= $fields['address']['html'] ?>
+                            <?php if ($fields['address']['error']): ?><span class="help-block"><?= $fields['address']['error'] ?></span><?php endif; ?>
+                        </div>
+                    </div>
+                </div><!-- /.box-body -->
+            </div>
+               <div class="box box-solid box-primary">
                    <div class="box-header with-border">
-                       <h3 class="box-title">Атрибуты </h3>
+                       <h3 class="box-title">Должностные характеристики</h3>
                    </div><!-- /.box-header -->
                    <div class="box-body">
-
+                       <div class="form-group form-group-sm <?= 0 == $fields['position']['renderMode'] ? ' hide' : '' ?><?= $fields['position']['error'] ? ' has-error' : '' ?>">
+                           <label class="col-sm-4 control-label" for="position"><?= $fields['position']['label'] ?></label>
+                           <div class="col-sm-8">
+                               <?= $fields['position']['html'] ?>
+                               <?php if ($fields['position']['error']): ?><span class="help-block"><?= $fields['position']['error'] ?></span><?php endif; ?>
+                           </div>
+                       </div>
                    </div>
                </div>
            </div><!-- /.box-body -->
@@ -179,33 +193,39 @@
 </div>
 <script type="text/javascript">
 
+    $('#form\\:intphone').keypress(function (e) {
+        var txt = String.fromCharCode(e.which);
+        if (e.which !== 0 && e.which !== 8) {
+            if ((txt.match(/[A-Za-zа-яА-Я.№:;,\/' @#$%^&_="?!\\]/)) || ($('#form\\:intphone').val().length >= 25)) {
+                return false;
+            }
+        }
+    });
+    $('#form\\:extphone').keypress(function (e) {
+        var txt = String.fromCharCode(e.which);
+        if (e.which !== 0 && e.which !== 8) {
+            if ((txt.match(/[A-Za-zа-яА-Я.№:;,\/' @#$%^&_="?!\\]/)) || ($('#form\\:extphone').val().length >= 25)) {
+                return false;
+            }
+        }
+    });
+    $('#form\\:mobphone').keypress(function (e) {
+        var txt = String.fromCharCode(e.which);
+        if (e.which !== 0 && e.which !== 8) {
+            if ((txt.match(/[A-Za-zа-яА-Я.№:;,\/' @#$%^&_="?!\\]/)) || ($('#form\\:mobphone').val().length >= 25)) {
+                return false;
+            }
+        }
+    });
 
-   $('#form\\:phone').keypress(function (e) {
-      var txt = String.fromCharCode(e.which);
-      if (e.which !== 0 && e.which !== 8) {
-         if ((txt.match(/[A-Za-zа-яА-Я.№:;,\/' @#$%^&_="?!\\]/)) || ($('#form\\:phone').val().length >= 25)) {
-            return false;
-         }
-      }
-   });
-
-   $('#form\\:fax').keypress(function (e) {
-      var txt = String.fromCharCode(e.which);
-      if (e.which !== 0 && e.which !== 8) {
-         if ((txt.match(/[A-Za-zа-яА-Я.№:;,\/' @#$%^&_="?!\\]/)) || ($('#form\\:fax').val().length >= 25)) {
-            return false;
-         }
-      }
-   });
-
-   $('#form\\:email').keypress(function (e) {
-      var txt = String.fromCharCode(e.which);
-      if (e.which !== 0 && e.which !== 8) {
-         if ((txt.match(/[а-яА-Я]/)) || ($('#form\\:email').val().length >= 40)) {
-            return false;
-         }
-      }
-   });
+    $('#form\\:email').keypress(function (e) {
+        var txt = String.fromCharCode(e.which);
+        if (e.which !== 0 && e.which !== 8) {
+            if ((txt.match(/[а-яА-Я]/)) || ($('#form\\:email').val().length >= 300)) {
+                return false;
+            }
+        }
+    });
 
 </script>
 <?php if (isset($isValid)): ?>
