@@ -185,7 +185,7 @@ class m200925_113514_ais_dictionary extends \main\BaseMigration
             'name' => $this->string(400)->notNull(),
             'hide' => $this->boolean()->defaultValue(false),
         ]);
-          $this->createTable('guide_activ_subcategory', [
+        $this->createTable('guide_activ_subcategory', [
             'id' => $this->primaryKey(),
             'name' => $this->string(400)->notNull(),
             'category_id' => $this->string(100)->notNull(),
@@ -238,6 +238,22 @@ class m200925_113514_ais_dictionary extends \main\BaseMigration
         $this->db->createCommand()->batchInsert('refbooks', ['name', 'table_name', 'key_field', 'value_field', 'sort_field', 'ref_field', 'group_field', 'note'], [
             ['activ_subcategory', 'guide_activ_subcategory', 'id', 'name', 'id', 'category_id', null, 'Подкатегории мероприятия'],
         ])->execute();
+
+        $this->createTable('guide_level_study', [
+            'id' => $this->primaryKey(),
+            'name' => $this->string(400)->notNull(),
+            'hide' => $this->boolean()->defaultValue(false),
+        ]);
+
+        $this->db->createCommand()->batchInsert('guide_level_study', ['id', 'name'], [
+            ['1', 'Общеразвивающая программа'],
+            ['2', 'Предпрофессиональная программа'],
+            ['3', 'Общеразвивающая программа (на углубленном уровне)']
+        ])->execute();
+
+        $this->db->createCommand()->batchInsert('refbooks', ['name', 'table_name', 'key_field', 'value_field', 'sort_field', 'ref_field', 'group_field', 'note'], [
+            ['level_study', 'guide_level_study', 'id', 'name', 'id', null, null, 'Уровень подготовки'],
+        ])->execute();
     }
 
     /**
@@ -246,10 +262,13 @@ class m200925_113514_ais_dictionary extends \main\BaseMigration
     public function safeDown()
     {
 
+        $this->db->createCommand()->delete('refbooks', ['name' => 'level_study'])->execute();
+        $this->dropTable('guide_level_study');
         $this->db->createCommand()->delete('refbooks', ['name' => 'activ_subcategory'])->execute();
         $this->db->createCommand()->delete('refbooks', ['name' => 'activ_category'])->execute();
         $this->dropTable('guide_activ_subcategory');
         $this->dropTable('guide_activ_category');
+        $this->db->createCommand()->delete('refbooks', ['name' => 'teachers_fio'])->execute();
         $this->db->createCommand()->delete('refbooks', ['name' => 'teachers'])->execute();
         $this->db->createCommand()->dropView('view_teachers')->execute();
         $this->db->createCommand()->delete('refbooks', ['name' => 'guide_creative'])->execute();

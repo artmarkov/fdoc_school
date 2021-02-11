@@ -2,19 +2,19 @@
 
 use \yii\helpers\Url;
 
-class manager_Subject extends manager_Base
+class manager_Studyplan extends manager_Base
 {
-    protected $type = 'subject';
-    protected $columnsDefaults = ['o_id', 'name', 'shortname', 'department', 'subject_cat', 'subject_vid', 'command'];
-    protected $editRoute = '/subject/edit';
-    protected $createRoute = '/subject/create';
-    protected $viewRoute = '/subject/view';
+    protected $type = 'studyplan';
+    protected $columnsDefaults = ['o_id', 'department', 'period_study', 'level_study', 'plan_rem', 'description', 'count', 'command'];
+    protected $editRoute = '/studyplan/edit';
+    protected $createRoute = '/studyplan/create';
+    protected $viewRoute = '/studyplan/view';
 
     public function __construct($url, $user)
     {
         $this->addCommand(
             'view', \main\ui\LinkButton::create()->setIcon('fa-eye')->setStyle('btn-default btn-xs')->setTitle('Просмотр'), function ($el, $o, $that) {
-            /* @var $that \manager_Subject */
+            /* @var $that \manager_Creative */
             /* @var $el \main\ui\LinkButton */
             return $that->isAllowed($o, 'read') ? $el->setLink($that->getViewUrl(['id' => $o->id]))->render() : '';
         }
@@ -25,7 +25,7 @@ class manager_Subject extends manager_Base
     public function getUiManager()
     {
         $m = parent::getUiManager();
-        $m->addCommand('Реестр дмсциплин', Url::to(array_merge($this->route, ['excel' => '1'])), 'download');
+        $m->addCommand('Реестр учебных планов', Url::to(array_merge($this->route, ['excel' => '1'])), 'download');
         if (Yii::$app->user->can('create@object', [$this->type])) {
             $m->addCommand('Создать', Url::to([$this->createRoute]), 'plus', 'primary');
         }
@@ -34,36 +34,54 @@ class manager_Subject extends manager_Base
 
     protected function getSearchObject()
     {
-        return new obj_search_Subject();
+        return new obj_search_Creative();
     }
 
     protected function getObject($id)
     {
-        return ObjectFactory::subject($id);
+        return ObjectFactory::studyplan($id);
     }
 
     /**
      * Возвращает текстовое значение колонки
-     * @param \main\eav\object\Subject $o
+     * @param \main\eav\object\Creative $o
      * @param string $field
      * @return string
      */
     protected function getColumnValue($o, $field)
     {
         switch ($field) {
-            case 'status':
-                return array_key_exists($o->getval($field), \main\eav\object\Subject::STATUS) ? \main\eav\object\Subject::STATUS[$o->getval($field)] : '';
             case 'department':
-                return \main\eav\object\Subject::getDepartmentList($o->getval($field));
-            case 'subject_cat':
-                return \main\eav\object\Subject::getSubjectCatList($o->getval($field));
-            case 'subject_vid':
-                return \main\eav\object\Subject::getSubjectVidList($o->getval($field));
-            case 'name':
-            case 'shortname':
+                return \RefBook::find('guide_studyplan')->getValue($o->getval($field));
+            case 'period_study':
+            case 'level_study':
+            case 'plan_rem':
+            case 'description':
+            case 'count':
+            case 'hide':
                 return $o->getval($field);
         }
         return parent::getColumnValue($o, $field);
+    }
+
+    /**
+     * Возвращает html значение колонки
+     * @param \main\models\Auditory $o
+     * @param string $field
+     * @return string
+     */
+    protected function getColumnHtmlValue($o, $field)
+    {
+        switch ($field) {
+            case 'hide':
+                return $o->getval($field) ? 'Да' : 'Нет';
+        }
+        return parent::getColumnHtmlValue($o, $field);
+    }
+
+    protected function getRowStyle($o)
+    {
+        return $o->getval('hide') ? '' : 'background:#EFBEBE';
     }
 
     public function getViewUrl($params = null)
@@ -84,7 +102,7 @@ class manager_Subject extends manager_Base
             \main\ui\Notice::registerWarning('Нет прав на удаление "' . $o->getname() . '"', 'Удаление');
             return true;
         }
-//        $s = new obj_search_OrderBySubject($id);
+//        $s = new obj_search_OrderByCreative($id);
 //        $s->do_search($total);
 //        if ($total > 0) {
 //            \main\ui\Notice::registerWarning('Удаление невозможно, число заявлений на контрагенте: ' . $total, 'Удаление');
@@ -92,11 +110,6 @@ class manager_Subject extends manager_Base
 //        }
         $o->delete();
         return true;
-    }
-
-    protected function getRowStyle($o)
-    {
-        return $o->getval('status') ? '' : 'background:#EFBEBE';
     }
 
 }

@@ -40,7 +40,7 @@
                         'options' => ['class' => 'treeview'],
                         'items' => [
                             ['label' => 'План мероприятий', 'icon' => 'fa fa-minus', 'url' => ['activities/index']],
-                            ['label' => 'Учебные планы', 'icon' => 'fa fa-minus', 'url' => ['attandlog/index']],
+                            ['label' => 'Учебные планы', 'icon' => 'fa fa-minus', 'url' => ['studyplan/index']],
                             ['label' => 'Счета за обучение', 'icon' => 'fa fa-minus', 'url' => ['attandlog/index']],
                             ['label' => 'Табель учета педагогических часов', 'icon' => 'fa fa-minus', 'url' => ['attandlog/index']],
                             ['label' => 'Календарный график', 'icon' => 'fa fa-minus', 'url' => ['attandlog/index']],

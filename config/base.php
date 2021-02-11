@@ -115,6 +115,9 @@ $config = [
                 'activities/' => 'activities/index',
                 'activities/<id:\d+>' => 'activities/edit',
                 'activities/<id:\d+>/view' => 'activities/view',
+                'studyplan/' => 'studyplan/index',
+                'studyplan/<id:\d+>' => 'studyplan/edit',
+                'studyplan/<id:\d+>/view' => 'studyplan/view',
                 ],
         ],
         'formatter' => [

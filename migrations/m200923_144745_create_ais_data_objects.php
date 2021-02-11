@@ -276,6 +276,9 @@ class m200923_144745_create_ais_data_objects extends \main\BaseMigration
         $this->addColumn('subject_sort', 'status', $this->string(200));
         $this->addColumn('subject_sort', 'name', $this->string(200));
         $this->addColumn('subject_sort', 'shortname', $this->string(200));
+        $this->addColumn('subject_sort', 'department', $this->string(500));
+        $this->addColumn('subject_sort', 'subject_cat', $this->string(500));
+        $this->addColumn('subject_sort', 'subject_vid', $this->string(500));
 
         $this->createTableWithHistory('own_division', [
             'id' => $this->primaryKey().' constraint check_range check (id between 1000 and 9999)',
@@ -441,6 +444,14 @@ class m200923_144745_create_ais_data_objects extends \main\BaseMigration
         $this->addColumn('activities_sort', 'num_winners', $this->string(10));
         $this->addColumn('activities_sort', 'num_visitors', $this->string(10));
 
+        $this->createEavTableGroup('studyplan');
+        $this->addColumn('studyplan_sort', 'department', $this->string(200));
+        $this->addColumn('studyplan_sort', 'period_study', $this->string(100));
+        $this->addColumn('studyplan_sort', 'level_study', $this->string(100));
+        $this->addColumn('studyplan_sort', 'plan_rem', $this->string(100));
+        $this->addColumn('studyplan_sort', 'description', $this->string(4000));
+        $this->addColumn('studyplan_sort', 'count', $this->string(100));
+        $this->addColumn('studyplan_sort', 'hide', $this->string(10));
     }
     /**
      * {@inheritdoc}
@@ -448,6 +459,7 @@ class m200923_144745_create_ais_data_objects extends \main\BaseMigration
      */
     public function safeDown()
     {
+        $this->dropEavTableGroup('studyplan');
         $this->dropEavTableGroup('activities');
         $this->dropEavTableGroup('creative');
         $this->dropEavTableGroup('own');

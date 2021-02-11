@@ -111,5 +111,14 @@ class ObjectFactory
         return self::load('activities', $id);
     }
 
+    /**
+     * @param int $id
+     * @return Subject
+     */
+    public static function studyplan($id)
+    {
+        return self::load('studyplan', $id);
+    }
+
 
 }

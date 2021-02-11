@@ -15,42 +15,22 @@
 
    <div class="box box-solid box-primary">
       <div class="box-header with-border">
-         <h3 class="box-title">Информация о дисциплине</h3>
+         <h3 class="box-title"><?= $title ?></h3>
           <div class="box-tools pull-right">
               <?= $helper_actions['history']['html'] ?>
           </div><!-- /.box-tools -->
       </div><!-- /.box-header -->
            <div class="box-body">
-
-               <div class="form-group form-group-sm <?= 0 == $fields['name']['renderMode'] ? ' hide' : '' ?><?= $fields['name']['error'] ? ' has-error' : '' ?>">
-                   <label class="col-sm-4 control-label" for="name"><?= $fields['name']['label'] ?></label>
-                   <div class="col-sm-8">
-                       <?= $fields['name']['html'] ?>
-                       <?php if ($fields['name']['error']): ?><span class="help-block"><?= $fields['name']['error'] ?></span><?php endif; ?>
+               <!-- Fields Поля -->
+               <?php foreach ($fields as $id => $field): ?>
+                   <div class="form-group form-group-sm <?= 0 == $field['renderMode'] ? ' hide' : '' ?><?= $field['error'] ? ' has-error' : '' ?>">
+                       <label class="col-sm-4 control-label" for="<?= $field['id'] ?>"><?= $field['label'] ?><?= $field['required'] ? '*' : '' ?></label>
+                       <div class="col-sm-8">
+                           <?= $field['html'] ?>
+                           <?php if ($field['error']): ?><span class="help-block"><?= $field['error'] ?></span><?php endif; ?>
+                       </div>
                    </div>
-               </div>
-               <div class="form-group form-group-sm <?= 0 == $fields['shortname']['renderMode'] ? ' hide' : '' ?><?= $fields['shortname']['error'] ? ' has-error' : '' ?>">
-                   <label class="col-sm-4 control-label" for="shortname"><?= $fields['shortname']['label'] ?></label>
-                   <div class="col-sm-8">
-                       <?= $fields['shortname']['html'] ?>
-                       <?php if ($fields['shortname']['error']): ?><span class="help-block"><?= $fields['shortname']['error'] ?></span><?php endif; ?>
-                   </div>
-               </div>
-               <div class="form-group form-group-sm <?= 0 == $fields['status']['renderMode'] ? ' hide' : '' ?><?= $fields['status']['error'] ? ' has-error' : '' ?>">
-                   <label class="col-sm-4 control-label" for="status"><?= $fields['status']['label'] ?></label>
-                   <div class="col-sm-8">
-                       <?= $fields['status']['html'] ?>
-                       <?php if ($fields['status']['error']): ?><span class="help-block"><?= $fields['status']['error'] ?></span><?php endif; ?>
-                   </div>
-               </div>
-               <div class="box box-solid box-info">
-                   <div class="box-header with-border">
-                       <h3 class="box-title">Атрибуты </h3>
-                   </div><!-- /.box-header -->
-                   <div class="box-body">
-
-                   </div>
-               </div>
+               <?php endforeach;?>
            <!-- Actions Действия -->
            <div class="box-footer">
                <?= $actions['save']['html'] ?>
@@ -63,9 +43,6 @@
             </div>
    </div>
 </form>
-<script status="text/javascript">
-   
-</script>
 <?php if (isset($isValid)): ?>
    <script>
       $(document).ready(function() {
