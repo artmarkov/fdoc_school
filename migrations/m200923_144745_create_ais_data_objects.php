@@ -247,7 +247,7 @@ class m200923_144745_create_ais_data_objects extends \main\BaseMigration
             }
         }
 
-        $this->createTableWithHistory('subject_cat', [
+        $this->createTableWithHistory('subject_sect', [
             'id' => $this->primaryKey().' constraint check_range check (id between 1000 and 9999)',
             'name' => $this->string(500)->notNull(),
             'description' => $this->string(1000),
@@ -257,14 +257,14 @@ class m200923_144745_create_ais_data_objects extends \main\BaseMigration
             'updated_by' => $this->integer(),
             'version' => $this->bigInteger()->notNull()->defaultValue(0),
         ]);
-        $this->addCommentOnTable('subject_cat','Категории дисциплин школы');
-        $this->addForeignKey('users_createdby_fk', 'subject_cat', 'created_by', 'users', 'id');
-        $this->addForeignKey('users_updatedby_fk', 'subject_cat', 'updated_by', 'users', 'id');
-        $this->db->createCommand()->resetSequence('subject_cat',1000)->execute();
+        $this->addCommentOnTable('subject_sect','Разделы дисциплин школы');
+        $this->addForeignKey('users_createdby_fk', 'subject_sect', 'created_by', 'users', 'id');
+        $this->addForeignKey('users_updatedby_fk', 'subject_sect', 'updated_by', 'users', 'id');
+        $this->db->createCommand()->resetSequence('subject_sect',1000)->execute();
 
-        $this->db->createCommand()->batchInsert('subject_cat', ['name', 'created_at', 'created_by', 'updated_at'], [
+        $this->db->createCommand()->batchInsert('subject_sect', ['name', 'created_at', 'created_by', 'updated_at'], [
             ['Специальность', time(), $adminId, time()],
-            ['Инструмент', time(), $adminId, time()],
+            ['Музыкальный инструмент', time(), $adminId, time()],
             ['Дисциплины отдела', time(), $adminId, time()],
             ['Общие дисциплины', time(), $adminId, time()],
             ['Предмет по выбору', time(), $adminId, time()],
@@ -277,8 +277,8 @@ class m200923_144745_create_ais_data_objects extends \main\BaseMigration
         $this->addColumn('subject_sort', 'name', $this->string(200));
         $this->addColumn('subject_sort', 'shortname', $this->string(200));
         $this->addColumn('subject_sort', 'department', $this->string(500));
-        $this->addColumn('subject_sort', 'subject_cat', $this->string(500));
-        $this->addColumn('subject_sort', 'subject_vid', $this->string(500));
+        $this->addColumn('subject_sort', 'subject_sect', $this->string(500));
+        $this->addColumn('subject_sort', 'subject_form', $this->string(500));
 
         $this->createTableWithHistory('own_division', [
             'id' => $this->primaryKey().' constraint check_range check (id between 1000 and 9999)',
@@ -466,7 +466,7 @@ class m200923_144745_create_ais_data_objects extends \main\BaseMigration
         $this->dropTableWithHistory('own_department');
         $this->dropTableWithHistory('own_division');
         $this->dropEavTableGroup('subject');
-        $this->dropTableWithHistory('subject_cat');
+        $this->dropTableWithHistory('subject_sect');
         $this->dropTableWithHistory('auditory');
         $this->dropTableWithHistory('auditory_cat');
         $this->dropTableWithHistory('auditory_building');

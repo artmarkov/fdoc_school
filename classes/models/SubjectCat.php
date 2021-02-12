@@ -8,7 +8,7 @@ use yii\db\ActiveRecord;
 use yii\helpers\ArrayHelper;
 
 /**
- * This is the model class for table "subject_cat".
+ * This is the model class for table "subject_sect".
  *
  * @property int $id
  * @property string $name
@@ -28,7 +28,7 @@ class SubjectCat extends ActiveRecord
      */
     public static function tableName()
     {
-        return 'subject_cat';
+        return 'subject_sect';
     }
 
     /**

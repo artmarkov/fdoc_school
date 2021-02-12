@@ -28,6 +28,7 @@
                        <div class="col-sm-8">
                            <?= $field['html'] ?>
                            <?php if ($field['error']): ?><span class="help-block"><?= $field['error'] ?></span><?php endif; ?>
+                           <small id="help_<?= $field['id'] ?>" class="form-text text-muted"><?= $field['hint'] ?></small>
                        </div>
                    </div>
                <?php endforeach;?>

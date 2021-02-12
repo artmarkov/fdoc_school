@@ -208,8 +208,8 @@ class m210130_154437_add_default_data extends \main\BaseMigration
                 'name' => $v['0'],
                 'shortname' => $v['1'],
                 'department' => $v['2'],
-                'subject_cat' => $v['3'],
-                'subject_vid' => $v['4'],
+                'subject_sect' => $v['3'],
+                'subject_form' => $v['4'],
             ]);
         }
     }

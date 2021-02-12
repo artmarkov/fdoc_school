@@ -138,7 +138,7 @@ class m200925_113514_ais_dictionary extends \main\BaseMigration
             ['auditory_cat', 'auditory_cat', 'id', 'name', 'id', null, null, 'Категории аудиторий'],
         ])->execute();
         $this->db->createCommand()->batchInsert('refbooks', ['name', 'table_name', 'key_field', 'value_field', 'sort_field', 'ref_field', 'group_field', 'note'], [
-            ['subject_cat', 'subject_cat', 'id', 'name', 'id', null, null, 'Категории дисциплин'],
+            ['subject_sect', 'subject_sect', 'id', 'name', 'id', null, null, 'Категории дисциплин'],
         ])->execute();
 
         $this->createTable('guide_creative', [
@@ -242,17 +242,21 @@ class m200925_113514_ais_dictionary extends \main\BaseMigration
         $this->createTable('guide_level_study', [
             'id' => $this->primaryKey(),
             'name' => $this->string(400)->notNull(),
+            'shortname' => $this->string(200)->notNull(),
             'hide' => $this->boolean()->defaultValue(false),
         ]);
 
         $this->db->createCommand()->batchInsert('guide_level_study', ['id', 'name'], [
-            ['1', 'Общеразвивающая программа'],
-            ['2', 'Предпрофессиональная программа'],
-            ['3', 'Общеразвивающая программа (на углубленном уровне)']
+            ['1', 'Общеразвивающая программа', 'ОП'],
+            ['2', 'Предпрофессиональная программа', 'ПП'],
         ])->execute();
 
         $this->db->createCommand()->batchInsert('refbooks', ['name', 'table_name', 'key_field', 'value_field', 'sort_field', 'ref_field', 'group_field', 'note'], [
             ['level_study', 'guide_level_study', 'id', 'name', 'id', null, null, 'Уровень подготовки'],
+        ])->execute();
+
+        $this->db->createCommand()->batchInsert('refbooks', ['name', 'table_name', 'key_field', 'value_field', 'sort_field', 'ref_field', 'group_field', 'note'], [
+            ['level_study_short', 'guide_level_study', 'id', 'shortname', 'id', null, null, 'Уровень подготовки - аббревиатура'],
         ])->execute();
     }
 
@@ -261,7 +265,7 @@ class m200925_113514_ais_dictionary extends \main\BaseMigration
      */
     public function safeDown()
     {
-
+        $this->db->createCommand()->delete('refbooks', ['name' => 'level_study_short'])->execute();
         $this->db->createCommand()->delete('refbooks', ['name' => 'level_study'])->execute();
         $this->dropTable('guide_level_study');
         $this->db->createCommand()->delete('refbooks', ['name' => 'activ_subcategory'])->execute();
@@ -273,7 +277,7 @@ class m200925_113514_ais_dictionary extends \main\BaseMigration
         $this->db->createCommand()->dropView('view_teachers')->execute();
         $this->db->createCommand()->delete('refbooks', ['name' => 'guide_creative'])->execute();
         $this->dropTable('guide_creative');
-        $this->db->createCommand()->delete('refbooks', ['name' => 'subject_cat'])->execute();
+        $this->db->createCommand()->delete('refbooks', ['name' => 'subject_sect'])->execute();
         $this->db->createCommand()->delete('refbooks', ['name' => 'auditory_cat'])->execute();
         $this->db->createCommand()->delete('refbooks', ['name' => 'buildings'])->execute();
         $this->db->createCommand()->delete('refbooks', ['name' => 'stake_dev'])->execute();

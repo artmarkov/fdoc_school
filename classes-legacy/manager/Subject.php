@@ -5,7 +5,7 @@ use \yii\helpers\Url;
 class manager_Subject extends manager_Base
 {
     protected $type = 'subject';
-    protected $columnsDefaults = ['o_id', 'name', 'shortname', 'department', 'subject_cat', 'subject_vid', 'command'];
+    protected $columnsDefaults = ['o_id', 'name', 'shortname', 'department', 'subject_sect', 'subject_form', 'command'];
     protected $editRoute = '/subject/edit';
     protected $createRoute = '/subject/create';
     protected $viewRoute = '/subject/view';
@@ -55,9 +55,9 @@ class manager_Subject extends manager_Base
                 return array_key_exists($o->getval($field), \main\eav\object\Subject::STATUS) ? \main\eav\object\Subject::STATUS[$o->getval($field)] : '';
             case 'department':
                 return \main\eav\object\Subject::getDepartmentList($o->getval($field));
-            case 'subject_cat':
+            case 'subject_sect':
                 return \main\eav\object\Subject::getSubjectCatList($o->getval($field));
-            case 'subject_vid':
+            case 'subject_form':
                 return \main\eav\object\Subject::getSubjectVidList($o->getval($field));
             case 'name':
             case 'shortname':

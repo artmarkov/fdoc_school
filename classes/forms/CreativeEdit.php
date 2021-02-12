@@ -53,8 +53,6 @@ class CreativeEdit extends form_ObjEdit
         $fBonus->addField('form_control_Month', 'period', 'Период', ['placeholder' => 'Период', 'required' => 1]);
         $fBonus->addField('form_control_Text', 'bonus', 'Надбавка(%)', ['placeholder' => 'Надбавка(%)', 'required' => 1]);
 
-
-
         if ($obj instanceof \main\eav\object\Snapshot) { // режим отображения на прошлую дату
             $this->timestamp = $obj->getTimestamp();
         }
@@ -71,10 +69,7 @@ class CreativeEdit extends form_ObjEdit
     {
         parent::onAfterLoad();
 
-//        $this->getField('type')->setRenderMode(form_dispMode::Read);
     }
-
-
 
     protected function asArray()
     {

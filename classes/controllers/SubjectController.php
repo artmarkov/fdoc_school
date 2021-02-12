@@ -72,6 +72,18 @@ class SubjectController extends BaseController
     }
 
     /**
+     * Карточка дисциплины в readonly
+     * @param integer $id
+     * @return mixed
+     * @throws \yii\web\NotFoundHttpException
+     * @throws \yii\db\Exception
+     */
+    public function actionView($id)
+    {
+        return $this->actionEdit($id, true);
+    }
+
+    /**
      * Категории дисциплины
      * @return string|\yii\web\Response
      */

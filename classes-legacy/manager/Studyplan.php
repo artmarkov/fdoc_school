@@ -5,7 +5,7 @@ use \yii\helpers\Url;
 class manager_Studyplan extends manager_Base
 {
     protected $type = 'studyplan';
-    protected $columnsDefaults = ['o_id', 'department', 'period_study', 'level_study', 'plan_rem', 'description', 'count', 'command'];
+    protected $columnsDefaults = ['o_id', 'department', 'period_study', 'level_study', 'plan_rem', 'count', 'command'];
     protected $editRoute = '/studyplan/edit';
     protected $createRoute = '/studyplan/create';
     protected $viewRoute = '/studyplan/view';
@@ -34,7 +34,7 @@ class manager_Studyplan extends manager_Base
 
     protected function getSearchObject()
     {
-        return new obj_search_Creative();
+        return new obj_search_Studyplan();
     }
 
     protected function getObject($id)
@@ -52,9 +52,11 @@ class manager_Studyplan extends manager_Base
     {
         switch ($field) {
             case 'department':
-                return \RefBook::find('guide_studyplan')->getValue($o->getval($field));
+                return \RefBook::find('department')->getValue($o->getval($field));
             case 'period_study':
+                return array_key_exists($o->getval($field), \main\eav\object\Studyplan::STUDY_PERIOD) ? \main\eav\object\Studyplan::STUDY_PERIOD[$o->getval($field)] : '';
             case 'level_study':
+                return \RefBook::find('level_study')->getValue($o->getval($field));
             case 'plan_rem':
             case 'description':
             case 'count':

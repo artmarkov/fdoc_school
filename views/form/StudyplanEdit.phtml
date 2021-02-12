@@ -72,11 +72,11 @@
                         </div><!-- /.box-header -->
                         <div class="box-body">
 
-                            <div class="form-group form-group-sm <?= 0 == $f['fields']['subject_cat']['renderMode'] ? ' hide' : '' ?><?= $f['fields']['subject_cat']['error'] ? ' has-error' : '' ?>">
-                                <label class="col-sm-4 control-label" for="lic:subject:<?= $fId ?>:name">Категория дисциплины</label>
+                            <div class="form-group form-group-sm <?= 0 == $f['fields']['subject_sect']['renderMode'] ? ' hide' : '' ?><?= $f['fields']['subject_sect']['error'] ? ' has-error' : '' ?>">
+                                <label class="col-sm-4 control-label" for="lic:subject:<?= $fId ?>:name">Раздел дисциплины</label>
                                 <div class="col-sm-8">
-                                    <?= $f['fields']['subject_cat']['html'] ?>
-                                    <?php if ($f['fields']['subject_cat']['error']): ?><span class="help-block"><?= $f['fields']['subject_cat']['error'] ?></span><?php endif; ?>
+                                    <?= $f['fields']['subject_sect']['html'] ?>
+                                    <?php if ($f['fields']['subject_sect']['error']): ?><span class="help-block"><?= $f['fields']['subject_sect']['error'] ?></span><?php endif; ?>
                                 </div>
                             </div>
 
@@ -116,7 +116,7 @@
                 <?php endforeach; ?>
             </div><!-- /.box-body -->
             <div class="box-footer">
-                <a class="btn btn-default<?= $auth < 2 ? ' hidden' : '' ?>" id="subject:add" href="#">Добавить заявителя</a>
+                <a class="btn btn-default<?= $auth < 2 ? ' hidden' : '' ?>" id="subject:add" href="#">Добавить раздел</a>
             </div>
         </div><!-- /.box -->
             <!-- Actions Действия -->
@@ -154,17 +154,17 @@
 <script id="subject-template" type="text/x-handlebars-template">
     <div class="box box-solid box-info" data-id="{{id}}">
         <div class="box-header with-border">
-            <h3 class="box-title">Заявитель</h3>
+            <h3 class="box-title">Предмет</h3>
             <div class="box-tools pull-right">
                 <a class="btn btn-sm btn-sm-fix btn-info" id="subject:{{id}}:delete" href="#">Удалить</a>
             </div>
         </div><!-- /.box-header -->
         <div class="box-body">
 
-            <div class="form-group form-group-sm <?= 0 == $fieldsets['subject']['template']['fields']['subject_cat']['renderMode'] ? ' hide' : '' ?>">
-                <label class="col-sm-4 control-label" for="lic:subject:{{id}}:subject_cat">Категория дисциплины</label>
+            <div class="form-group form-group-sm <?= 0 == $fieldsets['subject']['template']['fields']['subject_sect']['renderMode'] ? ' hide' : '' ?>">
+                <label class="col-sm-4 control-label" for="lic:subject:{{id}}:subject_sect">Раздел дисциплины</label>
                 <div class="col-sm-8">
-                    <?= $fieldsets['subject']['template']['fields']['subject_cat']['html'] ?>
+                    <?= $fieldsets['subject']['template']['fields']['subject_sect']['html'] ?>
                 </div>
             </div>
 

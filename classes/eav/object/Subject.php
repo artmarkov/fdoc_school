@@ -11,7 +11,7 @@ class Subject extends Base
         '1' => 'Активно',
     ];
 
-     const SUBJECT_VID = [
+     const SUBJECT_FORM = [
         '1' => 'Индивидуальные',
         '2' => 'Групповые',
         '3' => 'Мелкогрупповые',
@@ -30,11 +30,11 @@ class Subject extends Base
                 $v->valueNum = $v->value;
                 $v->value = self::getDepartmentList($v->value);
             }],
-            ['subject_cat', 'name' => 'Категория дисциплины', function ($v) {
+            ['subject_sect', 'name' => 'Раздел дисциплины', function ($v) {
                 $v->valueNum = $v->value;
                 $v->value = self::getSubjectCatList($v->value);
             }],
-            ['subject_vid', 'name' => 'Вид дисциплины', function ($v) {
+            ['subject_form', 'name' => 'Форма занятий', function ($v) {
                 $v->valueNum = $v->value;
                 $v->value = self::getSubjectVidList($v->value);
             }],
@@ -62,7 +62,7 @@ class Subject extends Base
     {
         $result = [];
         foreach (explode(',', $subjectCat) as $id => $item) {
-            $result[] = \RefBook::find('subject_cat')->getValue($item);
+            $result[] = \RefBook::find('subject_sect')->getValue($item);
         }
         return implode('<br />', $result);
     }
@@ -71,7 +71,7 @@ class Subject extends Base
     {
         $result = [];
         foreach (explode(',', $subjectVid) as $id => $item) {
-            $result[] = array_key_exists($item, self::SUBJECT_VID) ? self::SUBJECT_VID[$item] : '';
+            $result[] = array_key_exists($item, self::SUBJECT_FORM) ? self::SUBJECT_FORM[$item] : '';
         }
         return implode('<br />', $result);
     }
