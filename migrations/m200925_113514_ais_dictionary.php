@@ -246,7 +246,7 @@ class m200925_113514_ais_dictionary extends \main\BaseMigration
             'hide' => $this->boolean()->defaultValue(false),
         ]);
 
-        $this->db->createCommand()->batchInsert('guide_level_study', ['id', 'name'], [
+        $this->db->createCommand()->batchInsert('guide_level_study', ['id', 'name', 'shortname'], [
             ['1', 'Общеразвивающая программа', 'ОП'],
             ['2', 'Предпрофессиональная программа', 'ПП'],
         ])->execute();

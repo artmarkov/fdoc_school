@@ -15,7 +15,6 @@
     .datepicker{z-index:1151 !important;}
 </style>
 <form class="form-horizontal form-compact" role="form" action="<?= $url ?>" name="<?= $formName ?>" method="post" enctype="multipart/form-data">
-
     <div class="box box-solid box-primary">
         <div class="box-header with-border">
             <h3 class="box-title"><?= $title ?></h3>
@@ -56,79 +55,83 @@
                     </div>
                 </div>
             <?php endforeach;?>
-        <div class="box box-solid box-primary subject-container"
-             data-lastid="<?= 0 == count($fieldsets['subject']['instances']) ? '1' : 1 + max(array_keys($fieldsets['subject']['instances'])) ?>">
-            <div class="box-header with-border">
-                <h3 class="box-title">Учебные дисциплины</h3>
-            </div><!-- /.box-header -->
-            <div class="box-body">
-                <?php foreach ($fieldsets['subject']['instances'] as $fId => $f): ?>
-                    <div class="box box-solid box-info" data-id="<?= $fId ?>">
-                        <div class="box-header with-border">
-                            <h3 class="box-title"><?= $f['title'] ?></h3>
-                            <div class="box-tools pull-right">
-                                <a class="btn btn-sm btn-sm-fix btn-info<?= $auth < 2 ? ' hidden' : '' ?>" id="subject:<?= $fId ?>:delete" href="#">Удалить</a>
-                            </div>
-                        </div><!-- /.box-header -->
-                        <div class="box-body">
+            <?php if (!$isNew): ?>
+            <div class="box box-solid box-primary subject-container"
+                 data-lastid="<?= 0 == count($fieldsets['subject']['instances']) ? '1' : 1 + max(array_keys($fieldsets['subject']['instances'])) ?>">
+                <div class="box-header with-border">
+                    <h3 class="box-title">Учебные дисциплины</h3>
+                </div><!-- /.box-header -->
+                <div class="box-body">
 
-                            <div class="form-group form-group-sm <?= 0 == $f['fields']['subject_sect']['renderMode'] ? ' hide' : '' ?><?= $f['fields']['subject_sect']['error'] ? ' has-error' : '' ?>">
-                                <label class="col-sm-4 control-label" for="lic:subject:<?= $fId ?>:name">Раздел дисциплины</label>
-                                <div class="col-sm-8">
-                                    <?= $f['fields']['subject_sect']['html'] ?>
-                                    <?php if ($f['fields']['subject_sect']['error']): ?><span class="help-block"><?= $f['fields']['subject_sect']['error'] ?></span><?php endif; ?>
+                    <?php foreach ($fieldsets['subject']['instances'] as $fId => $f): ?>
+                        <div class="box box-solid box-info" data-id="<?= $fId ?>">
+                            <div class="box-header with-border">
+                                <h3 class="box-title"><?= $f['title'] ?></h3>
+                                <div class="box-tools pull-right">
+                                    <a class="btn btn-sm btn-sm-fix btn-info<?= $auth < 2 ? ' hidden' : '' ?>" id="subject:<?= $fId ?>:delete" href="#">Удалить</a>
                                 </div>
-                            </div>
-
-                            <div class="form-group form-group-sm">
-                                <label class="col-sm-4 control-label">Нагрузка</label>
-                                <div class="col-sm-8">
-                                    <div class="box box-solid box-default loads-container" data-lastid="<?= 0 == count($fieldsets['subject']['instances'][$fId]['fieldsets']['loads']['instances']) ? '1' : 1 + max(array_keys($fieldsets['subject']['instances'][$fId]['fieldsets']['loads']['instances'])) ?>">
-                                        <div class="box-body">
-                                            <?php foreach ($fieldsets['subject']['instances'][$fId]['fieldsets']['loads']['instances'] as $loadsId => $fBonus): ?>
-                                                <div class="box box-solid box-default" data-id="<?= $loadsId ?>">
-                                                    <div class="box-body">
-                                                        <div class="form-group">
-                                                            <div class="col-sm-7 <?= 0 == $fBonus['fields']['period']['renderMode'] ? ' hide' : '' ?><?= $fBonus['fields']['period']['error'] ? ' has-error' : '' ?>">
-                                                                <?= $fBonus['fields']['period']['html'] ?>
-                                                                <?php if ($fBonus['fields']['period']['error']): ?><span class="help-block"><?= $fBonus['fields']['period']['error'] ?></span><?php endif; ?>
-                                                            </div>
-                                                            <div class="col-sm-4 <?= 0 == $fBonus['fields']['bonus']['renderMode'] ? ' hide' : '' ?><?= $fBonus['fields']['bonus']['error'] ? ' has-error' : '' ?>">
-                                                                <?= $fBonus['fields']['bonus']['html'] ?>
-                                                                <?php if ($fBonus['fields']['bonus']['error']): ?><span class="help-block"><?= $fBonus['fields']['bonus']['error'] ?></span><?php endif; ?>
-                                                            </div>
-                                                            <div class="col-sm-1">
-                                                                <a class="btn pull-right btn-sm btn-sm-fix btn-danger<?= $auth < 2 ? ' hidden' : '' ?>" id="subject:<?= $fId ?>:loads:<?= $loadsId ?>:delete" href="#"><i class="fa fa-times"></i></a>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            <?php endforeach; ?>
-                                        </div><!-- /.box-body -->
-                                        <div class="box-footer">
-                                            <a class="btn btn-default<?= $auth < 2 ? ' hidden' : '' ?>" id="subject:<?= $fId ?>:loads:add" href="#"><i class="fa fa-plus"></i></a>
-                                        </div>
+                            </div><!-- /.box-header -->
+                            <div class="box-body">
+                                <div class="form-group form-group-sm <?= 0 == $f['fields']['subject_sect']['renderMode'] ? ' hide' : '' ?><?= $f['fields']['subject_sect']['error'] ? ' has-error' : '' ?>">
+                                    <label class="col-sm-4 control-label" for="lic:subject:<?= $fId ?>:name"><?= $f['fields']['subject_sect']['label'] ?><?= $f['fields']['subject_sect']['required'] ? '*' : '' ?></label>
+                                    <div class="col-sm-8">
+                                        <?= $f['fields']['subject_sect']['html'] ?>
+                                        <?php if ($f['fields']['subject_sect']['error']): ?><span class="help-block"><?= $f['fields']['subject_sect']['error'] ?></span><?php endif; ?>
                                     </div>
                                 </div>
-                            </div>
-                        </div><!-- /.box-body -->
-                    </div><!-- /.box -->
-                <?php endforeach; ?>
-            </div><!-- /.box-body -->
-            <div class="box-footer">
-                <a class="btn btn-default<?= $auth < 2 ? ' hidden' : '' ?>" id="subject:add" href="#">Добавить раздел</a>
-            </div>
-        </div><!-- /.box -->
-            <!-- Actions Действия -->
-            <div class="box-footer">
-                <?= $actions['save']['html'] ?>
-                <?= $actions['saveexit']['html'] ?>
-                <?= $actions['exit']['html'] ?>
-            </div>
+                                <div class="form-group form-group-sm <?= 0 == $f['fields']['subject']['renderMode'] ? ' hide' : '' ?><?= $f['fields']['subject']['error'] ? ' has-error' : '' ?>">
+                                    <label class="col-sm-4 control-label" for="lic:subject:<?= $fId ?>:name"><?= $f['fields']['subject']['label'] ?><?= $f['fields']['subject']['required'] ? '*' : '' ?></label>
+                                    <div class="col-sm-8">
+                                        <?= $f['fields']['subject']['html'] ?>
+                                        <?php if ($f['fields']['subject']['error']): ?><span class="help-block"><?= $f['fields']['subject']['error'] ?></span><?php endif; ?>
+                                    </div>
+                                </div>
 
-            <!-- Скрытые поля -->
-            <?= $hidden_fields['action']['html'] ?>
-        </div
+                                <div class="form-group form-group-sm">
+                                    <div class="col-sm-12">
+                                        <table id="f:subject:<?= $fId ?>:loads" class="table table-bordered" role="grid">
+                                            <thead>
+                                                <tr>
+                                                    <th style="text-align: center" colspan="<?= $period_study * 2?>">Вариативная часть - часов в неделю / Консультации - часов в год</th>
+                                                </tr>
+                                                <tr>
+                                                <?php for ($i = 1; $i <= $period_study; $i++): ?>
+                                                    <th style="text-align: center" colspan="2"><?= $i ?> год</th>
+                                                <?php endfor; ?>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                            <?php for ($i = 1; $i <= $period_study; $i++): ?>
+                                                    <td><input type="text" id="f:subject:<?= $fId ?>:loads:<?= $i ?>:week_time" name="f:subject:<?= $fId ?>:loads:<?= $i ?>:week_time" value="<?= $subject[$fId]['loads'][$i]['week_time'] ?? 0 ?>" class="form-control"></td>
+                                                    <td><input type="text" id="f:subject:<?= $fId ?>:loads:<?= $i ?>:year_time" name="f:subject:<?= $fId ?>:loads:<?= $i ?>:year_time" value="<?= $subject[$fId]['loads'][$i]['year_time'] ?? 0 ?>" class="form-control">
+                                                        <input type="hidden" id="f:subject:<?= $fId ?>:loads:<?= $i ?>:period" name="f:subject:<?= $fId ?>:loads:<?= $i ?>:period" value="<?= $i ?>" class="form-control"></td>
+                                            <?php endfor; ?>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div><!-- /.box-body -->
+                        </div><!-- /.box -->
+                    <?php endforeach; ?>
+                </div><!-- /.box-body -->
+                <div class="box-footer">
+                    <a class="btn btn-default<?= $auth < 2 ? ' hidden' : '' ?>" id="subject:add" href="#">Добавить раздел</a>
+                </div>
+            </div><!-- /.box -->
+            <?php endif;?>
+        </div>
+        <!-- Actions Действия -->
+        <div class="box-footer">
+            <?= $actions['save']['html'] ?>
+            <?= $actions['saveexit']['html'] ?>
+            <?= $actions['exit']['html'] ?>
+        </div>
+
+        <!-- Скрытые поля -->
+        <?= $hidden_fields['action']['html'] ?>
+    </div>
 </form>
 <div class="modal" id="historyDateModal">
     <div class="modal-dialog">
@@ -160,79 +163,63 @@
             </div>
         </div><!-- /.box-header -->
         <div class="box-body">
-
             <div class="form-group form-group-sm <?= 0 == $fieldsets['subject']['template']['fields']['subject_sect']['renderMode'] ? ' hide' : '' ?>">
-                <label class="col-sm-4 control-label" for="lic:subject:{{id}}:subject_sect">Раздел дисциплины</label>
+                <label class="col-sm-4 control-label" for="lic:subject:{{id}}:subject_sect"><?= $fieldsets['subject']['template']['fields']['subject_sect']['label'] ?></label>
                 <div class="col-sm-8">
                     <?= $fieldsets['subject']['template']['fields']['subject_sect']['html'] ?>
                 </div>
             </div>
-
-
-            <div class="form-group form-group-sm">
-                <label class="col-sm-4 control-label">Нагрузка</label>
+            <div class="form-group form-group-sm <?= 0 == $fieldsets['subject']['template']['fields']['subject']['renderMode'] ? ' hide' : '' ?>">
+                <label class="col-sm-4 control-label" for="lic:subject:{{id}}:subject"><?= $fieldsets['subject']['template']['fields']['subject']['label'] ?></label>
                 <div class="col-sm-8">
-                    <div class="box box-solid box-default loads-container" data-lastid="1">
-                        <div class="box-body">
-                        </div><!-- /.box-body -->
-                        <div class="box-footer">
-                            <a class="btn btn-default" id="subject:{{id}}:loads:add" data-id="{{id}}" href="#"><i class="fa fa-plus"></i></a>
-                        </div>
-                    </div><!-- /.box -->
+                    <?= $fieldsets['subject']['template']['fields']['subject']['html'] ?>
                 </div>
             </div>
-
+            <div class="form-group form-group-sm">
+                <div class="col-sm-12">
+                    <table id="f:subject:{{id}}:loads" class="table table-bordered" role="grid">
+                        <thead>
+                        <tr>
+                            <th style="text-align: center" colspan="<?= $period_study * 2?>">Вариативная часть - часов в неделю / Консультации - часов в год</th>
+                        </tr>
+                        <tr>
+                            <?php for ($i = 1; $i <= $period_study; $i++): ?>
+                                <th colspan="2"><?= $i ?> год</th>
+                            <?php endfor; ?>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <?php for ($i = 1; $i <= $period_study; $i++): ?>
+                                <td>
+                                    <input type="text" id="f:subject:{{id}}:loads:<?= $i ?>:week_time" name="f:subject:{{id}}:loads:<?= $i ?>:week_time" value="0" class="form-control">
+                                </td>
+                                <td>
+                                    <input type="text" id="f:subject:{{id}}:loads:<?= $i ?>:year_time" name="f:subject:{{id}}:loads:<?= $i ?>:year_time" value="0" class="form-control">
+                                    <input type="hidden" id="f:subject:{{id}}:loads:<?= $i ?>:period" name="f:subject:{{id}}:loads:<?= $i ?>:period" value="<?= $i ?>" class="form-control">
+                                </td>
+                            <?php endfor; ?>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
         </div><!-- /.box-body -->
     </div><!-- /.box -->
 </script>
-<script id="loads-template" type="text/x-handlebars-template">
-    <div class="box box-solid box-default" data-id="{{id}}">
-        <div class="box-body">
-            <div class="form-group">
-                <div class="col-sm-7 <?= 0 == $fieldsets['subject']['template']['fieldsets']['loads']['template']['fields']['period']['renderMode'] ? ' hide' : '' ?>">
-                    <?= $fieldsets['subject']['template']['fieldsets']['loads']['template']['fields']['period']['html'] ?>
-                </div>
-                <div class="col-sm-4<?= 0 == $fieldsets['subject']['template']['fieldsets']['loads']['template']['fields']['bonus']['renderMode'] ? ' hide' : '' ?>">
-                    <?= $fieldsets['subject']['template']['fieldsets']['loads']['template']['fields']['bonus']['html'] ?>
-                </div>
-                <div class="col-sm-1">
-                    <a class="btn pull-right btn-sm btn-sm-fix btn-danger" id="subject:{{parentId}}:loads:{{id}}:delete" href="#"><i class="fa fa-times"></i></a>
-                </div>
-            </div>
-        </div>
-    </div>
-</script>
+
 <script>
     var form = {
         tmplSubject: null,
-        tmplBonus: null,
+       // tmplBonus: null,
         init: function () {
             var self = this;
             this.tmplSubject = Handlebars.compile($('#subject-template').html());
-            this.tmplBonus = Handlebars.compile($('#loads-template').html());
+           // this.tmplBonus = Handlebars.compile($('#loads-template').html());
             app.formInitContainer($('div.subject-container'), 'subject', this.tmplSubject, {}, function(id, div) {
-                self.formBonusInitContainer(id, $('div.loads-container', div)); // Поощрения
+                //self.formBonusInitContainer(id, $('div.loads-container', div)); // Поощрения
             });
 
-        },
-        formBonusInitContainer: function (parentId, div) {
-            var self = this;
-            $('#subject\\:' + parentId + '\\:loads\\:add', div).click(function () { // активируем кнопку добавить подраздел
-                var id = div.data('lastid');
-                div.children('div.box-body').append(self.tmplBonus({parentId: parentId, id: id})); // вставить шаблон
-                self.formBonusInitSection(parentId, $('div.box[data-id=' + id + ']', div));
-                div.data('lastid', id + 1);
-                return false;
-            });
-            // настройка секций
-            div.children('div.box-body').children('div.box').each(function (i, e) {
-                self.formBonusInitSection(parentId, $(this));
-            });
-        },
-        formBonusInitSection: function (parentId, div) {
-            var self = this;
-            $('#subject\\:' + parentId + '\\:loads\\:' + div.data('id') + '\\:delete', div).click(app.deleteSectionCallback); // активировать кнопку удалить
-            app.activateFormFields(div);
         }
     };
     $().ready(function () {

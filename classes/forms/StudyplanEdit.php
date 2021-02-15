@@ -25,28 +25,32 @@ class StudyplanEdit extends form_ObjEdit
         parent::__construct('f', 'Сведения учебного плана', $objDS, $objAuth);
         $this->setRenderer(new form_render_Flight('StudyplanEdit.phtml'));
         $this->setUrl($url);
-        $this->addField('form_control_Select', 'department', 'Учебное отделение', [
+        $this->addField('form_control_Select3', 'department', 'Учебное отделение', [
             'refbook' => 'department', 'required' => 1]);
-        $this->addField('form_control_Select', 'period_study', 'Период обучения', [
+        $this->addField('form_control_Select3', 'period_study', 'Период обучения', [
             'list' => Studyplan::STUDY_PERIOD,
             'required' => 1, 'defaultValue' => 8]);
-        $this->addField('form_control_Select', 'level_study', 'Уровень подготовки', [
+        $this->addField('form_control_Select3', 'level_study', 'Уровень подготовки', [
             'refbook' => 'level_study', 'required' => 1]);
         $this->addField('form_control_TextFilter', 'plan_rem', 'Метка');
         $this->addField('form_control_Textarea', 'description', 'Описание учебного плана');
-        $this->addField('form_control_TextFilter', 'count', 'Учеников');
         $this->addField('form_control_Radio', 'hide', 'Доступно', ['list' => ['0' => 'Нет', '1' => 'Да']]);
         $this->addField('form_control_FileAttachment', 'file', 'Электронная версия');
 
+        $this->addField('form_control_Hidden', 'count', 'Учеников');
+
         $fSubject = $this->addFieldset('form_core_Dynamic', 'subject', 'Предмет', $this->getDataSource()->inherit('subject'), new form_auth_Acl('public'));
         $fSubject->setRequireOneElement(true);
-        $fSubject->addField('form_control_Select', 'subject_sect', 'Раздел дисциплины', [
+        $fSubject->addField('form_control_Select3', 'subject_sect', 'Раздел дисциплины', [
+            'refbook' => 'subject_sect', 'required' => 1]);
+        $fSubject->addField('form_control_Select3', 'subject', 'Дисциплина', [
             'refbook' => 'subject_sect', 'required' => 1]);
 
         $fLoads = $fSubject->addFieldset('form_core_Dynamic', 'loads', 'Количество аудиторных часов в неделю', $this->getDataSource()->inherit('loads'), new form_auth_Acl('public'));
         $fLoads->setRequireOneElement(true);
-        $fLoads->addField('form_control_Text', 'period', 'Год обучения', ['placeholder' => 'Год обучения', 'required' => 1]);
-        $fLoads->addField('form_control_Text', 'bonus', 'Нагрузка', ['placeholder' => 'Количество', 'required' => 1]);
+        $fLoads->addField('form_control_Text', 'period', 'Год обучения', ['required' => 1]);
+        $fLoads->addField('form_control_Text', 'week_time', 'Нагрузка', ['required' => 1]);
+        $fLoads->addField('form_control_Text', 'year_time', 'Нагрузка', ['required' => 1]);
 
         if ($obj instanceof \main\eav\object\Snapshot) { // режим отображения на прошлую дату
             $this->timestamp = $obj->getTimestamp();
@@ -69,7 +73,6 @@ class StudyplanEdit extends form_ObjEdit
             $this->getField('level_study')->setRenderMode(Form::MODE_READ);
         }
 
-//        $this->getField('type')->setRenderMode(form_dispMode::Read);
     }
 
     protected function asArray()
@@ -79,6 +82,22 @@ class StudyplanEdit extends form_ObjEdit
         $data['versionList'] = $this->getDataSource()->getVersionList();
         $data['version'] = $this->getDataSource()->getVersion();
         $data['isNew'] = $this->getDataSource()->isNew();
+        $data['period_study'] = $this->getField('period_study')->value;
+
+        $fs = $this->getFieldset('subject');
+        /* @var $fs \main\forms\core\Dynamic */
+        $list = $fs->getInstanceList();
+
+        foreach ($list as $id) {
+            $fl = $fs->getInstance($id)->getFieldset('loads');
+            foreach ($fl->getInstanceList() as $ids) {
+                $i = $fl->getInstance($ids);
+                foreach ($i->getFieldList() as $fname) {
+                    $data['subject'][$id]['loads'][$ids][$fname] = $i->getField($fname)->value;
+                }
+            }
+        }
+//        print_r($data['subject']);
         return $data;
     }
 
