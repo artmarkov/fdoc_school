@@ -46,11 +46,11 @@ class StudyplanEdit extends form_ObjEdit
         $fSubject->addField('form_control_Select3', 'subject', 'Дисциплина', [
             'refbook' => 'subject_sect', 'required' => 1]);
 
-        $fLoads = $fSubject->addFieldset('form_core_Dynamic', 'loads', 'Количество аудиторных часов в неделю', $this->getDataSource()->inherit('loads'), new form_auth_Acl('public'));
+        $fLoads = $fSubject->addFieldset('form_core_Dynamic', 'loads', 'Количество аудиторных часов', $this->getDataSource()->inherit('loads'), new form_auth_Acl('public'));
         $fLoads->setRequireOneElement(true);
         $fLoads->addField('form_control_Text', 'period', 'Год обучения', ['required' => 1]);
-        $fLoads->addField('form_control_Text', 'week_time', 'Нагрузка', ['required' => 1]);
-        $fLoads->addField('form_control_Text', 'year_time', 'Нагрузка', ['required' => 1]);
+        $fLoads->addField('form_control_Text', 'week_time', 'Вариативная часть - часов в неделю', ['required' => 1]);
+        $fLoads->addField('form_control_Text', 'year_time', 'Консультации - часов в год', ['required' => 1]);
 
         if ($obj instanceof \main\eav\object\Snapshot) { // режим отображения на прошлую дату
             $this->timestamp = $obj->getTimestamp();
